@@ -37,7 +37,7 @@ class FirstPageState extends State<FirstPage> {
           color: Colors.white30,
           child: Column(
             children: <Widget>[
-              Images.getIconImage(),
+              Images.getImage("images/tooth_icon.png", 200.0, 200.0),
               Text(
                 // Calling a function from a text
                 "Log in to Asnani",

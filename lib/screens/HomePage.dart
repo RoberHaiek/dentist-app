@@ -1,3 +1,4 @@
+import 'package:dentist_app/screens/AppointmentPage.dart';
 import 'package:dentist_app/screens/FirstPage.dart';
 import 'package:flutter/material.dart';
 import '../Images.dart';
@@ -10,18 +11,41 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.lightBlueAccent,
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: const [
+        child: Column(
+          children: [
+            // Top header with X
             DrawerHeader(
               decoration: BoxDecoration(color: Colors.blue),
-              child: Text("Menu", style: TextStyle(color: Colors.white)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Images.getImage("images/tooth_icon.png", 90, 90),
+                  const SizedBox(width: 2),
+                  Text("Asnani",
+                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)),
+                  const Spacer(), // pushes the X button to the far right
+                  IconButton(
+                    icon: const Icon(Icons.close, color: Colors.white),
+                    onPressed: () {
+                      Navigator.of(context).pop(); // closes the drawer
+                    },
+                  ),
+                ],
+              ),
             ),
-            ListTile(title: Text("Item 1")),
-            ListTile(title: Text("Item 2")),
+
+            // Other items
+            const ListTile(title: Text("Homepage")),
+            const ListTile(title: Text("My appointments")),
+            const ListTile(title: Text("Schedule a new appointment")),
+            const ListTile(title: Text("My medical record")),
+            const ListTile(title: Text("Previous appointments")),
+            const ListTile(title: Text("Contact clinic")),
+            const ListTile(title: Text("Settings")),
           ],
         ),
       ),
+
       body: SafeArea(
         child: Column(
           children: [
@@ -29,17 +53,17 @@ class HomePage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(
-                  icon: const Icon(Icons.menu, size: 40),
-                  onPressed: () {
-                    Scaffold.of(context).openDrawer();
-                  },
+                Builder(
+                  builder: (context) => IconButton(
+                    icon: const Icon(Icons.menu, size: 40, color: Colors.white),
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                  ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.language, size: 40),
-                  onPressed: () {
-                    // handle language change
-                  },
+                  icon: const Icon(Icons.language, size: 40, color: Colors.white),
+                  onPressed: () {},
                 ),
               ],
             ),
@@ -48,7 +72,7 @@ class HomePage extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Images.getIconImage(),
+                Images.getImage("images/tooth_icon.png", 200.0, 200.0),
                 const SizedBox(height: 10),
                 const Text(
                   "Welcome Mr. Name to Asnani",
@@ -96,6 +120,21 @@ class HomePage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
+
+            // Make an appointment button
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AppointmentPage(),
+                  ),
+                );
+              },
+              child: const Text("Make a new appointment"),
+            ),
+
+            const SizedBox(height: 15),
 
             // Logout button
             ElevatedButton(
