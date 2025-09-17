@@ -6,7 +6,13 @@ class Images extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    AssetImage assetImage = AssetImage("images/icon.png");
+    AssetImage assetImage = AssetImage("images/tooth_icon.png");
+    Image image = Image(image: assetImage, width: 200.0, height: 200.0);
+    return Container(child: image);
+  }
+
+  static Widget getIconImage(){
+    AssetImage assetImage = AssetImage("images/tooth_icon.png");
     Image image = Image(image: assetImage, width: 200.0, height: 200.0);
     return Container(child: image);
   }
