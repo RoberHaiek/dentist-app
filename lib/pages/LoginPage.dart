@@ -1,8 +1,6 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'HomePage.dart';
 import '../Images.dart';
-import '../WallpaperScaffold.dart';
 import 'ForgotPage.dart';
 import 'RegistrationPage.dart';
 
@@ -29,38 +27,39 @@ class LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Stack(
         children: [
-          // Fullscreen background
+          // Fullscreen wallpaper
           SizedBox.expand(
             child: Images.getWallpaper("images/login_wallpaper.png"),
           ),
 
           // Login form
-          Center(
+          Align(
+            alignment: const Alignment(0, -0.6), // negative Y lifts it up
             child: SingleChildScrollView(
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.3), // semi-transparent so wallpaper shows
+                  color: Colors.white.withOpacity(0.3), // semi-transparent
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
+                    // Logo
                     Images.getImage("images/tooth_icon.png", 120.0, 120.0),
-                    const SizedBox(height: 10),
                     const Text(
                       "Log in to Asnani",
                       style: TextStyle(color: Colors.white, fontSize: 26.0),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 8),
                     // Email field
                     TextField(
                       controller: emailController,
                       decoration: const InputDecoration(labelText: "Email"),
                       keyboardType: TextInputType.emailAddress,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 8),
                     // Password field
                     TextField(
                       controller: passwordController,
@@ -68,6 +67,7 @@ class LoginPageState extends State<LoginPage> {
                       obscureText: true,
                     ),
                     const SizedBox(height: 24),
+                    // Login button
                     ElevatedButton(
                       onPressed: () {
                         String email = emailController.text;
@@ -81,6 +81,7 @@ class LoginPageState extends State<LoginPage> {
                       child: const Text("Login"),
                     ),
                     const SizedBox(height: 8),
+                    // Forgot password link
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -97,6 +98,7 @@ class LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     const SizedBox(height: 8),
+                    // Register link
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -122,22 +124,4 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 
-  int generateLuckyNumber() {
-    Random random = Random();
-    return random.nextInt(10);
-  }
-
-  void changeNumber(BuildContext context) {
-    AlertDialog alertDialog = AlertDialog(
-      title: Text("Number changed to: ${generateLuckyNumber()}"),
-      content: const Text("Are you happy now?"),
-    );
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alertDialog;
-      },
-    );
-  }
 }

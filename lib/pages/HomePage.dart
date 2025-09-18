@@ -107,10 +107,6 @@ class HomePage extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          // Fullscreen background
-          SizedBox.expand(
-            child: Images.getWallpaper("images/wallpaper.png"),
-          ),
           SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
