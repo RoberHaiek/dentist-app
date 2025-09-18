@@ -62,6 +62,8 @@ flutter:
     - images/tooth_icon_with_bg.png
     - images/tooth_icon.png
     - images/dentist_icon.png
+    - images/login_wallpaper.png
+    - images/wallpaper.png
     #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

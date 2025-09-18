@@ -11,10 +11,17 @@ class Images extends StatelessWidget{
     return Container(child: image);
   }
 
-  static Widget getImage(String name, double width, double height){
-    AssetImage assetImage = AssetImage(name);
+  static Widget getImage(String imageName, double width, double height){
+    AssetImage assetImage = AssetImage(imageName);
     Image image = Image(image: assetImage, width: width, height: height);
     return Container(child: image);
+  }
+
+  static Widget getWallpaper(String imageName){
+    return Image.asset(
+      imageName,
+      fit: BoxFit.cover,
+    );
   }
 
 }

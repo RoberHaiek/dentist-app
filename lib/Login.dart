@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/HomePage.dart';
+import 'pages/HomePage.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -29,18 +29,14 @@ class LoginState extends State<Login> {
           // Email field
           TextField(
             controller: emailController,
-            decoration: const InputDecoration(
-              labelText: "Email",
-            ),
+            decoration: const InputDecoration(labelText: "Email"),
             keyboardType: TextInputType.emailAddress,
           ),
           const SizedBox(height: 16),
           // Password field
           TextField(
             controller: passwordController,
-            decoration: const InputDecoration(
-              labelText: "Password",
-            ),
+            decoration: const InputDecoration(labelText: "Password"),
             obscureText: true, // hides the text
           ),
           const SizedBox(height: 24),
