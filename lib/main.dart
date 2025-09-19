@@ -1,9 +1,21 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import '../pages/LoginPage.dart';
-import '../pages/HomePage.dart';
+import 'firebase_options.dart';
 
-void main() {
-  runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  print("Test is working");
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  print("🔥 Firebase initialized with project: ${DefaultFirebaseOptions.currentPlatform.projectId}");
+  print("Firebase app options: ${Firebase.app().options}");
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget{
@@ -18,9 +30,7 @@ class MyApp extends StatelessWidget{
         ),
         debugShowCheckedModeBanner: false,
         title: "Asnani", // actual name of the app on the phone
-        home: Scaffold(
-          body: const LoginPage()
-        )
+        home: const LoginPage()
     );
   }
 

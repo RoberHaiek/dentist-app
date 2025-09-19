@@ -14,11 +14,56 @@ class LoginPage extends StatefulWidget {
 class LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final FocusNode emailFocus = FocusNode();
+
+  bool isButtonEnabled = false;
+  bool emailValid = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Listen to email and password changes
+    emailController.addListener(_validateForm);
+    passwordController.addListener(_validateForm);
+
+    // Listen to focus changes to validate email
+    emailFocus.addListener(() {
+      if (!emailFocus.hasFocus) {
+        _validateEmail();
+      }
+    });
+  }
+
+  void _validateForm() {
+    final emailText = emailController.text;
+    final passwordText = passwordController.text;
+    final isValidEmail = _isValidEmail(emailText);
+
+    setState(() {
+      isButtonEnabled = emailText.isNotEmpty &&
+          passwordText.isNotEmpty &&
+          isValidEmail;
+    });
+  }
+
+  void _validateEmail() {
+    setState(() {
+      emailValid = _isValidEmail(emailController.text);
+    });
+  }
+
+  bool _isValidEmail(String email) {
+    final emailRegex =
+    RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
+    return emailRegex.hasMatch(email);
+  }
 
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
+    emailFocus.dispose();
     super.dispose();
   }
 
@@ -56,9 +101,19 @@ class LoginPageState extends State<LoginPage> {
                     // Email field
                     TextField(
                       controller: emailController,
+                      focusNode: emailFocus,
                       decoration: const InputDecoration(labelText: "Email"),
                       keyboardType: TextInputType.emailAddress,
                     ),
+                    // Email validation message
+                    if (!emailValid)
+                      const Padding(
+                        padding: EdgeInsets.only(top: 4.0),
+                        child: Text(
+                          "Email is invalid",
+                          style: TextStyle(color: Colors.red, fontSize: 12),
+                        ),
+                      ),
                     const SizedBox(height: 8),
                     // Password field
                     TextField(
@@ -69,24 +124,29 @@ class LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 24),
                     // Login button
                     ElevatedButton(
-                      onPressed: () {
-                        String email = emailController.text;
-                        String password = passwordController.text;
-                        print("Email: $email, Password: $password");
+                      onPressed: isButtonEnabled
+                          ? () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const HomePage()),
+                          MaterialPageRoute(
+                              builder: (context) => const HomePage()),
                         );
-                      },
+                      }
+                          : null, // disables the button if false
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isButtonEnabled
+                            ? Colors.blue
+                            : Colors.grey, // gray if disabled
+                      ),
                       child: const Text("Login"),
                     ),
                     const SizedBox(height: 8),
-                    // Forgot password link
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const ForgotPage()),
+                          MaterialPageRoute(
+                              builder: (context) => const ForgotPage()),
                         );
                       },
                       child: const Text(
@@ -103,7 +163,8 @@ class LoginPageState extends State<LoginPage> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const RegistrationPage()),
+                          MaterialPageRoute(
+                              builder: (context) => const RegistrationPage()),
                         );
                       },
                       child: const Text(
@@ -123,5 +184,4 @@ class LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
 }
