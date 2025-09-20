@@ -4,6 +4,7 @@ import 'package:dentist_app/pages/LoginPage.dart';
 import 'package:dentist_app/pages/MyMedicalReportPage.dart';
 import 'package:dentist_app/pages/PreviousAppointmentsPage.dart';
 import 'package:dentist_app/pages/SettingsPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../Images.dart';
 import 'UpcomingAppointmentsPage.dart';
@@ -210,12 +211,14 @@ class HomePage extends StatelessWidget {
 
                   // Logout button
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      // Sign out from Firebase
+                      await FirebaseAuth.instance.signOut();
+
+                      // Navigate to login page
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginPage(),
-                        ),
+                        MaterialPageRoute(builder: (context) => const LoginPage()),
                       );
                     },
                     child: const Text("Logout"),
