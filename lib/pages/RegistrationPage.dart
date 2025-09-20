@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'HomePage.dart'; // import your home page
+import 'HomePage.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -19,7 +19,7 @@ class RegistrationPageState extends State<RegistrationPage> {
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController dobController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController repeatPasswordController = TextEditingController();
@@ -32,7 +32,7 @@ class RegistrationPageState extends State<RegistrationPage> {
     lastNameController.dispose();
     dobController.dispose();
     addressController.dispose();
-    phoneController.dispose();
+    phoneNumberController.dispose();
     emailController.dispose();
     passwordController.dispose();
     repeatPasswordController.dispose();
@@ -74,8 +74,11 @@ class RegistrationPageState extends State<RegistrationPage> {
             .doc(uid)
             .set({
           'firstName': firstNameController.text.trim(),
+          'lastName': lastNameController.text.trim(),
+          'dateOfBirth': dobController.text.trim(),
+          'address': addressController.text.trim(),
+          'phoneNumber': phoneNumberController.text.trim(),
           'email': emailController.text.trim(),
-          // only fields you kept for testing
         })
             .timeout(const Duration(seconds: 120));
         debugPrint('registerUser: Firestore write succeeded for uid=$uid');
@@ -140,19 +143,14 @@ class RegistrationPageState extends State<RegistrationPage> {
             key: _formKey,
             child: Column(
               children: [
-                // Only keep the fields you need for testing
                 TextField(controller: firstNameController, decoration: const InputDecoration(labelText: "First Name")),
-
                 TextField(controller: emailController, decoration: const InputDecoration(labelText: "Email")),
-
                 TextField(controller: passwordController, decoration: const InputDecoration(labelText: "Password"), obscureText: true),
-
-                // Commented out for now
-                // TextField(controller: lastNameController, decoration: const InputDecoration(labelText: "Last Name")),
-                // TextField(controller: dobController, decoration: const InputDecoration(labelText: "Date of Birth")),
-                // TextField(controller: addressController, decoration: const InputDecoration(labelText: "Address")),
-                // TextField(controller: phoneController, decoration: const InputDecoration(labelText: "Phone Number")),
-                // TextField(controller: repeatPasswordController, decoration: const InputDecoration(labelText: "Repeat Password"), obscureText: true),
+                TextField(controller: lastNameController, decoration: const InputDecoration(labelText: "Last Name")),
+                TextField(controller: dobController, decoration: const InputDecoration(labelText: "Date of Birth")),
+                TextField(controller: addressController, decoration: const InputDecoration(labelText: "Address")),
+                TextField(controller: phoneNumberController, decoration: const InputDecoration(labelText: "Phone Number")),
+                TextField(controller: repeatPasswordController, decoration: const InputDecoration(labelText: "Repeat Password"), obscureText: true),
 
                 const SizedBox(height: 20),
                 ElevatedButton(
