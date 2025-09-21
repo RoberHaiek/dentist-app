@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../CurrentPatient.dart';
 import '../Images.dart';
+import 'MyDocumentsPage.dart';
 import 'UpcomingAppointmentsPage.dart';
 
 class HomePage extends StatefulWidget {
@@ -65,8 +66,13 @@ class HomePageState extends State<HomePage>{
               ),
             ),
             ListTile(
-              title: const Text("Homepage"),
-              onTap: () {},
+              title: const Text("Schedule a new appointment"),
+              onTap: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AppointmentPage()));
+              },
             ),
             ListTile(
               title: const Text("Upcoming appointments"),
@@ -78,12 +84,21 @@ class HomePageState extends State<HomePage>{
               },
             ),
             ListTile(
-              title: const Text("Schedule a new appointment"),
+              title: const Text("Previous appointments"),
               onTap: () {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const AppointmentPage()));
+                        builder: (context) => const PreviousAppointmentsPage()));
+              },
+            ),
+            ListTile(
+              title: const Text("My documents"),
+              onTap: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const MyDocumentsPage()));
               },
             ),
             ListTile(
@@ -93,15 +108,6 @@ class HomePageState extends State<HomePage>{
                     context,
                     MaterialPageRoute(
                         builder: (context) => const MyMedicalReportPage()));
-              },
-            ),
-            ListTile(
-              title: const Text("Previous appointments"),
-              onTap: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const PreviousAppointmentsPage()));
               },
             ),
             ListTile(
@@ -115,6 +121,15 @@ class HomePageState extends State<HomePage>{
             ),
             ListTile(
               title: const Text("Settings"),
+              onTap: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SettingsPage()));
+              },
+            ),
+            ListTile(
+              title: const Text("About"),
               onTap: () {
                 Navigator.pushReplacement(
                     context,
