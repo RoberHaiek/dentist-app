@@ -162,7 +162,7 @@ class HomePageState extends State<HomePage>{
                       children: [
                         Images.getImage("images/tooth_icon.png", 120.0, 120.0),
                         Text(
-                          "Welcome " + currentPatient.fullName + " to Asnani",
+                          "Welcome " + currentPatient.firstName + " to Asnani",
                           style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,

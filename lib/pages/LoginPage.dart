@@ -86,6 +86,7 @@ class LoginPageState extends State<LoginPage> {
 
     debugPrint('login: start for email=${emailController.text.trim()}');
 
+    // CANCEL LOGIN FOR DEBUG
     try {
       // Attempt sign in
       final cred = await FirebaseAuth.instance.signInWithEmailAndPassword(

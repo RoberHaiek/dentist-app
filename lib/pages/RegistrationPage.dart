@@ -147,7 +147,34 @@ class RegistrationPageState extends State<RegistrationPage> {
                 TextField(controller: emailController, decoration: const InputDecoration(labelText: "Email")),
                 TextField(controller: passwordController, decoration: const InputDecoration(labelText: "Password"), obscureText: true),
                 TextField(controller: lastNameController, decoration: const InputDecoration(labelText: "Last Name")),
-                TextField(controller: dobController, decoration: const InputDecoration(labelText: "Date of Birth")),
+                TextField(
+                  controller: dobController,
+                  readOnly: true, // prevents keyboard from opening
+                  decoration: const InputDecoration(
+                    labelText: "Date of Birth",
+                    suffixIcon: Icon(Icons.calendar_today),
+                  ),
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime(2000),
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime.now(),
+                    );
+
+                    if (pickedDate != null) {
+                      // format the date as yyyy-MM-dd
+                      String formattedDate =
+                          "${pickedDate.day.toString().padLeft(2, '0')}/"
+                          "${pickedDate.month.toString().padLeft(2, '0')}/"
+                          "${pickedDate.year}";
+
+                      setState(() {
+                        dobController.text = formattedDate;
+                      });
+                    }
+                  },
+                ),
                 TextField(controller: addressController, decoration: const InputDecoration(labelText: "Address")),
                 TextField(controller: phoneNumberController, decoration: const InputDecoration(labelText: "Phone Number")),
                 TextField(controller: repeatPasswordController, decoration: const InputDecoration(labelText: "Repeat Password"), obscureText: true),

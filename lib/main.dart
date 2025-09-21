@@ -5,16 +5,9 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  print("Test is working");
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  print("🔥 Firebase initialized with project: ${DefaultFirebaseOptions.currentPlatform.projectId}");
-  print("Firebase app options: ${Firebase.app().options}");
-
   runApp(const MyApp());
 }
 
