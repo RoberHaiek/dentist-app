@@ -11,10 +11,17 @@ class Images extends StatelessWidget{
     return Container(child: image);
   }
 
-  static Widget getIconImage(){
-    AssetImage assetImage = AssetImage("images/tooth_icon.png");
-    Image image = Image(image: assetImage, width: 200.0, height: 200.0);
+  static Widget getImage(String imageName, double width, double height){
+    AssetImage assetImage = AssetImage(imageName);
+    Image image = Image(image: assetImage, width: width, height: height);
     return Container(child: image);
+  }
+
+  static Widget getWallpaper(String imageName){
+    return Image.asset(
+      imageName,
+      fit: BoxFit.cover,
+    );
   }
 
 }
