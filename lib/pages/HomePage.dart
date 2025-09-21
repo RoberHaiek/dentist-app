@@ -6,11 +6,33 @@ import 'package:dentist_app/pages/PreviousAppointmentsPage.dart';
 import 'package:dentist_app/pages/SettingsPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../CurrentPatient.dart';
 import '../Images.dart';
 import 'UpcomingAppointmentsPage.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => HomePageState();
+}
+
+class HomePageState extends State<HomePage>{
+  final CurrentPatient currentPatient = CurrentPatient();
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPatient();
+  }
+
+  Future<void> _loadPatient() async {
+    await currentPatient.loadFromFirestore();
+    setState(() {
+      loading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +66,7 @@ class HomePage extends StatelessWidget {
             ),
             ListTile(
               title: const Text("Homepage"),
-              onTap: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const HomePage()));
-              },
+              onTap: () {},
             ),
             ListTile(
               title: const Text("Upcoming appointments"),
@@ -106,7 +125,9 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      body: Stack(
+      body: loading
+        ? const Center(child: CircularProgressIndicator())
+        : Stack(
         children: [
           SingleChildScrollView(
             child: Padding(
@@ -140,9 +161,9 @@ class HomePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Images.getImage("images/tooth_icon.png", 120.0, 120.0),
-                        const Text(
-                          "Welcome Mr. Name to Asnani",
-                          style: TextStyle(
+                        Text(
+                          "Welcome " + currentPatient.fullName + " to Asnani",
+                          style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                               color: Colors.white),
