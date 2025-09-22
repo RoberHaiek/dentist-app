@@ -1,3 +1,4 @@
+import 'package:dentist_app/pages/AboutPage.dart';
 import 'package:dentist_app/pages/AppointmentPage.dart';
 import 'package:dentist_app/pages/ContactClinicPage.dart';
 import 'package:dentist_app/pages/LoginPage.dart';
@@ -46,6 +47,13 @@ class HomePageState extends State<HomePage>{
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back_sharp, color: Colors.white),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  const Spacer(),
                   Images.getImage("images/tooth_icon.png", 90, 90),
                   const SizedBox(width: 2),
                   const Text(
@@ -55,18 +63,12 @@ class HomePageState extends State<HomePage>{
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
                   ),
-                  const Spacer(),
-                  IconButton(
-                    icon: const Icon(Icons.close, color: Colors.white),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
                 ],
               ),
             ),
             ListTile(
-              title: const Text("Schedule a new appointment"),
+              leading: Icon(Icons.add_circle_outline, color: Colors.blue[900]),
+              title: Text("Schedule a new appointment", style: TextStyle(color: Colors.blue[900]),),
               onTap: () {
                 Navigator.pushReplacement(
                     context,
@@ -75,7 +77,8 @@ class HomePageState extends State<HomePage>{
               },
             ),
             ListTile(
-              title: const Text("Upcoming appointments"),
+              leading: Icon(Icons.calendar_today, color: Colors.blue[900]),
+              title: Text("Upcoming appointments", style: TextStyle(color: Colors.blue[900])),
               onTap: () {
                 Navigator.pushReplacement(
                     context,
@@ -84,7 +87,8 @@ class HomePageState extends State<HomePage>{
               },
             ),
             ListTile(
-              title: const Text("Previous appointments"),
+              leading: Icon(Icons.history, color: Colors.blue[900]),
+              title: Text("Previous appointments", style: TextStyle(color: Colors.blue[900])),
               onTap: () {
                 Navigator.pushReplacement(
                     context,
@@ -93,7 +97,8 @@ class HomePageState extends State<HomePage>{
               },
             ),
             ListTile(
-              title: const Text("My documents"),
+              leading: Icon(Icons.insert_drive_file, color: Colors.blue[900]),
+              title: Text("My documents", style: TextStyle(color: Colors.blue[900])),
               onTap: () {
                 Navigator.pushReplacement(
                     context,
@@ -102,7 +107,8 @@ class HomePageState extends State<HomePage>{
               },
             ),
             ListTile(
-              title: const Text("My medical record"),
+              leading: Icon(Icons.medical_services, color: Colors.blue[900]),
+              title: Text("My medical record", style: TextStyle(color: Colors.blue[900])),
               onTap: () {
                 Navigator.pushReplacement(
                     context,
@@ -111,7 +117,8 @@ class HomePageState extends State<HomePage>{
               },
             ),
             ListTile(
-              title: const Text("Contact clinic"),
+              leading: Icon(Icons.phone, color: Colors.blue[900]),
+              title: Text("Contact clinic", style: TextStyle(color: Colors.blue[900])),
               onTap: () {
                 Navigator.pushReplacement(
                     context,
@@ -120,7 +127,8 @@ class HomePageState extends State<HomePage>{
               },
             ),
             ListTile(
-              title: const Text("Settings"),
+              leading: Icon(Icons.settings, color: Colors.blue[900]),
+              title: Text("Settings", style: TextStyle(color: Colors.blue[900])),
               onTap: () {
                 Navigator.pushReplacement(
                     context,
@@ -129,14 +137,15 @@ class HomePageState extends State<HomePage>{
               },
             ),
             ListTile(
-              title: const Text("About"),
+              leading: Icon(Icons.info, color: Colors.blue[900]),
+              title: Text("About", style: TextStyle(color: Colors.blue[900])),
               onTap: () {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const SettingsPage()));
+                        builder: (context) => const AboutPage()));
               },
-            )
+            ),
           ],
         ),
       ),
