@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart'; // <-- add this
+import 'package:url_launcher/url_launcher.dart';
 import '../Images.dart';
 import 'AppointmentPage.dart';
 import 'HomePage.dart';
@@ -11,33 +11,42 @@ class ContactClinicPage extends StatelessWidget {
   Future<void> _showPhoneOptions(BuildContext context, String number) async {
     showModalBottomSheet(
       context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       builder: (context) {
         return SafeArea(
-          child: Wrap(
-            children: [
-              ListTile(
-                leading: const Icon(Icons.phone, color: Colors.blue),
-                title: const Text("Call"),
-                onTap: () async {
-                  Navigator.pop(context);
-                  final Uri uri = Uri(scheme: "tel", path: number);
-                  if (await canLaunchUrl(uri)) {
-                    await launchUrl(uri);
-                  }
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.copy, color: Colors.blue),
-                title: const Text("Copy number"),
-                onTap: () {
-                  Navigator.pop(context);
-                  Clipboard.setData(ClipboardData(text: number));
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Phone number copied")),
-                  );
-                },
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Wrap(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.phone, color: Color(0xFF7DD3C0)),
+                  title: const Text("Call"),
+                  onTap: () async {
+                    Navigator.pop(context);
+                    final Uri uri = Uri(scheme: "tel", path: number);
+                    if (await canLaunchUrl(uri)) {
+                      await launchUrl(uri);
+                    }
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.copy, color: Color(0xFF7DD3C0)),
+                  title: const Text("Copy number"),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Clipboard.setData(ClipboardData(text: number));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Phone number copied"),
+                        backgroundColor: Color(0xFF7DD3C0),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -47,33 +56,42 @@ class ContactClinicPage extends StatelessWidget {
   Future<void> _showEmailOptions(BuildContext context, String email) async {
     showModalBottomSheet(
       context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       builder: (context) {
         return SafeArea(
-          child: Wrap(
-            children: [
-              ListTile(
-                leading: const Icon(Icons.email, color: Colors.blue),
-                title: const Text("Send email"),
-                onTap: () async {
-                  Navigator.pop(context);
-                  final Uri uri = Uri(scheme: "mailto", path: email);
-                  if (await canLaunchUrl(uri)) {
-                    await launchUrl(uri);
-                  }
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.copy, color: Colors.blue),
-                title: const Text("Copy email"),
-                onTap: () {
-                  Navigator.pop(context);
-                  Clipboard.setData(ClipboardData(text: email));
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Email copied")),
-                  );
-                },
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Wrap(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.email, color: Color(0xFF7DD3C0)),
+                  title: const Text("Send email"),
+                  onTap: () async {
+                    Navigator.pop(context);
+                    final Uri uri = Uri(scheme: "mailto", path: email);
+                    if (await canLaunchUrl(uri)) {
+                      await launchUrl(uri);
+                    }
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.copy, color: Color(0xFF7DD3C0)),
+                  title: const Text("Copy email"),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Clipboard.setData(ClipboardData(text: email));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Email copied"),
+                        backgroundColor: Color(0xFF7DD3C0),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -87,11 +105,14 @@ class ContactClinicPage extends StatelessWidget {
     const email = "dr.dentist@email.com";
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: const Color(0xFFF2EBE2),
       appBar: AppBar(
-        title: const Text("Doctor Details"),
+        title: const Text(
+          "Contact Clinic",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -99,18 +120,27 @@ class ContactClinicPage extends StatelessWidget {
             );
           },
         ),
-        backgroundColor: Colors.blue[900],
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFFA8E6CF), Color(0xFF7DD3C0)],
+            ),
+          ),
+        ),
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Top panel
+            // Top panel with doctor info
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-              decoration: BoxDecoration(
-                color: Colors.blue[900],
-                borderRadius: const BorderRadius.only(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFFA8E6CF), Color(0xFF7DD3C0)],
+                ),
+                borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(30),
                   bottomRight: Radius.circular(30),
                 ),
@@ -118,7 +148,21 @@ class ContactClinicPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Images.getImage("images/dentist_icon.png", 100, 100),
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Images.getImage("images/dentist_icon.png", 100, 100),
+                  ),
                   const SizedBox(height: 15),
                   const Text(
                     "Dr. Dentist",
@@ -128,26 +172,40 @@ class ContactClinicPage extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    "Dental Specialist",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const AppointmentPage()),
+                            builder: (context) => AppointmentPage()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
-                      foregroundColor: Colors.blue[900],
+                      foregroundColor: const Color(0xFF7DD3C0),
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 40, vertical: 12),
+                          horizontal: 40, vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
+                      elevation: 4,
                     ),
-                    child: const Text("Book an appointment",
-                        style: TextStyle(fontSize: 16)),
+                    child: const Text(
+                      "Book an appointment",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -164,8 +222,8 @@ class ContactClinicPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 8,
+                    color: Colors.black.withOpacity(0.08),
+                    blurRadius: 10,
                     offset: const Offset(0, 4),
                   )
                 ],
@@ -174,132 +232,218 @@ class ContactClinicPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Opening hours
-                  const Text(
-                    "Opening Hours",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87),
-                  ),
-                  const SizedBox(height: 10),
-                  Table(
-                    columnWidths: const {
-                      0: FlexColumnWidth(1),
-                      1: FlexColumnWidth(1),
-                    },
+                  Row(
                     children: const [
-                      TableRow(children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 6),
-                          child: Text("Monday"),
+                      Icon(Icons.access_time, color: Color(0xFF7DD3C0), size: 24),
+                      SizedBox(width: 10),
+                      Text(
+                        "Opening Hours",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF333333),
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 6),
-                          child: Text("09:00 - 17:00"),
-                        ),
-                      ]),
-                      TableRow(children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 6),
-                          child: Text("Tuesday"),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 6),
-                          child: Text("09:00 - 17:00"),
-                        ),
-                      ]),
-                      TableRow(children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 6),
-                          child: Text("Wednesday"),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 6),
-                          child: Text("09:00 - 17:00"),
-                        ),
-                      ]),
-                      TableRow(children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 6),
-                          child: Text("Thursday"),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 6),
-                          child: Text("09:00 - 17:00"),
-                        ),
-                      ]),
-                      TableRow(children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 6),
-                          child: Text("Friday"),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 6),
-                          child: Text("09:00 - 13:00"),
-                        ),
-                      ]),
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 16),
+                  _buildHoursRow("Monday", "09:00 - 17:00", true),
+                  _buildHoursRow("Tuesday", "09:00 - 17:00", false),
+                  _buildHoursRow("Wednesday", "09:00 - 17:00", true),
+                  _buildHoursRow("Thursday", "09:00 - 17:00", false),
+                  _buildHoursRow("Friday", "09:00 - 13:00", true),
+
+                  const SizedBox(height: 24),
+                  const Divider(),
+                  const SizedBox(height: 24),
 
                   // Address with copy button
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Icon(Icons.location_on,
-                          color: Colors.blue, size: 24),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          clinicAddress,
-                          style: const TextStyle(fontSize: 16),
+                    children: const [
+                      Icon(Icons.location_on, color: Color(0xFF7DD3C0), size: 24),
+                      SizedBox(width: 10),
+                      Text(
+                        "Address",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF333333),
                         ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.copy, color: Colors.blue),
-                        tooltip: "Copy address",
-                        onPressed: () {
-                          Clipboard.setData(
-                              const ClipboardData(text: clinicAddress));
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text("Address copied to clipboard")),
-                          );
-                        },
-                      )
                     ],
                   ),
-                  const SizedBox(height: 20),
-
-                  // Phone clickable
-                  InkWell(
-                    onTap: () => _showPhoneOptions(context, phoneNumber),
+                  const SizedBox(height: 12),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF2EBE2),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     child: Row(
                       children: [
-                        const Icon(Icons.phone, color: Colors.blue, size: 24),
-                        const SizedBox(width: 10),
-                        Text(phoneNumber, style: const TextStyle(fontSize: 16)),
+                        const Expanded(
+                          child: Text(
+                            clinicAddress,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Color(0xFF666666),
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.copy, color: Color(0xFF7DD3C0)),
+                          tooltip: "Copy address",
+                          onPressed: () {
+                            Clipboard.setData(
+                                const ClipboardData(text: clinicAddress));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Address copied to clipboard"),
+                                backgroundColor: Color(0xFF7DD3C0),
+                              ),
+                            );
+                          },
+                        ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 15),
+
+                  const SizedBox(height: 24),
+                  const Divider(),
+                  const SizedBox(height: 24),
+
+                  // Phone clickable
+                  Row(
+                    children: const [
+                      Icon(Icons.phone, color: Color(0xFF7DD3C0), size: 24),
+                      SizedBox(width: 10),
+                      Text(
+                        "Phone",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF333333),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  InkWell(
+                    onTap: () => _showPhoneOptions(context, phoneNumber),
+                    borderRadius: BorderRadius.circular(12),
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF2EBE2),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              phoneNumber,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Color(0xFF7DD3C0),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 16,
+                            color: Color(0xFF7DD3C0),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
 
                   // Email clickable
+                  Row(
+                    children: const [
+                      Icon(Icons.email, color: Color(0xFF7DD3C0), size: 24),
+                      SizedBox(width: 10),
+                      Text(
+                        "Email",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF333333),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
                   InkWell(
                     onTap: () => _showEmailOptions(context, email),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.email, color: Colors.blue, size: 24),
-                        const SizedBox(width: 10),
-                        Text(email, style: const TextStyle(fontSize: 16)),
-                      ],
+                    borderRadius: BorderRadius.circular(12),
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF2EBE2),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              email,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Color(0xFF7DD3C0),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 16,
+                            color: Color(0xFF7DD3C0),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
+
+            const SizedBox(height: 20),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildHoursRow(String day, String hours, bool isAlternate) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+      decoration: BoxDecoration(
+        color: isAlternate ? const Color(0xFFF2EBE2) : Colors.transparent,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            day,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Color(0xFF666666),
+            ),
+          ),
+          Text(
+            hours,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF333333),
+            ),
+          ),
+        ],
       ),
     );
   }

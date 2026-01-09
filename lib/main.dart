@@ -23,7 +23,9 @@ class MyApp extends StatelessWidget{
         ),
         debugShowCheckedModeBanner: false,
         title: "Asnani", // actual name of the app on the phone
-        home: const LoginPage()
+        home: SafeArea(
+            child: LoginPage()
+        )
     );
   }
 

@@ -41,6 +41,8 @@ dependencies:
   path: ^1.8.3
   open_file: ^3.2.1
   mime: ^1.0.6
+  flutter_svg: ^2.0.9
+  share_plus: ^12.0.1
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
@@ -80,6 +82,9 @@ flutter:
     - images/dentist_icon.png
     - images/login_wallpaper.png
     - images/asnani_app_icon.png
+    - images/barcode.png
+    - images/coupons/colgate_toothpaste.jpg
+    - images/coupons/electric_toothbrush.jpg
     #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -89,12 +89,12 @@ class LoginPageState extends State<LoginPage> {
     // CANCEL LOGIN FOR DEBUG
     try {
       // Attempt sign in
-      final cred = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
-
-      debugPrint('login: success uid=${cred.user?.uid}');
+//       final cred = await FirebaseAuth.instance.signInWithEmailAndPassword(
+//         email: emailController.text.trim(),
+//         password: passwordController.text.trim(),
+//       );
+//
+//       debugPrint('login: success uid=${cred.user?.uid}');
 
       // All UI changes must be scheduled on the main frame to avoid platform-thread warnings
       if (!mounted) return;
@@ -156,10 +156,11 @@ class LoginPageState extends State<LoginPage> {
       body: Stack(
         children: [
           // Fullscreen wallpaper
-          SizedBox.expand(
-            child: Images.getWallpaper("images/login_wallpaper.png"),
+          Positioned.fill(
+            child: Images.getWallpaper(
+              "images/login_wallpaper.png"
+            ),
           ),
-
           // Login form
           Align(
             alignment: const Alignment(0, -0.6), // negative Y lifts it up
