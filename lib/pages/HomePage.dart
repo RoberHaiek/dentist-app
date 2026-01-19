@@ -1,5 +1,6 @@
 import 'package:dentist_app/pages/AboutPage.dart';
 import 'package:dentist_app/pages/AppointmentPage.dart';
+import 'package:dentist_app/pages/BookAppointmentPage.dart';
 import 'package:dentist_app/pages/ContactClinicPage.dart';
 import 'package:dentist_app/pages/CouponPage.dart';
 import 'package:dentist_app/pages/LoginPage.dart';
@@ -21,6 +22,8 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   final CurrentPatient currentPatient = CurrentPatient();
   bool loading = true;
+  int numberOfAppointments = 1; // TODO: Configure this based on actual appointments
+  bool showInstructions = false;
 
   @override
   void initState() {
@@ -44,16 +47,41 @@ class HomePageState extends State<HomePage> {
           : SafeArea(
               child: Stack(
                 children: [
-                  SingleChildScrollView(
-                    padding: const EdgeInsets.only(bottom: 100),
-                    child: Column(
-                      children: [
-                        _buildHeroSection(),
-                        const SizedBox(height: 30),
-                        _buildBookAppointmentButton(),
-                        const SizedBox(height: 30),
-                        _buildActionCards(),
-                        const SizedBox(height: 30),
+                  // Parallax scrolling content
+                  NotificationListener<ScrollNotification>(
+                    onNotification: (scrollNotification) {
+                      if (scrollNotification is ScrollUpdateNotification) {
+                        setState(() {});
+                      }
+                      return false;
+                    },
+                    child: CustomScrollView(
+                      slivers: [
+                        SliverAppBar(
+                          expandedHeight: 320,
+                          pinned: false,
+                          floating: false,
+                          backgroundColor: Colors.transparent,
+                          flexibleSpace: FlexibleSpaceBar(
+                            background: _buildHeroSection(),
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: Container(
+                            color: const Color(0xFFFFF8F0),
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 20),
+                                _buildAppointmentStatusCard(),
+                                const SizedBox(height: 30),
+                                _buildBookAppointmentButton(),
+                                const SizedBox(height: 30),
+                                _buildActionCards(),
+                                const SizedBox(height: 100),
+                              ],
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -81,7 +109,6 @@ class HomePageState extends State<HomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-//                 const SizedBox(width: 48), // Spacer for centering
                 const Icon(Icons.notifications_outlined,
                     size: 28, color: Colors.white),
                 IconButton(
@@ -159,6 +186,241 @@ class HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _buildAppointmentStatusCard() {
+    Color borderColor;
+    Color backgroundColor;
+    String icon;
+    String title;
+    String subtitle;
+    String instructionsTitle;
+    List<String> instructions;
+
+    if (numberOfAppointments == 0) {
+      // Checkup due
+      borderColor = const Color(0xFFFFB74D);
+      backgroundColor = const Color(0xFFFFF3E0);
+      icon = "📅";
+      title = "Time for a Checkup!";
+      subtitle = "Your last checkup was 6 months ago.\nIt's time to visit us again!";
+      instructionsTitle = "";
+      instructions = [];
+    } else if (numberOfAppointments < 0) {
+      // Post-surgery care
+      borderColor = const Color(0xFFFF6B6B);
+      backgroundColor = const Color(0xFFFFEBEE);
+      icon = "❤️";
+      title = "Post-Surgery Care";
+      subtitle = "Hope you're feeling well after the surgery!";
+      instructionsTitle = "Important Instructions:";
+      instructions = [
+        "Don't eat for 1 hour after the surgery",
+        "If pain occurs, take Ibuprofen 400mg",
+        "Avoid hot drinks for 24 hours",
+        "Rest and take it easy today",
+      ];
+    } else {
+      // Upcoming appointment
+      borderColor = const Color(0xFF7DD3C0);
+      backgroundColor = const Color(0xFFE8F5F1);
+      icon = "🎯";
+      title = "Upcoming Appointment";
+      subtitle = "Your next appointment is on Monday";
+      instructionsTitle = "Before Your Appointment:";
+      instructions = [
+        "Don't eat for 1 hour before the appointment",
+        "Brush your teeth and floss thoroughly",
+        "Arrive 10 minutes early",
+        "Bring your insurance card",
+      ];
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: borderColor, width: 3),
+          boxShadow: [
+            BoxShadow(
+              color: borderColor.withOpacity(0.2),
+              blurRadius: 15,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            // Header with icon and color
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: backgroundColor,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(13),
+                  topRight: Radius.circular(13),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Text(
+                    icon,
+                    style: const TextStyle(fontSize: 32),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF333333),
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          subtitle,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Color(0xFF666666),
+                            height: 1.4,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Instructions section (if applicable)
+            if (instructions.isNotEmpty)
+              Column(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        showInstructions = !showInstructions;
+                      });
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            showInstructions ? "Hide Instructions" : "View Instructions",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: borderColor,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Icon(
+                            showInstructions ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                            color: borderColor,
+                            size: 20,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  if (showInstructions)
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Divider(),
+                          const SizedBox(height: 12),
+                          Text(
+                            instructionsTitle,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF333333),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          ...instructions.map((instruction) => Padding(
+                                padding: const EdgeInsets.only(bottom: 8),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.only(top: 6),
+                                      width: 6,
+                                      height: 6,
+                                      decoration: BoxDecoration(
+                                        color: borderColor,
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Text(
+                                        instruction,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Color(0xFF666666),
+                                          height: 1.4,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )),
+                        ],
+                      ),
+                    ),
+                ],
+              )
+//             else
+//               // Book checkup button for when no appointments
+//               Padding(
+//                 padding: const EdgeInsets.all(16),
+//                 child: SizedBox(
+//                   width: double.infinity,
+//                   child: ElevatedButton(
+//                     onPressed: () {
+//                       Navigator.pushReplacement(
+//                         context,
+//                         MaterialPageRoute(
+//                           builder: (context) => const AppointmentPage(),
+//                         ),
+//                       );
+//                     },
+//                     style: ElevatedButton.styleFrom(
+//                       backgroundColor: borderColor,
+//                       padding: const EdgeInsets.symmetric(vertical: 14),
+//                       shape: RoundedRectangleBorder(
+//                         borderRadius: BorderRadius.circular(12),
+//                       ),
+//                     ),
+//                     child: const Text(
+//                       "Book Checkup Now",
+//                       style: TextStyle(
+//                         fontSize: 16,
+//                         fontWeight: FontWeight.bold,
+//                         color: Colors.white,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildBookAppointmentButton() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -183,7 +445,7 @@ class HomePageState extends State<HomePage> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => AppointmentPage()),
+                  builder: (context) => const BookAppointmentPage()),
             );
           },
           style: ElevatedButton.styleFrom(

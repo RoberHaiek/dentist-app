@@ -100,9 +100,9 @@ class ContactClinicPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const clinicAddress = "Bab el der 11 street\n2020000 Shefaamr";
-    const phoneNumber = "+49 123 456 7890";
-    const email = "dr.dentist@email.com";
+    const clinicAddress = "Efroni 38\nAcco";
+    const phoneNumber = "04-9916245";
+    const email = "a049916245@gmail.com";
 
     return Scaffold(
       backgroundColor: const Color(0xFFF2EBE2),

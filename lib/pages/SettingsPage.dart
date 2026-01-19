@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'HomePage.dart';
 import 'AboutPage.dart';
+import 'LoginPage.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -42,12 +43,14 @@ class _SettingsPageState extends State<SettingsPage> {
     setState(() {
       userData![key] = value;
     });
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Updated successfully"),
-        backgroundColor: Color(0xFF7DD3C0),
-      ),
-    );
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Updated successfully"),
+          backgroundColor: Color(0xFF7DD3C0),
+        ),
+      );
+    }
   }
 
   Future<void> _editField(String fieldKey, String fieldLabel, String? currentValue) async {
@@ -126,6 +129,91 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
+  Future<void> _handleLogout() async {
+    // Show confirmation dialog
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text(
+          "Logout",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        content: const Text(
+          "Are you sure you want to logout?",
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text(
+              "Cancel",
+              style: TextStyle(color: Color(0xFF999999)),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFFF6B6B),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: const Text("Logout"),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      try {
+        // Show loading indicator
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Row(
+                children: [
+                  SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 2,
+                    ),
+                  ),
+                  SizedBox(width: 12),
+                  Text("Logging out..."),
+                ],
+              ),
+              duration: Duration(seconds: 1),
+              backgroundColor: Color(0xFF7DD3C0),
+            ),
+          );
+        }
+
+        // Sign out from Firebase
+        await _auth.signOut();
+
+        // Navigate to login page
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginPage()),
+          );
+        }
+      } catch (e) {
+        debugPrint('Logout error: $e');
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Logout failed: $e"),
+              backgroundColor: const Color(0xFFFF6B6B),
+            ),
+          );
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (loading) {
@@ -172,6 +260,10 @@ class _SettingsPageState extends State<SettingsPage> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
+            // Profile card at the top
+            _buildProfileCard(),
+            const SizedBox(height: 20),
+
             _buildSectionTitle("Personal Information", Icons.person),
             _buildPanel([
               _buildSettingTile(
@@ -240,6 +332,24 @@ class _SettingsPageState extends State<SettingsPage> {
             ]),
             const SizedBox(height: 20),
 
+            _buildSectionTitle("Preferences", Icons.tune),
+            _buildPanel([
+              _buildSettingTile(
+                "Notifications",
+                "Manage alerts",
+                Icons.notifications_outlined,
+                () => _manageNotifications(),
+              ),
+              const Divider(height: 1),
+              _buildSettingTile(
+                "Language",
+                "English",
+                Icons.language,
+                () => _changeLanguage(),
+              ),
+            ]),
+            const SizedBox(height: 20),
+
             _buildSectionTitle("App Information", Icons.info),
             _buildPanel([
               _buildSettingTile(
@@ -253,10 +363,137 @@ class _SettingsPageState extends State<SettingsPage> {
                   );
                 },
               ),
+              const Divider(height: 1),
+              _buildSettingTile(
+                "Terms & Conditions",
+                "Legal information",
+                Icons.description_outlined,
+                () => _showTerms(),
+              ),
+              const Divider(height: 1),
+              _buildSettingTile(
+                "Privacy Policy",
+                "Data protection",
+                Icons.privacy_tip_outlined,
+                () => _showPrivacy(),
+              ),
             ]),
+            const SizedBox(height: 20),
+
+            // Logout section
+            _buildSectionTitle("Account", Icons.exit_to_app),
+            _buildPanel([
+              _buildLogoutTile(),
+            ]),
+            const SizedBox(height: 40),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildProfileCard() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFFA8E6CF), Color(0xFF7DD3C0)],
+        ),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF7DD3C0).withOpacity(0.3),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 70,
+            height: 70,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(35),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Center(
+              child: Text(
+                _getInitials(),
+                style: const TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF7DD3C0),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "${userData?['firstName'] ?? 'User'} ${userData?['lastName'] ?? ''}",
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  _auth.currentUser?.email ?? "",
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.white,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLogoutTile() {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      leading: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: const Color(0xFFFF6B6B).withOpacity(0.1),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: const Icon(Icons.logout, color: Color(0xFFFF6B6B), size: 24),
+      ),
+      title: const Text(
+        "Logout",
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Color(0xFFFF6B6B),
+          fontSize: 16,
+        ),
+      ),
+      subtitle: const Text(
+        "Sign out of your account",
+        style: TextStyle(color: Color(0xFF999999), fontSize: 14),
+      ),
+      trailing: const Icon(
+        Icons.arrow_forward_ios,
+        size: 16,
+        color: Color(0xFFFF6B6B),
+      ),
+      onTap: _handleLogout,
     );
   }
 
@@ -349,6 +586,15 @@ class _SettingsPageState extends State<SettingsPage> {
     final relatives = userData?['relatives'] as List?;
     if (relatives == null || relatives.isEmpty) return "No relatives added";
     return "${relatives.length} relative${relatives.length == 1 ? '' : 's'}";
+  }
+
+  String _getInitials() {
+    final firstName = userData?['firstName'] ?? "";
+    final lastName = userData?['lastName'] ?? "";
+    String initials = "";
+    if (firstName.isNotEmpty) initials += firstName[0].toUpperCase();
+    if (lastName.isNotEmpty) initials += lastName[0].toUpperCase();
+    return initials.isEmpty ? "U" : initials;
   }
 
   void _showEmailWarning() {
@@ -453,9 +699,30 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
           ElevatedButton(
-            onPressed: () {
-              // TODO: Implement password change logic
+            onPressed: () async {
+              // Validate passwords
+              if (newPasswordController.text != confirmPasswordController.text) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Passwords don't match!"),
+                    backgroundColor: Color(0xFFFF6B6B),
+                  ),
+                );
+                return;
+              }
+
+              if (newPasswordController.text.length < 6) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Password must be at least 6 characters!"),
+                    backgroundColor: Color(0xFFFF6B6B),
+                  ),
+                );
+                return;
+              }
+
               Navigator.pop(context);
+              // TODO: Implement actual password change with Firebase reauthentication
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text("Password change feature coming soon!"),
@@ -499,6 +766,128 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
             child: const Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _manageNotifications() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text(
+          "Notification Settings",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        content: const Text(
+          "Notification preferences feature is coming soon! "
+          "You'll be able to customize appointment reminders and alerts.",
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF7DD3C0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: const Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _changeLanguage() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text(
+          "Language Settings",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        content: const Text(
+          "Multi-language support is coming soon! "
+          "The app will support multiple languages in future updates.",
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF7DD3C0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: const Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showTerms() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text(
+          "Terms & Conditions",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        content: const SingleChildScrollView(
+          child: Text(
+            "Terms and conditions will be displayed here. "
+            "This section will include all legal terms, user agreements, "
+            "and conditions for using the Asnani dental app.",
+          ),
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF7DD3C0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: const Text("Close"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showPrivacy() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text(
+          "Privacy Policy",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        content: const SingleChildScrollView(
+          child: Text(
+            "Privacy policy information will be displayed here. "
+            "This section will detail how user data is collected, stored, "
+            "and protected in the Asnani dental app.",
+          ),
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF7DD3C0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: const Text("Close"),
           ),
         ],
       ),
