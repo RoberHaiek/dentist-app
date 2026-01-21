@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../Images.dart';
 import 'HomePage.dart';
 import 'SettingsPage.dart';
+import 'package:dentist_app/services/LocalizationProvider.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
@@ -25,8 +26,8 @@ class AboutPage extends StatelessWidget {
       await launchUrl(whatsappUri, mode: LaunchMode.externalApplication);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Could not open WhatsApp"),
+        SnackBar(
+          content: Text(context.tr('whatsapp_error')),
           backgroundColor: Color(0xFFFF6B6B),
         ),
       );
@@ -37,6 +38,7 @@ class AboutPage extends StatelessWidget {
     Clipboard.setData(ClipboardData(text: text));
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
+      // TODO
         content: Text("$label copied to clipboard"),
         backgroundColor: const Color(0xFF7DD3C0),
       ),
@@ -48,8 +50,8 @@ class AboutPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF2EBE2),
       appBar: AppBar(
-        title: const Text(
-          "About",
+        title: Text(
+          context.tr('about'),
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -99,8 +101,8 @@ class AboutPage extends StatelessWidget {
             const SizedBox(height: 24),
 
             // App name
-            const Text(
-              "Asnani",
+            Text(
+              context.tr('app_name'),
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
@@ -118,8 +120,8 @@ class AboutPage extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: const Text(
-                "Version 1.0.0",
+              child: Text(
+                context.tr('version'),
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
@@ -132,19 +134,19 @@ class AboutPage extends StatelessWidget {
             // About text panel
             _infoCard(
               icon: Icons.info_outline,
-              title: "About this app",
+              title: context.tr('about_app'),
               content:
-                  "Asnani helps patients and dentists manage appointments, "
-                  "reminders, and services with ease. A modern tool to make "
-                  "dental care simpler and more accessible for everyone.",
+                    context.tr('about_content_1')+
+                    context.tr('about_content_2')+
+                    context.tr('about_content_3'),
             ),
             const SizedBox(height: 16),
 
             // Developer info panel
             _infoCard(
               icon: Icons.code,
-              title: "Developed by",
-              content: "Rober Haiek",
+              title: context.tr('programmed_by'),
+              content: context.tr('rober_haiek'),
             ),
             const SizedBox(height: 16),
 
@@ -167,11 +169,11 @@ class AboutPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    children: const [
+                    children: [
                       Icon(Icons.contact_mail, color: Color(0xFF7DD3C0), size: 24),
                       SizedBox(width: 12),
                       Text(
-                        "Contact Developer",
+                        context.tr('contact_developer'),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -222,7 +224,7 @@ class AboutPage extends StatelessWidget {
                             onPressed: () => _copyToClipboard(
                               context,
                               "rober.haiek@gmail.com",
-                              "Email",
+                              context.tr('email'),
                             ),
                           ),
                         ],
@@ -271,7 +273,7 @@ class AboutPage extends StatelessWidget {
                             onPressed: () => _copyToClipboard(
                               context,
                               "0522965892",
-                              "Phone",
+                              context.tr('phone'),
                             ),
                           ),
                         ],

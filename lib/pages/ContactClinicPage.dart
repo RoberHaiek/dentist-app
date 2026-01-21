@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../Images.dart';
+import '../services/LocalizationProvider.dart';
 import 'AppointmentPage.dart';
 import 'HomePage.dart';
 
@@ -22,7 +23,7 @@ class ContactClinicPage extends StatelessWidget {
               children: [
                 ListTile(
                   leading: const Icon(Icons.phone, color: Color(0xFF7DD3C0)),
-                  title: const Text("Call"),
+                  title: Text(context.tr('call')),
                   onTap: () async {
                     Navigator.pop(context);
                     final Uri uri = Uri(scheme: "tel", path: number);
@@ -33,14 +34,14 @@ class ContactClinicPage extends StatelessWidget {
                 ),
                 ListTile(
                   leading: const Icon(Icons.copy, color: Color(0xFF7DD3C0)),
-                  title: const Text("Copy number"),
+                  title: Text(context.tr('copy_number')),
                   onTap: () {
                     Navigator.pop(context);
                     Clipboard.setData(ClipboardData(text: number));
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Phone number copied"),
-                        backgroundColor: Color(0xFF7DD3C0),
+                      SnackBar(
+                        content: Text(context.tr('phone_copied')),
+                        backgroundColor: const Color(0xFF7DD3C0),
                       ),
                     );
                   },
@@ -67,7 +68,7 @@ class ContactClinicPage extends StatelessWidget {
               children: [
                 ListTile(
                   leading: const Icon(Icons.email, color: Color(0xFF7DD3C0)),
-                  title: const Text("Send email"),
+                  title: Text(context.tr('send_email')),
                   onTap: () async {
                     Navigator.pop(context);
                     final Uri uri = Uri(scheme: "mailto", path: email);
@@ -78,14 +79,14 @@ class ContactClinicPage extends StatelessWidget {
                 ),
                 ListTile(
                   leading: const Icon(Icons.copy, color: Color(0xFF7DD3C0)),
-                  title: const Text("Copy email"),
+                  title: Text(context.tr('copy_email')),
                   onTap: () {
                     Navigator.pop(context);
                     Clipboard.setData(ClipboardData(text: email));
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Email copied"),
-                        backgroundColor: Color(0xFF7DD3C0),
+                      SnackBar(
+                        content: Text(context.tr('email_copied')),
+                        backgroundColor: const Color(0xFF7DD3C0),
                       ),
                     );
                   },
@@ -100,16 +101,16 @@ class ContactClinicPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const clinicAddress = "Efroni 38\nAcco";
+    const clinicAddress = "עפרוני 38, עכו";
     const phoneNumber = "04-9916245";
     const email = "a049916245@gmail.com";
 
     return Scaffold(
       backgroundColor: const Color(0xFFF2EBE2),
       appBar: AppBar(
-        title: const Text(
-          "Contact Clinic",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        title: Text(
+          context.tr('contact_clinic'),
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -164,18 +165,18 @@ class ContactClinicPage extends StatelessWidget {
                     child: Images.getImage("images/dentist_icon.png", 100, 100),
                   ),
                   const SizedBox(height: 15),
-                  const Text(
-                    "Dr. Dentist",
-                    style: TextStyle(
+                  Text(
+                    context.tr('example_doctor_1'),
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    "Dental Specialist",
-                    style: TextStyle(
+                  Text(
+                    context.tr('dental_specialist'),
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                     ),
@@ -186,7 +187,7 @@ class ContactClinicPage extends StatelessWidget {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => AppointmentPage()),
+                            builder: (context) => const AppointmentPage()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -199,9 +200,9 @@ class ContactClinicPage extends StatelessWidget {
                       ),
                       elevation: 4,
                     ),
-                    child: const Text(
-                      "Book an appointment",
-                      style: TextStyle(
+                    child: Text(
+                      context.tr('book_appointment'),
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -233,12 +234,12 @@ class ContactClinicPage extends StatelessWidget {
                 children: [
                   // Opening hours
                   Row(
-                    children: const [
-                      Icon(Icons.access_time, color: Color(0xFF7DD3C0), size: 24),
-                      SizedBox(width: 10),
+                    children: [
+                      const Icon(Icons.access_time, color: Color(0xFF7DD3C0), size: 24),
+                      const SizedBox(width: 10),
                       Text(
-                        "Opening Hours",
-                        style: TextStyle(
+                        context.tr('opening_hours'),
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF333333),
@@ -247,11 +248,11 @@ class ContactClinicPage extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  _buildHoursRow("Monday", "09:00 - 17:00", true),
-                  _buildHoursRow("Tuesday", "09:00 - 17:00", false),
-                  _buildHoursRow("Wednesday", "09:00 - 17:00", true),
-                  _buildHoursRow("Thursday", "09:00 - 17:00", false),
-                  _buildHoursRow("Friday", "09:00 - 13:00", true),
+                  _buildHoursRow(context, context.tr('monday'), "09:00 - 17:00", true),
+                  _buildHoursRow(context, context.tr('tuesday'), "09:00 - 17:00", false),
+                  _buildHoursRow(context, context.tr('wednesday'), "09:00 - 17:00", true),
+                  _buildHoursRow(context, context.tr('thursday'), "09:00 - 17:00", false),
+                  _buildHoursRow(context, context.tr('friday'), "09:00 - 13:00", true),
 
                   const SizedBox(height: 24),
                   const Divider(),
@@ -259,12 +260,12 @@ class ContactClinicPage extends StatelessWidget {
 
                   // Address with copy button
                   Row(
-                    children: const [
-                      Icon(Icons.location_on, color: Color(0xFF7DD3C0), size: 24),
-                      SizedBox(width: 10),
+                    children: [
+                      const Icon(Icons.location_on, color: Color(0xFF7DD3C0), size: 24),
+                      const SizedBox(width: 10),
                       Text(
-                        "Address",
-                        style: TextStyle(
+                        context.tr('address'),
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF333333),
@@ -292,14 +293,14 @@ class ContactClinicPage extends StatelessWidget {
                         ),
                         IconButton(
                           icon: const Icon(Icons.copy, color: Color(0xFF7DD3C0)),
-                          tooltip: "Copy address",
+                          tooltip: context.tr('copy_address'),
                           onPressed: () {
                             Clipboard.setData(
                                 const ClipboardData(text: clinicAddress));
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Address copied to clipboard"),
-                                backgroundColor: Color(0xFF7DD3C0),
+                              SnackBar(
+                                content: Text(context.tr('address_copied')),
+                                backgroundColor: const Color(0xFF7DD3C0),
                               ),
                             );
                           },
@@ -314,12 +315,12 @@ class ContactClinicPage extends StatelessWidget {
 
                   // Phone clickable
                   Row(
-                    children: const [
-                      Icon(Icons.phone, color: Color(0xFF7DD3C0), size: 24),
-                      SizedBox(width: 10),
+                    children: [
+                      const Icon(Icons.phone, color: Color(0xFF7DD3C0), size: 24),
+                      const SizedBox(width: 10),
                       Text(
-                        "Phone",
-                        style: TextStyle(
+                        context.tr('phone'),
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF333333),
@@ -337,19 +338,19 @@ class ContactClinicPage extends StatelessWidget {
                         color: const Color(0xFFF2EBE2),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Row(
+                      child: const Row(
                         children: [
                           Expanded(
                             child: Text(
                               phoneNumber,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
                                 color: Color(0xFF7DD3C0),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
-                          const Icon(
+                          Icon(
                             Icons.arrow_forward_ios,
                             size: 16,
                             color: Color(0xFF7DD3C0),
@@ -363,12 +364,12 @@ class ContactClinicPage extends StatelessWidget {
 
                   // Email clickable
                   Row(
-                    children: const [
-                      Icon(Icons.email, color: Color(0xFF7DD3C0), size: 24),
-                      SizedBox(width: 10),
+                    children: [
+                      const Icon(Icons.email, color: Color(0xFF7DD3C0), size: 24),
+                      const SizedBox(width: 10),
                       Text(
-                        "Email",
-                        style: TextStyle(
+                        context.tr('email'),
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF333333),
@@ -386,19 +387,19 @@ class ContactClinicPage extends StatelessWidget {
                         color: const Color(0xFFF2EBE2),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Row(
+                      child: const Row(
                         children: [
                           Expanded(
                             child: Text(
                               email,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
                                 color: Color(0xFF7DD3C0),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
-                          const Icon(
+                          Icon(
                             Icons.arrow_forward_ios,
                             size: 16,
                             color: Color(0xFF7DD3C0),
@@ -418,7 +419,7 @@ class ContactClinicPage extends StatelessWidget {
     );
   }
 
-  Widget _buildHoursRow(String day, String hours, bool isAlternate) {
+  Widget _buildHoursRow(BuildContext context, String day, String hours, bool isAlternate) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
       decoration: BoxDecoration(

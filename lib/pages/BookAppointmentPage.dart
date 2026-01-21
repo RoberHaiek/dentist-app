@@ -2,6 +2,7 @@ import 'package:dentist_app/CurrentPatient.dart';
 import 'package:flutter/material.dart';
 import '../Images.dart';
 import 'Homepage.dart';
+import 'package:dentist_app/services/LocalizationProvider.dart';
 
 class BookAppointmentPage extends StatefulWidget {
   const BookAppointmentPage({super.key});
@@ -20,9 +21,9 @@ class BookAppointmentPageState extends State<BookAppointmentPage> {
   bool loading = true;
 
   final Map<String, List<String>> availableTimes = {
-    "Monday": ["10:00", "12:00", "16:00", "17:30", "18:30"],
-    "Tuesday": ["09:30", "11:00", "12:00"],
-    "Wednesday": ["09:00", "10:00", "11:00", "12:00", "16:00", "17:00"],
+    "יום שני": ["10:00", "12:00", "16:00", "17:30", "18:30"],
+    "יום שלישי": ["09:30", "11:00", "12:00"],
+    "יום רביעי": ["09:00", "10:00", "11:00", "12:00", "16:00", "17:00"],
   };
 
   @override
@@ -114,12 +115,12 @@ class BookAppointmentPageState extends State<BookAppointmentPage> {
           ),
           Images.getImage("images/dentist_icon.png", 60.0, 60.0),
           const SizedBox(width: 16),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Book Appointment",
+                  context.tr('book_appointment'),
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
@@ -127,7 +128,7 @@ class BookAppointmentPageState extends State<BookAppointmentPage> {
                   ),
                 ),
                 Text(
-                  "Dr. Dentist",
+                  context.tr('example_doctor_1'),
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.white,
@@ -145,8 +146,8 @@ class BookAppointmentPageState extends State<BookAppointmentPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "1. Select Patient",
+        Text(
+          context.tr('select_patient'),
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -191,16 +192,17 @@ class BookAppointmentPageState extends State<BookAppointmentPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          currentPatient.fullName,
+                        Text(//TODO
+//                           currentPatient.fullName,
+                          context.tr('example_patient_1'),
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF333333),
                           ),
                         ),
-                        const Text(
-                          "Primary patient",
+                        Text(
+                          context.tr('primary_patient'),
                           style: TextStyle(
                             fontSize: 14,
                             color: Color(0xFF999999),
@@ -223,7 +225,7 @@ class BookAppointmentPageState extends State<BookAppointmentPage> {
                 onTap: () {
                   // TODO: Implement add relative functionality
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
+                    SnackBar(
                       content: Text("Add relative feature coming soon!"),
                       duration: Duration(seconds: 2),
                     ),
@@ -231,7 +233,7 @@ class BookAppointmentPageState extends State<BookAppointmentPage> {
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Icon(
                       Icons.add_circle_outline,
                       color: Color(0xFF7DD3C0),
@@ -239,7 +241,7 @@ class BookAppointmentPageState extends State<BookAppointmentPage> {
                     ),
                     SizedBox(width: 8),
                     Text(
-                      "Book for a relative",
+                      context.tr('book_for_relative'),
                       style: TextStyle(
                         fontSize: 16,
                         color: Color(0xFF7DD3C0),
@@ -258,17 +260,17 @@ class BookAppointmentPageState extends State<BookAppointmentPage> {
 
   Widget _buildReasonSection() {
     final reasons = [
-      {"title": "Teeth Cleaning", "icon": "🦷"},
-      {"title": "Painful Tooth", "icon": "😖"},
-      {"title": "General Check-up", "icon": "🔍"},
-      {"title": "Other", "icon": "💬"},
+      {"title": context.tr('teeth_cleaning'), "icon": "🦷"},
+      {"title": context.tr('painful_tooth'), "icon": "😖"},
+      {"title": context.tr('general_checkup'), "icon": "🔍"},
+      {"title": context.tr('other'), "icon": "💬"},
     ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "2. Reason for Visit",
+        Text(
+          context.tr('reason_for_visit'),
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -358,8 +360,8 @@ class BookAppointmentPageState extends State<BookAppointmentPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "3. Select Date & Time",
+        Text(
+          context.tr('select_date_time'),
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -383,8 +385,8 @@ class BookAppointmentPageState extends State<BookAppointmentPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Choose a day:",
+              Text(
+                context.tr('choose_day'),
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -442,8 +444,8 @@ class BookAppointmentPageState extends State<BookAppointmentPage> {
               ),
               if (selectedDay.isNotEmpty) ...[
                 const SizedBox(height: 20),
-                const Text(
-                  "Choose a time:",
+                Text(
+                  context.tr('choose_time'),
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -541,8 +543,8 @@ class BookAppointmentPageState extends State<BookAppointmentPage> {
               borderRadius: BorderRadius.circular(16),
             ),
           ),
-          child: const Text(
-            "Confirm Appointment",
+          child: Text(
+            context.tr('confirm_appointment'),
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -599,8 +601,8 @@ class BookAppointmentPageState extends State<BookAppointmentPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                  "Appointment Confirmed!",
+                Text(
+                  context.tr('appointment_confirmed'),
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
@@ -609,8 +611,9 @@ class BookAppointmentPageState extends State<BookAppointmentPage> {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 12),
-                Text(
-                  "Appointment for ${currentPatient.fullName}",
+                Text(   //TODO
+//                   "Appointment for ${currentPatient.fullName}",
+                    "טיפול עבור מר מטופל",
                   style: const TextStyle(
                     fontSize: 16,
                     color: Color(0xFF666666),
@@ -663,8 +666,8 @@ class BookAppointmentPageState extends State<BookAppointmentPage> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text(
-                      "Done",
+                    child: Text(
+                      context.tr('done'),
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -683,8 +686,8 @@ class BookAppointmentPageState extends State<BookAppointmentPage> {
                       selectedTime = "";
                     });
                   },
-                  child: const Text(
-                    "Book Another",
+                  child: Text(
+                    context.tr('book_another'),
                     style: TextStyle(
                       fontSize: 14,
                       color: Color(0xFF7DD3C0),

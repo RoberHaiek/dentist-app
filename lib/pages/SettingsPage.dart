@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../services/LocalizationProvider.dart';
+import '../services/LocalizationService.dart';
 import 'HomePage.dart';
 import 'AboutPage.dart';
 import 'LoginPage.dart';
@@ -45,9 +47,9 @@ class _SettingsPageState extends State<SettingsPage> {
     });
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Updated successfully"),
-          backgroundColor: Color(0xFF7DD3C0),
+        SnackBar(
+          content: Text(context.tr('updated_successfully')),
+          backgroundColor: const Color(0xFF7DD3C0),
         ),
       );
     }
@@ -61,7 +63,7 @@ class _SettingsPageState extends State<SettingsPage> {
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           title: Text(
-            "Edit $fieldLabel",
+            "${context.tr('edit')} $fieldLabel",
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           content: TextField(
@@ -80,9 +82,9 @@ class _SettingsPageState extends State<SettingsPage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text(
-                "Cancel",
-                style: TextStyle(color: Color(0xFF999999)),
+              child: Text(
+                context.tr('cancel'),
+                style: const TextStyle(color: Color(0xFF999999)),
               ),
             ),
             ElevatedButton(
@@ -93,7 +95,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text("Save"),
+              child: Text(context.tr('save')),
             ),
           ],
         );
@@ -135,19 +137,19 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text(
-          "Logout",
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          context.tr('logout'),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        content: const Text(
-          "Are you sure you want to logout?",
+        content: Text(
+          context.tr('logout_confirm'),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text(
-              "Cancel",
-              style: TextStyle(color: Color(0xFF999999)),
+            child: Text(
+              context.tr('cancel'),
+              style: const TextStyle(color: Color(0xFF999999)),
             ),
           ),
           ElevatedButton(
@@ -158,7 +160,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: const Text("Logout"),
+            child: Text(context.tr('logout')),
           ),
         ],
       ),
@@ -169,10 +171,10 @@ class _SettingsPageState extends State<SettingsPage> {
         // Show loading indicator
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+            SnackBar(
               content: Row(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                     height: 20,
                     child: CircularProgressIndicator(
@@ -180,12 +182,12 @@ class _SettingsPageState extends State<SettingsPage> {
                       strokeWidth: 2,
                     ),
                   ),
-                  SizedBox(width: 12),
-                  Text("Logging out..."),
+                  const SizedBox(width: 12),
+                  Text(context.tr('logging_out')),
                 ],
               ),
-              duration: Duration(seconds: 1),
-              backgroundColor: Color(0xFF7DD3C0),
+              duration: const Duration(seconds: 1),
+              backgroundColor: const Color(0xFF7DD3C0),
             ),
           );
         }
@@ -205,7 +207,7 @@ class _SettingsPageState extends State<SettingsPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text("Logout failed: $e"),
+              content: Text("${context.tr('logout_failed')}: $e"),
               backgroundColor: const Color(0xFFFF6B6B),
             ),
           );
@@ -230,9 +232,9 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFF2EBE2),
       appBar: AppBar(
-        title: const Text(
-          "Settings",
-          style: TextStyle(
+        title: Text(
+          context.tr('settings'),
+          style: const TextStyle(
             fontSize: 24,
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -264,56 +266,56 @@ class _SettingsPageState extends State<SettingsPage> {
             _buildProfileCard(),
             const SizedBox(height: 20),
 
-            _buildSectionTitle("Personal Information", Icons.person),
+            _buildSectionTitle(context.tr('personal_information'), Icons.person),
             _buildPanel([
               _buildSettingTile(
-                "First Name",
-                userData?['firstName'] ?? "Not set",
+                context.tr('first_name'),
+                userData?['firstName'] ?? context.tr('not_set'),
                 Icons.badge,
-                () => _editField("firstName", "First Name", userData?['firstName']),
+                () => _editField("firstName", context.tr('first_name'), userData?['firstName']),
               ),
               const Divider(height: 1),
               _buildSettingTile(
-                "Last Name",
-                userData?['lastName'] ?? "Not set",
+                context.tr('last_name'),
+                userData?['lastName'] ?? context.tr('not_set'),
                 Icons.badge_outlined,
-                () => _editField("lastName", "Last Name", userData?['lastName']),
+                () => _editField("lastName", context.tr('last_name'), userData?['lastName']),
               ),
               const Divider(height: 1),
               _buildSettingTile(
-                "Date of Birth",
+                context.tr('date_of_birth'),
                 _formatDate(userData?['dateOfBirth']),
                 Icons.cake,
-                () => _editDate("dateOfBirth", "Date of Birth", userData?['dateOfBirth']),
+                () => _editDate("dateOfBirth", context.tr('date_of_birth'), userData?['dateOfBirth']),
               ),
               const Divider(height: 1),
               _buildSettingTile(
-                "Address",
-                userData?['address'] ?? "Not set",
+                context.tr('address'),
+                userData?['address'] ?? context.tr('not_set'),
                 Icons.home,
-                () => _editField("address", "Address", userData?['address']),
+                () => _editField("address", context.tr('address'), userData?['address']),
               ),
               const Divider(height: 1),
               _buildSettingTile(
-                "Phone",
-                userData?['phoneNumber'] ?? "Not set",
+                context.tr('phone'),
+                userData?['phoneNumber'] ?? context.tr('not_set'),
                 Icons.phone,
-                () => _editField("phoneNumber", "Phone Number", userData?['phoneNumber']),
+                () => _editField("phoneNumber", context.tr('phone'), userData?['phoneNumber']),
               ),
               const Divider(height: 1),
               _buildSettingTile(
-                "Email",
-                _auth.currentUser?.email ?? "Not set",
+                context.tr('email'),
+                _auth.currentUser?.email ?? context.tr('not_set'),
                 Icons.email,
                 () => _showEmailWarning(),
               ),
             ]),
             const SizedBox(height: 20),
 
-            _buildSectionTitle("Security", Icons.lock),
+            _buildSectionTitle(context.tr('security'), Icons.lock),
             _buildPanel([
               _buildSettingTile(
-                "Password",
+                context.tr('password'),
                 "••••••••",
                 Icons.lock_outline,
                 () => _changePassword(),
@@ -321,10 +323,10 @@ class _SettingsPageState extends State<SettingsPage> {
             ]),
             const SizedBox(height: 20),
 
-            _buildSectionTitle("Family", Icons.group),
+            _buildSectionTitle(context.tr('family'), Icons.group),
             _buildPanel([
               _buildSettingTile(
-                "Manage Relatives",
+                context.tr('manage_relatives'),
                 _getRelativesCount(),
                 Icons.people_outline,
                 () => _manageRelatives(),
@@ -332,29 +334,29 @@ class _SettingsPageState extends State<SettingsPage> {
             ]),
             const SizedBox(height: 20),
 
-            _buildSectionTitle("Preferences", Icons.tune),
+            _buildSectionTitle(context.tr('preferences'), Icons.tune),
             _buildPanel([
               _buildSettingTile(
-                "Notifications",
-                "Manage alerts",
+                context.tr('notifications'),
+                context.tr('manage_alerts'),
                 Icons.notifications_outlined,
                 () => _manageNotifications(),
               ),
               const Divider(height: 1),
               _buildSettingTile(
-                "Language",
-                "English",
+                context.tr('language'),
+                _getCurrentLanguageName(),
                 Icons.language,
                 () => _changeLanguage(),
               ),
             ]),
             const SizedBox(height: 20),
 
-            _buildSectionTitle("App Information", Icons.info),
+            _buildSectionTitle(context.tr('app_information'), Icons.info),
             _buildPanel([
               _buildSettingTile(
-                "About Asnani",
-                "Version 1.0.0",
+                context.tr('about'),
+                context.tr('version'),
                 Icons.info_outline,
                 () {
                   Navigator.pushReplacement(
@@ -365,15 +367,15 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               const Divider(height: 1),
               _buildSettingTile(
-                "Terms & Conditions",
-                "Legal information",
+                context.tr('terms_conditions'),
+                context.tr('legal_information'),
                 Icons.description_outlined,
                 () => _showTerms(),
               ),
               const Divider(height: 1),
               _buildSettingTile(
-                "Privacy Policy",
-                "Data protection",
+                context.tr('privacy_policy'),
+                context.tr('data_protection'),
                 Icons.privacy_tip_outlined,
                 () => _showPrivacy(),
               ),
@@ -381,7 +383,7 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(height: 20),
 
             // Logout section
-            _buildSectionTitle("Account", Icons.exit_to_app),
+            _buildSectionTitle(context.tr('account'), Icons.exit_to_app),
             _buildPanel([
               _buildLogoutTile(),
             ]),
@@ -476,17 +478,17 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         child: const Icon(Icons.logout, color: Color(0xFFFF6B6B), size: 24),
       ),
-      title: const Text(
-        "Logout",
-        style: TextStyle(
+      title: Text(
+        context.tr('logout'),
+        style: const TextStyle(
           fontWeight: FontWeight.bold,
           color: Color(0xFFFF6B6B),
           fontSize: 16,
         ),
       ),
-      subtitle: const Text(
-        "Sign out of your account",
-        style: TextStyle(color: Color(0xFF999999), fontSize: 14),
+      subtitle: Text(
+        context.tr('logout_subtitle'),
+        style: const TextStyle(color: Color(0xFF999999), fontSize: 14),
       ),
       trailing: const Icon(
         Icons.arrow_forward_ios,
@@ -573,19 +575,33 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   String _formatDate(String? dateString) {
-    if (dateString == null || dateString.isEmpty) return "Not set";
+    if (dateString == null || dateString.isEmpty) return context.tr('not_set');
     try {
       final date = DateTime.parse(dateString);
       return "${date.day}/${date.month}/${date.year}";
     } catch (e) {
-      return "Not set";
+      return context.tr('not_set');
     }
   }
 
   String _getRelativesCount() {
     final relatives = userData?['relatives'] as List?;
-    if (relatives == null || relatives.isEmpty) return "No relatives added";
-    return "${relatives.length} relative${relatives.length == 1 ? '' : 's'}";
+    if (relatives == null || relatives.isEmpty) return context.tr('no_relatives');
+    return "${relatives.length} ${relatives.length == 1 ? context.tr('relative') : context.tr('relatives')}";
+  }
+
+  String _getCurrentLanguageName() {
+    final currentLang = LocalizationService().currentLanguage;
+    switch (currentLang) {
+      case 'en':
+        return context.tr('english');
+      case 'ar':
+        return context.tr('arabic');
+      case 'he':
+        return context.tr('hebrew');
+      default:
+        return context.tr('english');
+    }
   }
 
   String _getInitials() {
@@ -602,13 +618,12 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text(
-          "Cannot Edit Email",
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          context.tr('cannot_edit_email'),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        content: const Text(
-          "Email address is linked to your account and cannot be changed from here. "
-          "Please contact support if you need to update your email.",
+        content: Text(
+          context.tr('email_change_restriction'),
         ),
         actions: [
           ElevatedButton(
@@ -619,7 +634,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: const Text("OK"),
+            child: Text(context.tr('ok')),
           ),
         ],
       ),
@@ -635,9 +650,9 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text(
-          "Change Password",
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          context.tr('change_password'),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         content: SingleChildScrollView(
           child: Column(
@@ -647,7 +662,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 controller: oldPasswordController,
                 obscureText: true,
                 decoration: InputDecoration(
-                  labelText: "Current Password",
+                  labelText: context.tr('current_password'),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -662,7 +677,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 controller: newPasswordController,
                 obscureText: true,
                 decoration: InputDecoration(
-                  labelText: "New Password",
+                  labelText: context.tr('new_password'),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -677,7 +692,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 controller: confirmPasswordController,
                 obscureText: true,
                 decoration: InputDecoration(
-                  labelText: "Confirm Password",
+                  labelText: context.tr('confirm_password'),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -693,9 +708,9 @@ class _SettingsPageState extends State<SettingsPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text(
-              "Cancel",
-              style: TextStyle(color: Color(0xFF999999)),
+            child: Text(
+              context.tr('cancel'),
+              style: const TextStyle(color: Color(0xFF999999)),
             ),
           ),
           ElevatedButton(
@@ -703,9 +718,9 @@ class _SettingsPageState extends State<SettingsPage> {
               // Validate passwords
               if (newPasswordController.text != confirmPasswordController.text) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("Passwords don't match!"),
-                    backgroundColor: Color(0xFFFF6B6B),
+                  SnackBar(
+                    content: Text(context.tr('passwords_dont_match')),
+                    backgroundColor: const Color(0xFFFF6B6B),
                   ),
                 );
                 return;
@@ -713,9 +728,9 @@ class _SettingsPageState extends State<SettingsPage> {
 
               if (newPasswordController.text.length < 6) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("Password must be at least 6 characters!"),
-                    backgroundColor: Color(0xFFFF6B6B),
+                  SnackBar(
+                    content: Text(context.tr('password_min_length')),
+                    backgroundColor: const Color(0xFFFF6B6B),
                   ),
                 );
                 return;
@@ -724,9 +739,9 @@ class _SettingsPageState extends State<SettingsPage> {
               Navigator.pop(context);
               // TODO: Implement actual password change with Firebase reauthentication
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Password change feature coming soon!"),
-                  backgroundColor: Color(0xFF7DD3C0),
+                SnackBar(
+                  content: Text(context.tr('password_change_coming_soon')),
+                  backgroundColor: const Color(0xFF7DD3C0),
                 ),
               );
             },
@@ -736,7 +751,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: const Text("Save"),
+            child: Text(context.tr('save')),
           ),
         ],
       ),
@@ -748,13 +763,12 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text(
-          "Manage Relatives",
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          context.tr('manage_relatives'),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        content: const Text(
-          "Relatives management feature is coming soon! "
-          "You'll be able to add family members to book appointments for them.",
+        content: Text(
+          context.tr('relatives_feature_coming_soon'),
         ),
         actions: [
           ElevatedButton(
@@ -765,7 +779,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: const Text("OK"),
+            child: Text(context.tr('ok')),
           ),
         ],
       ),
@@ -777,13 +791,12 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text(
-          "Notification Settings",
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          context.tr('notification_settings'),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        content: const Text(
-          "Notification preferences feature is coming soon! "
-          "You'll be able to customize appointment reminders and alerts.",
+        content: Text(
+          context.tr('notifications_feature_coming_soon'),
         ),
         actions: [
           ElevatedButton(
@@ -794,7 +807,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: const Text("OK"),
+            child: Text(context.tr('ok')),
           ),
         ],
       ),
@@ -806,26 +819,77 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text(
-          "Language Settings",
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          context.tr('language_settings'),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        content: const Text(
-          "Multi-language support is coming soon! "
-          "The app will support multiple languages in future updates.",
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildLanguageOption('en', context.tr('english'), '🇬🇧'),
+            const SizedBox(height: 12),
+            _buildLanguageOption('ar', context.tr('arabic'), '🇸🇦'),
+            const SizedBox(height: 12),
+            _buildLanguageOption('he', context.tr('hebrew'), '🇮🇱'),
+          ],
         ),
         actions: [
-          ElevatedButton(
+          TextButton(
             onPressed: () => Navigator.pop(context),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF7DD3C0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
+            child: Text(
+              context.tr('cancel'),
+              style: const TextStyle(color: Color(0xFF999999)),
             ),
-            child: const Text("OK"),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildLanguageOption(String code, String name, String flag) {
+    final isSelected = LocalizationService().currentLanguage == code;
+    return InkWell(
+      onTap: () async {
+        Navigator.pop(context);
+        await context.changeLanguage(code);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(context.tr('language_changed')),
+              backgroundColor: const Color(0xFF7DD3C0),
+            ),
+          );
+        }
+      },
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFFA8E6CF).withOpacity(0.2) : Colors.transparent,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected ? const Color(0xFF7DD3C0) : Colors.grey.shade300,
+            width: 2,
+          ),
+        ),
+        child: Row(
+          children: [
+            Text(flag, style: const TextStyle(fontSize: 32)),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                name,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  color: isSelected ? const Color(0xFF7DD3C0) : const Color(0xFF333333),
+                ),
+              ),
+            ),
+            if (isSelected)
+              const Icon(Icons.check_circle, color: Color(0xFF7DD3C0)),
+          ],
+        ),
       ),
     );
   }
@@ -835,15 +899,13 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text(
-          "Terms & Conditions",
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          context.tr('terms_conditions'),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        content: const SingleChildScrollView(
+        content: SingleChildScrollView(
           child: Text(
-            "Terms and conditions will be displayed here. "
-            "This section will include all legal terms, user agreements, "
-            "and conditions for using the Asnani dental app.",
+            context.tr('terms_content'),
           ),
         ),
         actions: [
@@ -855,7 +917,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: const Text("Close"),
+            child: Text(context.tr('close')),
           ),
         ],
       ),
@@ -867,15 +929,13 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text(
-          "Privacy Policy",
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          context.tr('privacy_policy'),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        content: const SingleChildScrollView(
+        content: SingleChildScrollView(
           child: Text(
-            "Privacy policy information will be displayed here. "
-            "This section will detail how user data is collected, stored, "
-            "and protected in the Asnani dental app.",
+            context.tr('privacy_content'),
           ),
         ),
         actions: [
@@ -887,7 +947,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: const Text("Close"),
+            child: Text(context.tr('close')),
           ),
         ],
       ),

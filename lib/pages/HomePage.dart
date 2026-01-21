@@ -10,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../CurrentPatient.dart';
 import '../Images.dart';
+import '../services/LocalizationProvider.dart';
 import 'MyDocumentsPage.dart';
 
 class HomePage extends StatefulWidget {
@@ -131,7 +132,8 @@ class HomePageState extends State<HomePage> {
             child: Column(
               children: [
                 Text(
-                  "Hi ${currentPatient.firstName}! ✨",
+//                   "${context.tr('welcome')} ${currentPatient.firstName}! ✨",
+                "היי מר. מטופל! ✨",
                   style: const TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -139,9 +141,9 @@ class HomePageState extends State<HomePage> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  "Your smile matters to us",
-                  style: TextStyle(
+                Text(
+                  context.tr('your_smile_matters'),
+                  style: const TextStyle(
                     fontSize: 16,
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
@@ -200,8 +202,8 @@ class HomePageState extends State<HomePage> {
       borderColor = const Color(0xFFFFB74D);
       backgroundColor = const Color(0xFFFFF3E0);
       icon = "📅";
-      title = "Time for a Checkup!";
-      subtitle = "Your last checkup was 6 months ago.\nIt's time to visit us again!";
+      title = context.tr('time_for_checkup');
+      subtitle = context.tr('last_checkup_6_months');
       instructionsTitle = "";
       instructions = [];
     } else if (numberOfAppointments < 0) {
@@ -209,7 +211,7 @@ class HomePageState extends State<HomePage> {
       borderColor = const Color(0xFFFF6B6B);
       backgroundColor = const Color(0xFFFFEBEE);
       icon = "❤️";
-      title = "Post-Surgery Care";
+      title = "Post-Surgery Care"; // Not in strings.json yet
       subtitle = "Hope you're feeling well after the surgery!";
       instructionsTitle = "Important Instructions:";
       instructions = [
@@ -223,14 +225,14 @@ class HomePageState extends State<HomePage> {
       borderColor = const Color(0xFF7DD3C0);
       backgroundColor = const Color(0xFFE8F5F1);
       icon = "🎯";
-      title = "Upcoming Appointment";
-      subtitle = "Your next appointment is on Monday";
-      instructionsTitle = "Before Your Appointment:";
+      title = context.tr('upcoming_appointment');
+      subtitle = context.tr('next_appointment_on');
+      instructionsTitle = "לפני הטיפול";
       instructions = [
-        "Don't eat for 1 hour before the appointment",
-        "Brush your teeth and floss thoroughly",
-        "Arrive 10 minutes early",
-        "Bring your insurance card",
+        "מומלץ לא לאכול שעה לפני הפגישה",
+        "לצחצח שיניים ולנקות בחוט דנטלי היטב",
+        "להגיע 10 דקות מוקדם יותר",
+        "להביא את כרטיס קופת החולים שלך",
       ];
     }
 
@@ -314,7 +316,7 @@ class HomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            showInstructions ? "Hide Instructions" : "View Instructions",
+                            showInstructions ? context.tr('hide_instructions') : context.tr('view_instructions'),
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -382,39 +384,6 @@ class HomePageState extends State<HomePage> {
                     ),
                 ],
               )
-//             else
-//               // Book checkup button for when no appointments
-//               Padding(
-//                 padding: const EdgeInsets.all(16),
-//                 child: SizedBox(
-//                   width: double.infinity,
-//                   child: ElevatedButton(
-//                     onPressed: () {
-//                       Navigator.pushReplacement(
-//                         context,
-//                         MaterialPageRoute(
-//                           builder: (context) => const AppointmentPage(),
-//                         ),
-//                       );
-//                     },
-//                     style: ElevatedButton.styleFrom(
-//                       backgroundColor: borderColor,
-//                       padding: const EdgeInsets.symmetric(vertical: 14),
-//                       shape: RoundedRectangleBorder(
-//                         borderRadius: BorderRadius.circular(12),
-//                       ),
-//                     ),
-//                     child: const Text(
-//                       "Book Checkup Now",
-//                       style: TextStyle(
-//                         fontSize: 16,
-//                         fontWeight: FontWeight.bold,
-//                         color: Colors.white,
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//               ),
           ],
         ),
       ),
@@ -457,15 +426,15 @@ class HomePageState extends State<HomePage> {
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text(
+            children: [
+              const Text(
                 "📅",
                 style: TextStyle(fontSize: 26),
               ),
-              SizedBox(width: 12),
+              const SizedBox(width: 12),
               Text(
-                "Book Appointment",
-                style: TextStyle(
+                context.tr('book_appointment'),
+                style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -491,8 +460,8 @@ class HomePageState extends State<HomePage> {
         children: [
           _buildActionCard(
             icon: "📄",
-            title: "Documents",
-            subtitle: "View files",
+            title: context.tr('documents'),
+            subtitle: context.tr('view_files'),
             onTap: () {
               Navigator.pushReplacement(
                 context,
@@ -502,9 +471,9 @@ class HomePageState extends State<HomePage> {
             },
           ),
           _buildActionCard(
-            icon: "🏷️️",
-            title: "Coupons",
-            subtitle: "Active deals",
+            icon: "🏷️",
+            title: context.tr('coupons'),
+            subtitle: context.tr('active_deals'),
             onTap: () {
               Navigator.pushReplacement(
                 context,
@@ -514,8 +483,8 @@ class HomePageState extends State<HomePage> {
           ),
           _buildActionCard(
             icon: "🗓️",
-            title: "Appointments",
-            subtitle: "View schedule",
+            title: context.tr('appointments'),
+            subtitle: context.tr('view_schedule'),
             onTap: () {
               Navigator.pushReplacement(
                 context,
@@ -526,8 +495,8 @@ class HomePageState extends State<HomePage> {
           ),
           _buildActionCard(
             icon: "📞",
-            title: "Contact Clinic",
-            subtitle: "Get in touch",
+            title: context.tr('contact_clinic'),
+            subtitle: context.tr('get_in_touch'),
             onTap: () {
               Navigator.pushReplacement(
                 context,
@@ -537,9 +506,9 @@ class HomePageState extends State<HomePage> {
             },
           ),
           _buildActionCard(
-            icon: "📝",
-            title: "Instructions",
-            subtitle: "Before or after treatment",
+            icon: "📋",
+            title: context.tr('instructions'),
+            subtitle: "לפני או אחרי הטיפול",
             onTap: () {
               Navigator.pushReplacement(
                 context,
@@ -550,8 +519,8 @@ class HomePageState extends State<HomePage> {
           ),
           _buildActionCard(
             icon: "🦷",
-            title: "My teeth",
-            subtitle: "See the teeth situation",
+            title: "השיניים שלי",
+            subtitle: "הצגת מצב השיניים",
             onTap: () {
               Navigator.pushReplacement(
                 context,
@@ -675,9 +644,9 @@ class HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              child: const Text(
-                "Emergency",
-                style: TextStyle(
+              child: Text(
+                context.tr('emergency'),
+                style: const TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFFFF6B6B),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../Images.dart';
+import '../services/LocalizationProvider.dart';
 import 'HomePage.dart';
 
 class CouponPage extends StatefulWidget {
@@ -16,28 +17,28 @@ class _CouponPageState extends State<CouponPage> with SingleTickerProviderStateM
   final List<Coupon> availableCoupons = [
     Coupon(
       id: "1",
-      serviceName: "Colgate toothpaste",
+      serviceName: "משחת שיניים קולגייט",
       discount: "20%",
       expirationDate: DateTime(2024, 12, 31),
-      terms: "Valid for regular Colgate toothpaste only. Cannot be combined with other offers.",
+      terms: "תקף למשחת שיניים קולגייט רגילה בלבד. לא ניתן לשלב עם מבצעים אחרים.",
       discountType: DiscountType.percentage,
       imagePath: "images/coupons/colgate_toothpaste.jpg",
     ),
     Coupon(
       id: "2",
-      serviceName: "Electric toothbrush",
+      serviceName: "מברשת שיניים חשמלית",
       discount: "₪150",
       expirationDate: DateTime(2024, 11, 30),
-      terms: "Valid for this brand only. Cannot be combined with other offers.",
+      terms: "תקף למשחת שיניים קולגייט רגילה בלבד. לא ניתן לשלב עם מבצעים אחרים.",
       discountType: DiscountType.fixed,
       imagePath: "images/coupons/electric_toothbrush.jpg",
     ),
     Coupon(
       id: "3",
-      serviceName: "Dental Checkup",
+      serviceName: "מברשת שיניים חשמלית",
       discount: "Free",
       expirationDate: DateTime(2025, 1, 15),
-      terms: "First-time patients only. Includes basic examination.",
+      terms: "תקף למשחת שיניים קולגייט רגילה בלבד. לא ניתן לשלב עם מבצעים אחרים.",
       discountType: DiscountType.free,
     ),
   ];
@@ -45,10 +46,10 @@ class _CouponPageState extends State<CouponPage> with SingleTickerProviderStateM
   final List<Coupon> usedCoupons = [
     Coupon(
       id: "4",
-      serviceName: "Root Canal Treatment",
+      serviceName: "מברשת שיניים חשמלית",
       discount: "10%",
       expirationDate: DateTime(2024, 10, 20),
-      terms: "Used on Oct 15, 2024",
+      terms: "שומש ב־15 באוקטובר 2024",
       discountType: DiscountType.percentage,
       isUsed: true,
     ),
@@ -73,7 +74,10 @@ class _CouponPageState extends State<CouponPage> with SingleTickerProviderStateM
       appBar: AppBar(
         backgroundColor: const Color(0xFFA8E6CF),
         elevation: 0,
-        title: Text("My Coupons", style: TextStyle(color: Colors.blue[900], fontWeight: FontWeight.bold)),
+        title: Text(
+          context.tr('my_coupons'),
+          style: TextStyle(color: Colors.blue[900], fontWeight: FontWeight.bold),
+        ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.blue[900]),
           onPressed: () {
@@ -88,9 +92,9 @@ class _CouponPageState extends State<CouponPage> with SingleTickerProviderStateM
           indicatorColor: Colors.blue[900],
           labelColor: Colors.blue[900],
           unselectedLabelColor: Colors.blue[600],
-          tabs: const [
-            Tab(text: "Available"),
-            Tab(text: "Used"),
+          tabs: [
+            Tab(text: context.tr('available')),
+            Tab(text: context.tr('used')),
           ],
         ),
       ),
@@ -119,7 +123,7 @@ class _CouponPageState extends State<CouponPage> with SingleTickerProviderStateM
             ),
             const SizedBox(height: 16),
             Text(
-              isUsedTab ? "No used coupons yet" : "No available coupons",
+              isUsedTab ? context.tr('no_used_coupons') : context.tr('no_available_coupons'),
               style: TextStyle(
                 fontSize: 18,
                 color: Colors.grey[600],
@@ -245,8 +249,8 @@ class _CouponPageState extends State<CouponPage> with SingleTickerProviderStateM
                     const SizedBox(width: 6),
                     Text(
                       isUsedTab
-                        ? "Used"
-                        : "Valid until ${_formatDate(coupon.expirationDate)}",
+                        ? context.tr('used')
+                        : "${context.tr('valid_until')} ${_formatDate(coupon.expirationDate)}",
                       style: TextStyle(
                         fontSize: 14,
                         color: _isExpiringSoon(coupon.expirationDate)
@@ -273,10 +277,10 @@ class _CouponPageState extends State<CouponPage> with SingleTickerProviderStateM
                       ),
                       const SizedBox(width: 6),
                       Text(
-                        "Tap for terms & conditions",
-                        style: TextStyle(
+                        context.tr('tap_for_terms'),
+                        style: const TextStyle(
                           fontSize: 13,
-                          color: const Color(0xFF629C86),
+                          color: Color(0xFF629C86),
                           decoration: TextDecoration.underline,
                         ),
                       ),
@@ -299,9 +303,9 @@ class _CouponPageState extends State<CouponPage> with SingleTickerProviderStateM
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text(
-                        "Activate Coupon",
-                        style: TextStyle(
+                      child: Text(
+                        context.tr('activate_coupon'),
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
@@ -340,12 +344,12 @@ class _CouponPageState extends State<CouponPage> with SingleTickerProviderStateM
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Terms & Conditions"),
+        title: Text(context.tr('terms_conditions')),
         content: Text(coupon.terms),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Close"),
+            child: Text(context.tr('close')),
           ),
         ],
       ),
@@ -356,22 +360,22 @@ class _CouponPageState extends State<CouponPage> with SingleTickerProviderStateM
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Activate Coupon?"),
+        title: Text(context.tr('activate_coupon_question')),
         content: Text(
-          "Are you sure you want to activate the coupon for ${coupon.serviceName}?\n\n"
-          "Once activated, you'll receive a barcode to use at the clinic."
+          "${context.tr('activate_coupon_confirm')} ${coupon.serviceName}?\n\n"
+          "${context.tr('barcode_message')}"
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
+            child: Text(context.tr('cancel')),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               _showBarcodeScreen(coupon);
             },
-            child: const Text("Activate"),
+            child: Text(context.tr('activate')),
           ),
         ],
       ),
@@ -384,11 +388,11 @@ class _CouponPageState extends State<CouponPage> with SingleTickerProviderStateM
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Coupon Activated!"),
+        title: Text(context.tr('coupon_activated')),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("Coupon for ${coupon.serviceName}"),
+            Text("${context.tr('coupon_for')} ${coupon.serviceName}"),
             const SizedBox(height: 16),
             Container(
               height: 100,
@@ -399,7 +403,7 @@ class _CouponPageState extends State<CouponPage> with SingleTickerProviderStateM
             ),
             const SizedBox(height: 8),
             Text(
-              "Show this at the store",
+              context.tr('show_at_store'),
               style: TextStyle(color: Colors.grey[600]),
             ),
           ],
@@ -407,7 +411,7 @@ class _CouponPageState extends State<CouponPage> with SingleTickerProviderStateM
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Close"),
+            child: Text(context.tr('close')),
           ),
         ],
       ),

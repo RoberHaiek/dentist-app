@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'HomePage.dart';
 import 'AppointmentPage.dart';
+import 'package:dentist_app/services/LocalizationProvider.dart';
 
 class AppointmentPage extends StatefulWidget {
   const AppointmentPage({super.key});
@@ -13,30 +14,29 @@ class _AppointmentPageState extends State<AppointmentPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  // Sample data - replace with Firebase data
   final List<AppointmentItem> upcomingAppointments = [
     AppointmentItem(
       id: "1",
       date: DateTime(2026, 1, 15, 10, 0),
-      reason: "Teeth Cleaning",
-      patientName: "John Doe",
-      doctorName: "Dr. Dentist",
+      reason: "בדיקה כללית",
+      patientName: "מר מטופל",
+      doctorName: "רופא שיניים",
       isUpcoming: true,
     ),
     AppointmentItem(
       id: "2",
       date: DateTime(2026, 1, 20, 14, 30),
-      reason: "General Check-up",
-      patientName: "John Doe",
-      doctorName: "Dr. Dentist",
+      reason: "טיפול שורש",
+      patientName: "מר מטופל",
+      doctorName: "רופא שיניים",
       isUpcoming: true,
     ),
     AppointmentItem(
       id: "3",
       date: DateTime(2026, 1, 25, 16, 0),
-      reason: "Painful Tooth",
-      patientName: "John Doe",
-      doctorName: "Dr. Dentist",
+      reason: "שן כואבת",
+      patientName: "מר מטופל",
+      doctorName: "רופא שיניים",
       isUpcoming: true,
     ),
   ];
@@ -45,17 +45,17 @@ class _AppointmentPageState extends State<AppointmentPage>
     AppointmentItem(
       id: "4",
       date: DateTime(2025, 12, 10, 11, 0),
-      reason: "Root Canal Treatment",
-      patientName: "John Doe",
-      doctorName: "Dr. Dentist",
+      reason: "ניקוי שיניים",
+      patientName: "מר מטופל",
+      doctorName: "רופא שיניים",
       isUpcoming: false,
     ),
     AppointmentItem(
       id: "5",
       date: DateTime(2025, 11, 5, 9, 30),
-      reason: "Teeth Cleaning",
-      patientName: "John Doe",
-      doctorName: "Dr. Dentist",
+      reason: "בדיקה כללית",
+      patientName: "מר מטופל",
+      doctorName: "רופא שיניים",
       isUpcoming: false,
     ),
   ];
@@ -77,8 +77,8 @@ class _AppointmentPageState extends State<AppointmentPage>
     return Scaffold(
       backgroundColor: const Color(0xFFF2EBE2),
       appBar: AppBar(
-        title: const Text(
-          "My Appointments",
+        title: Text(
+          context.tr('my_appointments'),
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
@@ -104,9 +104,9 @@ class _AppointmentPageState extends State<AppointmentPage>
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white70,
           labelStyle: const TextStyle(fontWeight: FontWeight.bold),
-          tabs: const [
-            Tab(text: "Upcoming"),
-            Tab(text: "Previous"),
+          tabs: [
+            Tab(text: context.tr('upcoming')),
+            Tab(text: context.tr('previous')),
           ],
         ),
       ),
@@ -144,8 +144,8 @@ class _AppointmentPageState extends State<AppointmentPage>
                 color: Color(0xFFBBBBBB),
               ),
               const SizedBox(height: 18),
-              const Text(
-                "No upcoming appointments",
+              Text(
+                context.tr('no_upcoming_appointments'),
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -153,8 +153,8 @@ class _AppointmentPageState extends State<AppointmentPage>
                 ),
               ),
               const SizedBox(height: 8),
-              const Text(
-                "Tap + to book your next appointment",
+              Text(
+                context.tr('tap_to_book'),
                 style: TextStyle(
                   color: Color(0xFF999999),
                   fontSize: 16,
@@ -171,7 +171,7 @@ class _AppointmentPageState extends State<AppointmentPage>
                   );
                 },
                 icon: const Icon(Icons.add),
-                label: const Text("Book Appointment"),
+                label: Text(context.tr('book_appointment')),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF7DD3C0),
                   padding: const EdgeInsets.symmetric(
@@ -205,7 +205,7 @@ class _AppointmentPageState extends State<AppointmentPage>
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               Icon(
                 Icons.history,
                 size: 90,
@@ -213,7 +213,7 @@ class _AppointmentPageState extends State<AppointmentPage>
               ),
               SizedBox(height: 18),
               Text(
-                "No previous appointments",
+                context.tr('no_previous_appointments'),
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -222,7 +222,7 @@ class _AppointmentPageState extends State<AppointmentPage>
               ),
               SizedBox(height: 8),
               Text(
-                "Your appointment history will appear here",
+                context.tr('appointment_history'),
                 style: TextStyle(
                   color: Color(0xFF999999),
                   fontSize: 16,
@@ -292,7 +292,7 @@ class _AppointmentPageState extends State<AppointmentPage>
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  isUpcoming ? "Upcoming" : "Completed",
+                  isUpcoming ? context.tr('upcoming') : context.tr('completed'),
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -388,14 +388,14 @@ class _AppointmentPageState extends State<AppointmentPage>
                 // Patient and Doctor info
                 _buildInfoRow(
                   Icons.person,
-                  "Patient",
+                  context.tr('patient'),
                   appointment.patientName,
                   isUpcoming,
                 ),
                 const SizedBox(height: 8),
                 _buildInfoRow(
                   Icons.medical_services,
-                  "Doctor",
+                  context.tr('doctor'),
                   appointment.doctorName,
                   isUpcoming,
                 ),
@@ -409,7 +409,7 @@ class _AppointmentPageState extends State<AppointmentPage>
                         child: OutlinedButton.icon(
                           onPressed: () => _cancelAppointment(appointment),
                           icon: const Icon(Icons.close, size: 18),
-                          label: const Text("Cancel"),
+                          label: Text(context.tr('cancel')),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: const Color(0xFFFF6B6B),
                             side: const BorderSide(color: Color(0xFFFF6B6B)),
@@ -424,7 +424,7 @@ class _AppointmentPageState extends State<AppointmentPage>
                         child: ElevatedButton.icon(
                           onPressed: () => _rescheduleAppointment(appointment),
                           icon: const Icon(Icons.edit_calendar, size: 18),
-                          label: const Text("Reschedule"),
+                          label: Text(context.tr('reschedule')),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF7DD3C0),
                             shape: RoundedRectangleBorder(
@@ -442,7 +442,7 @@ class _AppointmentPageState extends State<AppointmentPage>
                     child: OutlinedButton.icon(
                       onPressed: () => _bookAgain(appointment),
                       icon: const Icon(Icons.replay, size: 18),
-                      label: const Text("Book Again"),
+                      label: Text(context.tr('book_again')),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: const Color(0xFF7DD3C0),
                         side: const BorderSide(color: Color(0xFF7DD3C0)),
@@ -492,27 +492,27 @@ class _AppointmentPageState extends State<AppointmentPage>
 
   String _formatDate(DateTime date) {
     final weekdays = [
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-      'Sunday'
+      context.tr('sunday'),
+      context.tr('monday'),
+      context.tr('tuesday'),
+      context.tr('wednesday'),
+      context.tr('thursday'),
+      context.tr('friday'),
+      context.tr('saturday'),
     ];
     final months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
+      context.tr('january'),
+      context.tr('february'),
+      context.tr('march'),
+      context.tr('april'),
+      context.tr('may'),
+      context.tr('june'),
+      context.tr('july'),
+      context.tr('august'),
+      context.tr('september'),
+      context.tr('october'),
+      context.tr('november'),
+      context.tr('december'),
     ];
     return "${weekdays[date.weekday - 1]}, ${months[date.month - 1]} ${date.day}";
   }
@@ -520,8 +520,8 @@ class _AppointmentPageState extends State<AppointmentPage>
   String _formatTime(DateTime date) {
     final hour = date.hour > 12 ? date.hour - 12 : date.hour;
     final minute = date.minute.toString().padLeft(2, '0');
-    final period = date.hour >= 12 ? 'PM' : 'AM';
-    return "$hour:$minute $period";
+//     final period = date.hour >= 12 ? 'PM' : 'AM';
+    return "$hour:$minute";
   }
 
   void _cancelAppointment(AppointmentItem appointment) {
@@ -529,18 +529,18 @@ class _AppointmentPageState extends State<AppointmentPage>
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text(
-          "Cancel Appointment?",
+        title: Text(
+          context.tr('cancel_appointment_title'),
           style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+        ),  // TODO
         content: Text(
           "Are you sure you want to cancel the appointment on ${_formatDate(appointment.date)} at ${_formatTime(appointment.date)}?",
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text(
-              "No",
+            child: Text(
+              context.tr('no'),
               style: TextStyle(color: Color(0xFF999999)),
             ),
           ),
@@ -551,8 +551,8 @@ class _AppointmentPageState extends State<AppointmentPage>
                 upcomingAppointments.remove(appointment);
               });
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Appointment cancelled"),
+                SnackBar(
+                  content: Text(context.tr('appointment_cancelled')),
                   backgroundColor: Color(0xFFFF6B6B),
                 ),
               );
@@ -563,7 +563,7 @@ class _AppointmentPageState extends State<AppointmentPage>
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: const Text("Yes, Cancel"),
+            child: Text(context.tr('yes_cancel')),
           ),
         ],
       ),
@@ -576,8 +576,8 @@ class _AppointmentPageState extends State<AppointmentPage>
       MaterialPageRoute(builder: (context) => AppointmentPage()),
     );
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Please select a new date and time"),
+      SnackBar(
+        content: Text(context.tr('select_new_date')),
         backgroundColor: Color(0xFF7DD3C0),
       ),
     );

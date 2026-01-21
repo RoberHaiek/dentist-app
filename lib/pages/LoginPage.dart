@@ -5,6 +5,7 @@ import 'HomePage.dart';
 import '../Images.dart';
 import 'ForgotPage.dart';
 import 'RegistrationPage.dart';
+import '../services/LocalizationProvider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -209,7 +210,7 @@ class LoginPageState extends State<LoginPage> {
                     // Logo
                     Images.getImage("images/tooth_icon.png", 120.0, 120.0),
                     const Text(
-                      "Log in to Asnani",
+                      "אסנאני",
                       style: TextStyle(color: Colors.white, fontSize: 26.0),
                     ),
                     const SizedBox(height: 8),
@@ -217,7 +218,7 @@ class LoginPageState extends State<LoginPage> {
                     TextField(
                       controller: emailController,
                       focusNode: emailFocus,
-                      decoration: const InputDecoration(labelText: "Email"),
+                      decoration: const InputDecoration(labelText: "אימייל"),
                       keyboardType: TextInputType.emailAddress,
                     ),
                     // Email validation message
@@ -225,7 +226,7 @@ class LoginPageState extends State<LoginPage> {
                       const Padding(
                         padding: EdgeInsets.only(top: 4.0),
                         child: Text(
-                          "Email is invalid",
+                          "כתובת האימייל אינה תקינה",
                           style: TextStyle(color: Colors.red, fontSize: 12),
                         ),
                       ),
@@ -233,7 +234,7 @@ class LoginPageState extends State<LoginPage> {
                     // Password field
                     TextField(
                       controller: passwordController,
-                      decoration: const InputDecoration(labelText: "Password"),
+                      decoration: const InputDecoration(labelText: "סיסמה"),
                       obscureText: true,
                     ),
                     const SizedBox(height: 12),
@@ -250,7 +251,7 @@ class LoginPageState extends State<LoginPage> {
                           activeColor: const Color(0xFF7DD3C0),
                         ),
                         const Text(
-                          "Remember me",
+                          "הישאר מחובר",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 14,
@@ -271,7 +272,7 @@ class LoginPageState extends State<LoginPage> {
                         height: 20,
                         child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
                       )
-                          : const Text("Login"),
+                          : const Text("התחברות"),
                     ),
                     const SizedBox(height: 8),
                     GestureDetector(
@@ -282,7 +283,7 @@ class LoginPageState extends State<LoginPage> {
                         );
                       },
                       child: const Text(
-                        "Forgot password?",
+                        "שנה סיסמה",
                         style: TextStyle(
                           color: Colors.blue,
                           decoration: TextDecoration.underline,
@@ -299,7 +300,7 @@ class LoginPageState extends State<LoginPage> {
                         );
                       },
                       child: const Text(
-                        "Register",
+                        "הרשמה",
                         style: TextStyle(
                           color: Colors.blue,
                           decoration: TextDecoration.underline,

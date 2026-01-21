@@ -8,6 +8,7 @@ import 'package:open_file/open_file.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../services/LocalizationProvider.dart';
 import 'HomePage.dart';
 
 class MyDocumentsPage extends StatefulWidget {
@@ -41,9 +42,9 @@ class _DocumentsPageState extends State<MyDocumentsPage>
     return Scaffold(
       backgroundColor: const Color(0xFFF2EBE2),
       appBar: AppBar(
-        title: const Text(
-          "My Documents",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        title: Text(
+          context.tr('my_documents'),
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -68,9 +69,9 @@ class _DocumentsPageState extends State<MyDocumentsPage>
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white70,
           labelStyle: const TextStyle(fontWeight: FontWeight.bold),
-          tabs: const [
-            Tab(text: "Documents"),
-            Tab(text: "Images"),
+          tabs: [
+            Tab(text: context.tr('documents')),
+            Tab(text: context.tr('images')),
           ],
         ),
       ),
@@ -97,21 +98,21 @@ class _DocumentsPageState extends State<MyDocumentsPage>
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(Icons.insert_drive_file, size: 90, color: Color(0xFFBBBBBB)),
-              SizedBox(height: 18),
+            children: [
+              const Icon(Icons.insert_drive_file, size: 90, color: Color(0xFFBBBBBB)),
+              const SizedBox(height: 18),
               Text(
-                "No documents yet",
-                style: TextStyle(
+                context.tr('no_documents_yet'),
+                style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF333333),
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
-                "Tap + to upload your first document",
-                style: TextStyle(
+                context.tr('tap_to_upload_document'),
+                style: const TextStyle(
                   color: Color(0xFF999999),
                   fontSize: 16,
                 ),
@@ -190,21 +191,21 @@ class _DocumentsPageState extends State<MyDocumentsPage>
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(Icons.image, size: 90, color: Color(0xFFBBBBBB)),
-              SizedBox(height: 18),
+            children: [
+              const Icon(Icons.image, size: 90, color: Color(0xFFBBBBBB)),
+              const SizedBox(height: 18),
               Text(
-                "No images yet",
-                style: TextStyle(
+                context.tr('no_images_yet'),
+                style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF333333),
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
-                "Tap + to add your first image",
-                style: TextStyle(
+                context.tr('tap_to_add_image'),
+                style: const TextStyle(
                   color: Color(0xFF999999),
                   fontSize: 16,
                 ),
@@ -280,9 +281,9 @@ class _DocumentsPageState extends State<MyDocumentsPage>
                     color: Color(0xFF7DD3C0),
                   ),
                 ),
-                title: const Text(
-                  "Upload document",
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                title: Text(
+                  context.tr('upload_document'),
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
                 onTap: () {
                   Navigator.pop(ctx);
@@ -301,9 +302,9 @@ class _DocumentsPageState extends State<MyDocumentsPage>
                     color: Color(0xFF7DD3C0),
                   ),
                 ),
-                title: const Text(
-                  "Take photo",
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                title: Text(
+                  context.tr('take_photo'),
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
                 onTap: () {
                   Navigator.pop(ctx);
@@ -395,9 +396,9 @@ class _DocumentsPageState extends State<MyDocumentsPage>
       builder: (ctx) {
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: const Text(
-            "Preview & Name",
-            style: TextStyle(fontWeight: FontWeight.bold),
+          title: Text(
+            context.tr('preview_and_name'),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           content: SingleChildScrollView(
             child: Column(
@@ -417,12 +418,12 @@ class _DocumentsPageState extends State<MyDocumentsPage>
                               : Image.memory(previewBytes!, fit: BoxFit.contain),
                         )
                       : Column(
-                          children: const [
-                            Icon(Icons.insert_drive_file, size: 80, color: Color(0xFF7DD3C0)),
-                            SizedBox(height: 8),
+                          children: [
+                            const Icon(Icons.insert_drive_file, size: 80, color: Color(0xFF7DD3C0)),
+                            const SizedBox(height: 8),
                             Text(
-                              "Preview not available",
-                              style: TextStyle(color: Color(0xFF999999)),
+                              context.tr('preview_not_available'),
+                              style: const TextStyle(color: Color(0xFF999999)),
                             ),
                           ],
                         ),
@@ -431,7 +432,7 @@ class _DocumentsPageState extends State<MyDocumentsPage>
                 TextField(
                   controller: nameCtrl,
                   decoration: InputDecoration(
-                    labelText: "Document name",
+                    labelText: context.tr('document_name'),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -447,9 +448,9 @@ class _DocumentsPageState extends State<MyDocumentsPage>
           actions: [
             TextButton(
               onPressed: () => Navigator.of(ctx).pop(null),
-              child: const Text(
-                "Cancel",
-                style: TextStyle(color: Color(0xFF999999)),
+              child: Text(
+                context.tr('cancel'),
+                style: const TextStyle(color: Color(0xFF999999)),
               ),
             ),
             ElevatedButton(
@@ -460,7 +461,7 @@ class _DocumentsPageState extends State<MyDocumentsPage>
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text("Upload"),
+              child: Text(context.tr('upload')),
             ),
           ],
         );
@@ -492,9 +493,9 @@ class _DocumentsPageState extends State<MyDocumentsPage>
                     color: Color(0xFF7DD3C0),
                   ),
                 ),
-                title: const Text(
-                  "View",
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                title: Text(
+                  context.tr('view'),
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
                 onTap: () {
                   Navigator.pop(ctx);
@@ -513,9 +514,9 @@ class _DocumentsPageState extends State<MyDocumentsPage>
                     color: Color(0xFF7DD3C0),
                   ),
                 ),
-                title: const Text(
-                  "Share",
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                title: Text(
+                  context.tr('share'),
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
                 onTap: () {
                   Navigator.pop(ctx);
@@ -534,9 +535,9 @@ class _DocumentsPageState extends State<MyDocumentsPage>
                     color: Color(0xFF7DD3C0),
                   ),
                 ),
-                title: const Text(
-                  "Download",
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                title: Text(
+                  context.tr('download'),
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
                 onTap: () {
                   Navigator.pop(ctx);
@@ -555,9 +556,9 @@ class _DocumentsPageState extends State<MyDocumentsPage>
                     color: Color(0xFFFF6B6B),
                   ),
                 ),
-                title: const Text(
-                  "Delete",
-                  style: TextStyle(
+                title: Text(
+                  context.tr('delete'),
+                  style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Color(0xFFFF6B6B),
                   ),
@@ -604,7 +605,7 @@ class _DocumentsPageState extends State<MyDocumentsPage>
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Could not open file: $e"),
+          content: Text("${context.tr('could_not_open_file')}: $e"),
           backgroundColor: const Color(0xFFFF6B6B),
         ),
       );
@@ -625,7 +626,7 @@ class _DocumentsPageState extends State<MyDocumentsPage>
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Could not share file: $e"),
+          content: Text("${context.tr('could_not_share_file')}: $e"),
           backgroundColor: const Color(0xFFFF6B6B),
         ),
       );
@@ -638,9 +639,9 @@ class _DocumentsPageState extends State<MyDocumentsPage>
       final directory = await getExternalStorageDirectory();
       if (directory == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Could not access storage"),
-            backgroundColor: Color(0xFFFF6B6B),
+          SnackBar(
+            content: Text(context.tr('could_not_access_storage')),
+            backgroundColor: const Color(0xFFFF6B6B),
           ),
         );
         return;
@@ -664,14 +665,14 @@ class _DocumentsPageState extends State<MyDocumentsPage>
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Downloaded to ${file.path}"),
+          content: Text("${context.tr('downloaded_to')} ${file.path}"),
           backgroundColor: const Color(0xFF7DD3C0),
         ),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Could not download file: $e"),
+          content: Text("${context.tr('could_not_download_file')}: $e"),
           backgroundColor: const Color(0xFFFF6B6B),
         ),
       );
@@ -683,20 +684,20 @@ class _DocumentsPageState extends State<MyDocumentsPage>
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text(
-          "Delete Document?",
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          context.tr('delete_document_question'),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         content: Text(
-          "Are you sure you want to delete \"${doc.title}\"?",
+          "${context.tr('delete_document_confirm')} \"${doc.title}\"?",
           style: const TextStyle(fontSize: 16),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text(
-              "Cancel",
-              style: TextStyle(color: Color(0xFF999999)),
+            child: Text(
+              context.tr('cancel'),
+              style: const TextStyle(color: Color(0xFF999999)),
             ),
           ),
           ElevatedButton(
@@ -707,7 +708,7 @@ class _DocumentsPageState extends State<MyDocumentsPage>
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: const Text("Delete"),
+            child: Text(context.tr('delete')),
           ),
         ],
       ),
@@ -718,9 +719,9 @@ class _DocumentsPageState extends State<MyDocumentsPage>
         _documents.removeWhere((d) => d.id == doc.id);
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Document deleted"),
-          backgroundColor: Color(0xFF7DD3C0),
+        SnackBar(
+          content: Text(context.tr('document_deleted')),
+          backgroundColor: const Color(0xFF7DD3C0),
         ),
       );
     }
@@ -830,18 +831,18 @@ class _DocumentsPageState extends State<MyDocumentsPage>
                                 ),
                               ),
                               const SizedBox(height: 24),
-                              const Text(
-                                "This document cannot be previewed in the app.",
-                                style: TextStyle(
+                              Text(
+                                context.tr('cannot_preview_document'),
+                                style: const TextStyle(
                                   fontSize: 14,
                                   color: Color(0xFF666666),
                                 ),
                                 textAlign: TextAlign.center,
                               ),
                               const SizedBox(height: 8),
-                              const Text(
-                                "You can download and open it with your device's default app.",
-                                style: TextStyle(
+                              Text(
+                                context.tr('can_download_and_open'),
+                                style: const TextStyle(
                                   fontSize: 14,
                                   color: Color(0xFF999999),
                                 ),
@@ -854,7 +855,7 @@ class _DocumentsPageState extends State<MyDocumentsPage>
                                   _openInExternalApp(doc);
                                 },
                                 icon: const Icon(Icons.open_in_new),
-                                label: const Text("Open Document"),
+                                label: Text(context.tr('open_document')),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFF7DD3C0),
                                   padding: const EdgeInsets.symmetric(
@@ -891,9 +892,9 @@ class _DocumentsPageState extends State<MyDocumentsPage>
     final dateOnly = DateTime(date.year, date.month, date.day);
 
     if (dateOnly == today) {
-      return "Today at ${date.hour}:${date.minute.toString().padLeft(2, '0')}";
+      return "${context.tr('today')} ${context.tr('at')} ${date.hour}:${date.minute.toString().padLeft(2, '0')}";
     } else if (dateOnly == yesterday) {
-      return "Yesterday at ${date.hour}:${date.minute.toString().padLeft(2, '0')}";
+      return "${context.tr('yesterday')} ${context.tr('at')} ${date.hour}:${date.minute.toString().padLeft(2, '0')}";
     } else {
       return "${date.day}/${date.month}/${date.year}";
     }
