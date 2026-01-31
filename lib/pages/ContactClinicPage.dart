@@ -115,10 +115,7 @@ class ContactClinicPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const HomePage()),
-            );
+            Navigator.pop(context);
           },
         ),
         flexibleSpace: Container(
@@ -184,7 +181,7 @@ class ContactClinicPage extends StatelessWidget {
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushReplacement(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const AppointmentPage()),

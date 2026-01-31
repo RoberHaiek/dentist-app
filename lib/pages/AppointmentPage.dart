@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'HomePage.dart';
-import 'AppointmentPage.dart';
+import 'BookAppointmentPage.dart';
 import 'package:dentist_app/services/LocalizationProvider.dart';
 
 class AppointmentPage extends StatefulWidget {
@@ -84,10 +84,7 @@ class _AppointmentPageState extends State<AppointmentPage>
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const HomePage()),
-            );
+               Navigator.pop(context);
           },
         ),
         flexibleSpace: Container(
@@ -121,7 +118,7 @@ class _AppointmentPageState extends State<AppointmentPage>
         onPressed: () {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => AppointmentPage()),
+            MaterialPageRoute(builder: (context) => BookAppointmentPage()),
           );
         },
         backgroundColor: const Color(0xFF7DD3C0),
@@ -167,7 +164,7 @@ class _AppointmentPageState extends State<AppointmentPage>
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => AppointmentPage()),
+                        builder: (context) => BookAppointmentPage()),
                   );
                 },
                 icon: const Icon(Icons.add),
@@ -571,7 +568,7 @@ class _AppointmentPageState extends State<AppointmentPage>
   }
 
   void _rescheduleAppointment(AppointmentItem appointment) {
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => AppointmentPage()),
     );
@@ -584,7 +581,7 @@ class _AppointmentPageState extends State<AppointmentPage>
   }
 
   void _bookAgain(AppointmentItem appointment) {
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => AppointmentPage()),
     );

@@ -81,10 +81,7 @@ class _CouponPageState extends State<CouponPage> with SingleTickerProviderStateM
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.blue[900]),
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const HomePage()),
-            );
+            Navigator.pop(context);
           },
         ),
         bottom: TabBar(

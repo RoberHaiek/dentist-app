@@ -107,10 +107,7 @@ class BookAppointmentPageState extends State<BookAppointmentPage> {
           IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const HomePage()),
-              );
+              Navigator.pop(context);
             },
           ),
           Images.getImage("images/dentist_icon.png", 60.0, 60.0),

@@ -49,10 +49,7 @@ class _DocumentsPageState extends State<MyDocumentsPage>
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const HomePage()),
-            );
+            Navigator.pop(context);
           },
         ),
         flexibleSpace: Container(

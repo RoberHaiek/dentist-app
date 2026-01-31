@@ -197,7 +197,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
         // Navigate to login page
         if (mounted) {
-          Navigator.pushReplacement(
+          Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const LoginPage()),
           );
@@ -243,10 +243,7 @@ class _SettingsPageState extends State<SettingsPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const HomePage()),
-            );
+            Navigator.pop(context);
           },
         ),
         flexibleSpace: Container(
@@ -359,7 +356,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 context.tr('version'),
                 Icons.info_outline,
                 () {
-                  Navigator.pushReplacement(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const AboutPage()),
                   );
@@ -826,11 +823,11 @@ class _SettingsPageState extends State<SettingsPage> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _buildLanguageOption('en', context.tr('english'), '🇬🇧'),
+            _buildLanguageOption('en', "English"),
             const SizedBox(height: 12),
-            _buildLanguageOption('ar', context.tr('arabic'), '🇸🇦'),
+            _buildLanguageOption('ar', "العربية"),
             const SizedBox(height: 12),
-            _buildLanguageOption('he', context.tr('hebrew'), '🇮🇱'),
+            _buildLanguageOption('he', "עברית"),
           ],
         ),
         actions: [
@@ -846,19 +843,17 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget _buildLanguageOption(String code, String name, String flag) {
+  Widget _buildLanguageOption(String code, String name) {
     final isSelected = LocalizationService().currentLanguage == code;
     return InkWell(
       onTap: () async {
         Navigator.pop(context);
         await context.changeLanguage(code);
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(context.tr('language_changed')),
-              backgroundColor: const Color(0xFF7DD3C0),
-            ),
-          );
+            Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SettingsPage()),
+                    );
         }
       },
       borderRadius: BorderRadius.circular(12),
@@ -874,8 +869,6 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         child: Row(
           children: [
-            Text(flag, style: const TextStyle(fontSize: 32)),
-            const SizedBox(width: 16),
             Expanded(
               child: Text(
                 name,

@@ -115,7 +115,7 @@ class HomePageState extends State<HomePage> {
                 IconButton(
                   icon: const Icon(Icons.settings, size: 28, color: Colors.white),
                   onPressed: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const SettingsPage()),
@@ -411,7 +411,7 @@ class HomePageState extends State<HomePage> {
         ),
         child: ElevatedButton(
           onPressed: () {
-            Navigator.pushReplacement(
+            Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => const BookAppointmentPage()),
@@ -463,7 +463,7 @@ class HomePageState extends State<HomePage> {
             title: context.tr('documents'),
             subtitle: context.tr('view_files'),
             onTap: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => const MyDocumentsPage()),
@@ -475,7 +475,7 @@ class HomePageState extends State<HomePage> {
             title: context.tr('coupons'),
             subtitle: context.tr('active_deals'),
             onTap: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const CouponPage()),
               );
@@ -486,7 +486,7 @@ class HomePageState extends State<HomePage> {
             title: context.tr('appointments'),
             subtitle: context.tr('view_schedule'),
             onTap: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => const AppointmentPage()),
@@ -498,7 +498,7 @@ class HomePageState extends State<HomePage> {
             title: context.tr('contact_clinic'),
             subtitle: context.tr('get_in_touch'),
             onTap: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => const ContactClinicPage()),
@@ -510,7 +510,7 @@ class HomePageState extends State<HomePage> {
             title: context.tr('instructions'),
             subtitle: "לפני או אחרי הטיפול",
             onTap: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => const AppointmentPage()),
@@ -522,7 +522,7 @@ class HomePageState extends State<HomePage> {
             title: "השיניים שלי",
             subtitle: "הצגת מצב השיניים",
             onTap: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => const ContactClinicPage()),
@@ -598,7 +598,7 @@ class HomePageState extends State<HomePage> {
       right: 20,
       child: GestureDetector(
         onTap: () {
-          Navigator.pushReplacement(
+          Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => const ContactClinicPage()),

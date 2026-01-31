@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'HomePage.dart';
+import 'LoginPage.dart';
 import '../services/LocalizationProvider.dart';
 
 class RegistrationPage extends StatefulWidget {
@@ -96,15 +96,19 @@ class RegistrationPageState extends State<RegistrationPage> {
         // continue — don't block navigation
       }
 
+      // ✅ ADDED: Sign out the user so they have to login manually
+      await FirebaseAuth.instance.signOut();
+      debugPrint('registerUser: signed out user after registration');
+
       // final UI update and navigation must run on the main/UI frame
       if (!mounted) return;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Registration successful! Check your email.')),
+          const SnackBar(content: Text('Registration successful! Please login.')),
         );
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const HomePage()),
+          MaterialPageRoute(builder: (_) => const LoginPage()),
         );
       });
     } on FirebaseAuthException catch (e, st) {
@@ -136,7 +140,15 @@ class RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(context.tr('register'))),
+      appBar: AppBar(
+        title: Text(context.tr('register')),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);  // ✅ Just pop back to LoginPage
+          },
+        ),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -187,8 +199,7 @@ class RegistrationPageState extends State<RegistrationPage> {
                       : Text(context.tr('register')),
                 ),
               ],
-            )
-            ,
+            ),
           ),
         ),
       ),
