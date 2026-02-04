@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.rober.asnani">
+    package="com.dentech">
     <application
         android:label="dentist_app"
         android:name="${applicationName}"
