@@ -10,17 +10,16 @@ if (keystorePropertiesFile.exists()) {
 
 plugins {
     id("com.android.application")
-    // START: FlutterFire Configuration
     id("com.google.gms.google-services")
-    // END: FlutterFire Configuration
     id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
 
 android {
     namespace = "com.dentech"
-    compileSdk = flutter.compileSdkVersion
+
+    // IMPORTANT: Use 35 unless you KNOW API 36 is installed
+    compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -35,7 +34,7 @@ android {
     defaultConfig {
         applicationId = "com.dentech"
         minSdk = flutter.minSdkVersion
-        targetSdk = 34
+        targetSdk = 36
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
@@ -54,6 +53,12 @@ android {
             signingConfig = signingConfigs.getByName("release")
         }
     }
+
+    // Avoid Windows lint lock issues
+    lint {
+        abortOnError = false
+        checkReleaseBuilds = false
+    }
 }
 
 flutter {
@@ -61,13 +66,7 @@ flutter {
 }
 
 dependencies {
-    // Import the Firebase BoM
+    // Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:34.2.0"))
-
-    // TODO: Add the dependencies for Firebase products you want to use
-    // When using the BoM, don't specify versions in Firebase dependencies
     implementation("com.google.firebase:firebase-analytics")
-
-    // Add the dependencies for any other desired Firebase products
-    // https://firebase.google.com/docs/android/setup#available-libraries
 }
