@@ -1,0 +1,1052 @@
+{
+  "app_name": {
+    "en": "Asnani Dental",
+    "ar": "أسناني لطب الأسنان",
+    "he": "אסנאני לרפואת שיניים"
+  },
+  "welcome": {
+    "en": "Welcome",
+    "ar": "مرحبا",
+    "he": "ברוך הבא"
+  },
+  "your_smile_matters": {
+    "en": "Your smile matters to us",
+    "ar": "ابتسامتك مهمة بالنسبة لنا",
+    "he": "החיוך שלך חשוב לנו"
+  },
+  "login": {
+    "en": "Login",
+    "ar": "تسجيل الدخول",
+    "he": "התחברות"
+  },
+  "logout": {
+    "en": "Logout",
+    "ar": "تسجيل الخروج",
+    "he": "התנתקות"
+  },
+  "logout_subtitle": {
+    "en": "Sign out of your account",
+    "ar": "تسجيل الخروج من حسابك",
+    "he": "התנתק מהחשבון שלך"
+  },
+  "logout_confirm": {
+    "en": "Are you sure you want to logout?",
+    "ar": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+    "he": "האם אתה בטוח שברצונך להתנתק?"
+  },
+  "about_app": {
+    "en": "About this app",
+    "ar": "حول هذا التطبيق",
+    "he": "אודות האפליקציה"
+  },
+  "about_content_1": {
+    "en": "Asnani helps patients and dentists manage appointments, ",
+    "ar": "يساعد التطبيق المرضى وأطباء الأسنان على إدارة المواعيد ",
+    "he": "האפליקציה מסייעת למטופלים ולרופאי שיניים לנהל תורים, "
+  },
+  "about_content_2": {
+    "en": "reminders, and services with ease. A modern tool to make ",
+    "ar": "والتذكيرات والخدمات بسهولة. أداة حديثة تجعل العناية ",
+    "he": "תזכורות ושירותים בקלות. כלי מודרני שהופך "
+  },
+  "about_content_3": {
+    "en": "dental care simpler and more accessible for everyone.",
+    "ar": "بصحة الأسنان أبسط وأكثر سهولة للجميع.",
+    "he": "את טיפולי השיניים לפשוטים ונגישים יותר לכולם."
+  },
+  "programmed_by": {
+    "en": "Developed by",
+    "ar": "المبرمج",
+    "he": "פותח על־ידי"
+  },
+  "rober_haiek": {
+    "en": "Rober Haiek",
+    "ar": "روبير حايك",
+    "he": "רוביר חאיק"
+  },
+  "contact_developer": {
+    "en": "Contact Developer",
+    "ar": "للتواصل",
+    "he": "צור קשר"
+  },
+  "email": {
+    "en": "Email",
+    "ar": "البريد الإلكتروني",
+    "he": "דוא״ל"
+  },
+  "password": {
+    "en": "Password",
+    "ar": "كلمة المرور",
+    "he": "סיסמה"
+  },
+  "forgot_password": {
+    "en": "Forgot password?",
+    "ar": "هل نسيت كلمة المرور؟",
+    "he": "שכחת סיסמה?"
+  },
+  "check_email": {
+    "en": "Password reset email sent! Check your inbox and spam folder.",
+    "ar": "تم إرسال رسالة إعادة تعيين كلمة المرور! تحقق من صندوق الوارد ومجلد الرسائل غير المرغوب فيها.",
+    "he": "נשלח אימייל לאיפוס הסיסמה! בדוק את תיבת הדואר הנכנס ואת תיקיית הספאם."
+  },
+  "email_invalid": {
+    "en": "Email is invalid",
+    "ar": "البريد الإلكتروني غير صالح",
+    "he": "כתובת האימייל אינה תקינה"
+  },
+  "reset_link": {
+    "en": "Send Reset Link",
+    "ar": "إرسال رابط إعادة التعيين",
+    "he": "שליחת קישור לאיפוס"
+  },
+  "register": {
+    "en": "Register",
+    "ar": "تسجيل",
+    "he": "הרשמה"
+  },
+  "settings": {
+    "en": "Settings",
+    "ar": "الإعدادات",
+    "he": "הגדרות"
+  },
+  "book_appointment": {
+    "en": "Book Appointment",
+    "ar": "حجز موعد",
+    "he": "קבע תור"
+  },
+  "my_appointments": {
+    "en": "My Appointments",
+    "ar": "مواعيدي",
+    "he": "התורים שלי"
+  },
+  "upcoming": {
+    "en": "Upcoming",
+    "ar": "القادمة",
+    "he": "קרובים"
+  },
+  "previous": {
+    "en": "Previous",
+    "ar": "السابقة",
+    "he": "קודמים"
+  },
+  "no_upcoming_appointments": {
+    "en": "No upcoming appointments",
+    "ar": "لا توجد مواعيد قادمة",
+    "he": "אין תורים קרובים"
+  },
+  "tap_to_book": {
+    "en": "Tap + to book your next appointment",
+    "ar": "انقر + لحجز موعدك القادم",
+    "he": "לחץ + כדי לקבוע את התור הבא שלך"
+  },
+  "no_previous_appointments": {
+    "en": "No previous appointments",
+    "ar": "لا توجد مواعيد سابقة",
+    "he": "אין תורים קודמים"
+  },
+  "appointment_history": {
+    "en": "Your appointment history will appear here",
+    "ar": "سيظهر سجل مواعيدك هنا",
+    "he": "היסטוריית התורים שלך תופיע כאן"
+  },
+  "cancel": {
+    "en": "Cancel",
+    "ar": "إلغاء",
+    "he": "ביטול"
+  },
+  "reschedule": {
+    "en": "Reschedule",
+    "ar": "إعادة جدولة",
+    "he": "שינוי מועד"
+  },
+  "book_again": {
+    "en": "Book Again",
+    "ar": "احجز مرة أخرى",
+    "he": "קבע שוב"
+  },
+  "completed": {
+    "en": "Completed",
+    "ar": "مكتمل",
+    "he": "הושלם"
+  },
+  "patient": {
+    "en": "Patient",
+    "ar": "المريض",
+    "he": "מטופל"
+  },
+  "doctor": {
+    "en": "Doctor",
+    "ar": "الطبيب",
+    "he": "רופא"
+  },
+  "cancel_appointment_title": {
+    "en": "Cancel Appointment?",
+    "ar": "إلغاء الموعد؟",
+    "he": "לבטל תור?"
+  },
+  "cancel_appointment_confirm": {
+    "en": "Are you sure you want to cancel the appointment on",
+    "ar": "هل أنت متأكد أنك تريد إلغاء الموعد في",
+    "he": "האם אתה בטוח שברצונך לבטל את התור ב"
+  },
+  "yes_cancel": {
+    "en": "Yes, Cancel",
+    "ar": "نعم، إلغاء",
+    "he": "כן, בטל"
+  },
+  "no": {
+    "en": "No",
+    "ar": "لا",
+    "he": "לא"
+  },
+  "appointment_cancelled": {
+    "en": "Appointment cancelled",
+    "ar": "تم إلغاء الموعد",
+    "he": "התור בוטל"
+  },
+  "select_new_date": {
+    "en": "Please select a new date and time",
+    "ar": "يرجى تحديد تاريخ ووقت جديد",
+    "he": "אנא בחר תאריך ושעה חדשים"
+  },
+  "select_patient": {
+    "en": "1. Select Patient",
+    "ar": "١. اختر المريض",
+    "he": "1. בחר מטופל"
+  },
+  "primary_patient": {
+    "en": "Primary patient",
+    "ar": "المريض الأساسي",
+    "he": "מטופל ראשי"
+  },
+  "book_for_relative": {
+    "en": "Book for a relative",
+    "ar": "احجز لقريب",
+    "he": "קבע תור לקרוב משפחה"
+  },
+  "reason_for_visit": {
+    "en": "2. Reason for Visit",
+    "ar": "٢. سبب الزيارة",
+    "he": "2. סיבת הביקור"
+  },
+  "teeth_cleaning": {
+    "en": "Teeth Cleaning",
+    "ar": "تنظيف الأسنان",
+    "he": "ניקוי שיניים"
+  },
+  "painful_tooth": {
+    "en": "Painful Tooth",
+    "ar": "سن مؤلم",
+    "he": "שן כואבת"
+  },
+  "root_canal_treatment": {
+    "en": "Root Canal Treatment",
+    "ar": "علاج قناة الجذر",
+    "he": "טיפול שורש"
+  },
+  "general_checkup": {
+    "en": "General Check-up",
+    "ar": "فحص عام",
+    "he": "בדיקה כללית"
+  },
+  "other": {
+    "en": "Other",
+    "ar": "آخر",
+    "he": "אחר"
+  },
+  "select_date_time": {
+    "en": "3. Select Date & Time",
+    "ar": "٣. اختر التاريخ والوقت",
+    "he": "3. בחר תאריך ושעה"
+  },
+  "choose_day": {
+    "en": "Choose a day:",
+    "ar": "اختر يوماً:",
+    "he": "בחר יום:"
+  },
+  "choose_time": {
+    "en": "Choose a time:",
+    "ar": "اختر وقتاً:",
+    "he": "בחר שעה:"
+  },
+  "confirm_appointment": {
+    "en": "Confirm Appointment",
+    "ar": "تأكيد الموعد",
+    "he": "אשר תור"
+  },
+  "appointment_confirmed": {
+    "en": "Appointment Confirmed!",
+    "ar": "تم تأكيد الموعد!",
+    "he": "התור אושר!"
+  },
+  "appointment_for": {
+    "en": "Appointment for",
+    "ar": "موعد لـ",
+    "he": "תור עבור"
+  },
+  "done": {
+    "en": "Done",
+    "ar": "تم",
+    "he": "סיום"
+  },
+  "book_another": {
+    "en": "Book Another",
+    "ar": "احجز آخر",
+    "he": "קבע תור נוסף"
+  },
+  "personal_information": {
+    "en": "Personal Information",
+    "ar": "المعلومات الشخصية",
+    "he": "מידע אישי"
+  },
+  "first_name": {
+    "en": "First Name",
+    "ar": "الاسم الأول",
+    "he": "שם פרטי"
+  },
+  "last_name": {
+    "en": "Last Name",
+    "ar": "اسم العائلة",
+    "he": "שם משפחה"
+  },
+  "date_of_birth": {
+    "en": "Date of Birth",
+    "ar": "تاريخ الميلاد",
+    "he": "תאריך לידה"
+  },
+  "address": {
+    "en": "Address",
+    "ar": "العنوان",
+    "he": "כתובת"
+  },
+  "phone": {
+    "en": "Phone",
+    "ar": "الهاتف",
+    "he": "טלפון"
+  },
+  "not_set": {
+    "en": "Not set",
+    "ar": "غير محدد",
+    "he": "לא הוגדר"
+  },
+  "security": {
+    "en": "Security",
+    "ar": "الأمان",
+    "he": "אבטחה"
+  },
+  "family": {
+    "en": "Family",
+    "ar": "العائلة",
+    "he": "משפחה"
+  },
+  "manage_relatives": {
+    "en": "Manage Relatives",
+    "ar": "إدارة الأقارب",
+    "he": "ניהול קרובי משפחה"
+  },
+  "no_relatives": {
+    "en": "No relatives added",
+    "ar": "لم يتم إضافة أقارب",
+    "he": "לא נוספו קרובי משפחה"
+  },
+  "preferences": {
+    "en": "Preferences",
+    "ar": "التفضيلات",
+    "he": "העדפות"
+  },
+  "notifications": {
+    "en": "Notifications",
+    "ar": "الإشعارات",
+    "he": "התראות"
+  },
+  "manage_alerts": {
+    "en": "Manage alerts",
+    "ar": "إدارة التنبيهات",
+    "he": "ניהול התראות"
+  },
+  "language": {
+    "en": "Language",
+    "ar": "اللغة",
+    "he": "שפה"
+  },
+  "english": {
+    "en": "English",
+    "ar": "الإنجليزية",
+    "he": "אנגלית"
+  },
+  "arabic": {
+    "en": "Arabic",
+    "ar": "العربية",
+    "he": "ערבית"
+  },
+  "hebrew": {
+    "en": "Hebrew",
+    "ar": "العبرية",
+    "he": "עברית"
+  },
+  "app_information": {
+    "en": "App Information",
+    "ar": "معلومات التطبيق",
+    "he": "מידע על האפליקציה"
+  },
+  "about": {
+    "en": "About Asnani",
+    "ar": "حول أسناني",
+    "he": "אודות אסנאני"
+  },
+  "version": {
+    "en": "Version 1.0.0",
+    "ar": "الإصدار 1.0.0",
+    "he": "גרסה 1.0.0"
+  },
+  "terms_conditions": {
+    "en": "Terms & Conditions",
+    "ar": "الشروط والأحكام",
+    "he": "תנאים והתניות"
+  },
+  "legal_information": {
+    "en": "Legal information",
+    "ar": "المعلومات القانونية",
+    "he": "מידע משפטי"
+  },
+  "privacy_policy": {
+    "en": "Privacy Policy",
+    "ar": "سياسة الخصوصية",
+    "he": "מדיניות פרטיות"
+  },
+  "data_protection": {
+    "en": "Data protection",
+    "ar": "حماية البيانات",
+    "he": "הגנת מידע"
+  },
+  "account": {
+    "en": "Account",
+    "ar": "الحساب",
+    "he": "חשבון"
+  },
+  "save": {
+    "en": "Save",
+    "ar": "حفظ",
+    "he": "שמור"
+  },
+  "edit": {
+    "en": "Edit",
+    "ar": "تعديل",
+    "he": "ערוך"
+  },
+  "delete": {
+    "en": "Delete",
+    "ar": "حذف",
+    "he": "מחק"
+  },
+  "ok": {
+    "en": "OK",
+    "ar": "حسناً",
+    "he": "אישור"
+  },
+  "close": {
+    "en": "Close",
+    "ar": "إغلاق",
+    "he": "סגור"
+  },
+  "updated_successfully": {
+    "en": "Updated successfully",
+    "ar": "تم التحديث بنجاح",
+    "he": "עודכן בהצלחה"
+  },
+  "error": {
+    "en": "Error",
+    "ar": "خطأ",
+    "he": "שגיאה"
+  },
+  "loading": {
+    "en": "Loading...",
+    "ar": "جار التحميل...",
+    "he": "טוען..."
+  },
+  "logging_out": {
+    "en": "Logging out...",
+    "ar": "جار تسجيل الخروج...",
+    "he": "מתנתק..."
+  },
+  "monday": {
+    "en": "Monday",
+    "ar": "الإثنين",
+    "he": "יום שני"
+  },
+  "tuesday": {
+    "en": "Tuesday",
+    "ar": "الثلاثاء",
+    "he": "יום שלישי"
+  },
+  "wednesday": {
+    "en": "Wednesday",
+    "ar": "الأربعاء",
+    "he": "יום רביעי"
+  },
+  "thursday": {
+    "en": "Thursday",
+    "ar": "الخميس",
+    "he": "יום חמישי"
+  },
+  "friday": {
+    "en": "Friday",
+    "ar": "الجمعة",
+    "he": "יום שישי"
+  },
+  "saturday": {
+    "en": "Saturday",
+    "ar": "السبت",
+    "he": "שבת"
+  },
+  "sunday": {
+    "en": "Sunday",
+    "ar": "الأحد",
+    "he": "יום ראשון"
+  },
+  "january": {
+    "en": "Jan",
+    "ar": "كانون الثاني",
+    "he": "ינואר"
+  },
+  "february": {
+    "en": "Feb",
+    "ar": "شباط",
+    "he": "פברואר"
+  },
+  "march": {
+    "en": "Mar",
+    "ar": "آذار",
+    "he": "מרץ"
+  },
+  "april": {
+    "en": "Apr",
+    "ar": "نيسان",
+    "he": "אפריל"
+  },
+  "may": {
+    "en": "May",
+    "ar": "أيار",
+    "he": "מאי"
+  },
+  "june": {
+    "en": "Jun",
+    "ar": "حزيران",
+    "he": "יוני"
+  },
+  "july": {
+    "en": "Jul",
+    "ar": "تموز",
+    "he": "יולי"
+  },
+  "august": {
+    "en": "Aug",
+    "ar": "آب",
+    "he": "אוגוסט"
+  },
+  "september": {
+    "en": "Sep",
+    "ar": "أيلول",
+    "he": "ספטמבר"
+  },
+  "october": {
+    "en": "Oct",
+    "ar": "تشرين الأول",
+    "he": "אוקטובר"
+  },
+  "november": {
+    "en": "Nov",
+    "ar": "تشرين الثاني",
+    "he": "נובמבר"
+  },
+  "december": {
+    "en": "Dec",
+    "ar": "كانون الأول",
+    "he": "דצמבר"
+  },
+  "documents": {
+    "en": "Documents",
+    "ar": "المستندات",
+    "he": "מסמכים"
+  },
+  "view_files": {
+    "en": "View files",
+    "ar": "عرض الملفات",
+    "he": "צפה בקבצים"
+  },
+  "coupons": {
+    "en": "Coupons",
+    "ar": "كوبونات",
+    "he": "קופונים"
+  },
+  "active_deals": {
+    "en": "Active deals",
+    "ar": "عروض نشطة",
+    "he": "הטבות פעילות"
+  },
+  "appointments": {
+    "en": "Appointments",
+    "ar": "المواعيد",
+    "he": "תורים"
+  },
+  "view_schedule": {
+    "en": "View schedule",
+    "ar": "عرض الجدول",
+    "he": "צפה בלוח זמנים"
+  },
+  "contact_clinic": {
+    "en": "Contact Clinic",
+    "ar": "اتصل بالعيادة",
+    "he": "צור קשר עם המרפאה"
+  },
+  "get_in_touch": {
+    "en": "Get in touch",
+    "ar": "تواصل معنا",
+    "he": "צור קשר"
+  },
+  "emergency": {
+    "en": "Emergency",
+    "ar": "طوارئ",
+    "he": "חירום"
+  },
+  "time_for_checkup": {
+    "en": "Time for a Checkup!",
+    "ar": "حان وقت الفحص!",
+    "he": "הגיע זמן לבדיקה!"
+  },
+  "last_checkup_6_months": {
+    "en": "Your last checkup was 6 months ago.\\nIt's time to visit us again!",
+    "ar": "كان آخر فحص لك قبل 6 أشهر.\\nحان الوقت لزيارتنا مرة أخرى!",
+    "he": "הבדיקה האחרונה שלך הייתה לפני 6 חודשים.\\nהגיע הזמן לבקר אותנו שוב!"
+  },
+  "upcoming_appointment": {
+    "en": "Upcoming Appointment",
+    "ar": "موعد قادم",
+    "he": "תור קרוב"
+  },
+  "next_appointment_on": {
+    "en": "Your next appointment is on Monday",
+    "ar": "موعدك القادم يوم الاثنين",
+    "he": "התור הבא שלך הוא ביום שני"
+  },
+  "view_instructions": {
+    "en": "View Instructions",
+    "ar": "عرض التعليمات",
+    "he": "צפה בהוראות"
+  },
+  "hide_instructions": {
+    "en": "Hide Instructions",
+    "ar": "إخفاء التعليمات",
+    "he": "הסתר הוראות"
+  },
+  "whatsapp_error": {
+    "en": "Could not open WhatsApp",
+    "ar": "تعذّر فتح واتساب",
+    "he": "לא ניתן לפתוח את וואטסאפ"
+  },
+  "instructions": {
+    "en": "Instructions",
+    "ar": "التعليمات",
+    "he": "הוראות"
+  },
+  "treatment_instructions": {
+    "en": "Before or after treatment",
+    "ar": "قبل أو بعد العلاج",
+    "he": "לפני או אחרי הטיפול"
+  },
+  "my_teeth": {
+    "en": "My teeth",
+    "ar": "أسناني",
+    "he": "השיניים שלי"
+  },
+  "teeth_situation": {
+    "en": "See the teeth situation",
+    "ar": "انظر حالة الأسنان",
+    "he": "צפה במצב השיניים"
+  },
+  "post_surgery_care": {
+    "en": "Post-Surgery Care",
+    "ar": "رعاية ما بعد الجراحة",
+    "he": "טיפול לאחר הניתוח"
+  },
+  "surgery_recovery": {
+    "en": "Hope you're feeling well after the surgery!",
+    "ar": "نأمل أن تشعر بتحسن بعد الجراحة!",
+    "he": "מקווים שאתה מרגיש טוב אחרי הניתוח!"
+  },
+  "call": {
+    "en": "Call",
+    "ar": "اتصل",
+    "he": "התקשר"
+  },
+  "copy_number": {
+    "en": "Copy number",
+    "ar": "نسخ الرقم",
+    "he": "העתק מספר"
+  },
+  "phone_copied": {
+    "en": "Phone number copied",
+    "ar": "تم نسخ رقم الهاتف",
+    "he": "המספר הועתק"
+  },
+  "send_email": {
+    "en": "Send email",
+    "ar": "إرسال بريد إلكتروني",
+    "he": "שלח אימייל"
+  },
+  "copy_email": {
+    "en": "Copy email",
+    "ar": "نسخ البريد الإلكتروني",
+    "he": "העתק אימייל"
+  },
+  "email_copied": {
+    "en": "Email copied",
+    "ar": "تم نسخ البريد الإلكتروني",
+    "he": "האימייל הועתק"
+  },
+  "dental_specialist": {
+    "en": "Dental Specialist",
+    "ar": "أخصائي الأسنان",
+    "he": "מומחה שיניים"
+  },
+  "opening_hours": {
+    "en": "Opening Hours",
+    "ar": "ساعات العمل",
+    "he": "שעות פתיחה"
+  },
+  "copy_address": {
+    "en": "Copy address",
+    "ar": "نسخ العنوان",
+    "he": "העתק כתובת"
+  },
+  "address_copied": {
+    "en": "Address copied to clipboard",
+    "ar": "تم نسخ العنوان",
+    "he": "הכתובת הועתקה"
+  },
+  "my_coupons": {
+    "en": "My Coupons",
+    "ar": "كوبوناتي",
+    "he": "הקופונים שלי"
+  },
+  "available": {
+    "en": "Available",
+    "ar": "متاح",
+    "he": "זמין"
+  },
+  "used": {
+    "en": "Used",
+    "ar": "مستخدم",
+    "he": "נוצל"
+  },
+  "no_used_coupons": {
+    "en": "No used coupons yet",
+    "ar": "لا توجد كوبونات مستخدمة حتى الآن",
+    "he": "אין קופונים שנוצלו עדיין"
+  },
+  "no_available_coupons": {
+    "en": "No available coupons",
+    "ar": "لا توجد كوبونات متاحة",
+    "he": "אין קופונים זמינים"
+  },
+  "valid_until": {
+    "en": "Valid until",
+    "ar": "صالح حتى",
+    "he": "תקף עד"
+  },
+  "tap_for_terms": {
+    "en": "Tap for terms & conditions",
+    "ar": "اضغط للشروط والأحكام",
+    "he": "לחץ לתנאים והגבלות"
+  },
+  "activate_coupon": {
+    "en": "Activate Coupon",
+    "ar": "تفعيل الكوبون",
+    "he": "הפעל קופון"
+  },
+  "activate_coupon_question": {
+    "en": "Activate Coupon?",
+    "ar": "تفعيل الكوبون؟",
+    "he": "להפעיל קופון?"
+  },
+  "activate_coupon_confirm": {
+    "en": "Are you sure you want to activate the coupon for",
+    "ar": "هل أنت متأكد أنك تريد تفعيل الكوبون لـ",
+    "he": "האם אתה בטוח שברצונך להפעיל את הקופון עבור"
+  },
+  "barcode_message": {
+    "en": "Once activated, you'll receive a barcode to use at the clinic.",
+    "ar": "بمجرد التفعيل، ستحصل على رمز شريطي لاستخدامه في العيادة.",
+    "he": "לאחר ההפעלה, תקבל ברקוד לשימוש במרפאה."
+  },
+  "activate": {
+    "en": "Activate",
+    "ar": "تفعيل",
+    "he": "הפעל"
+  },
+  "coupon_activated": {
+    "en": "Coupon Activated!",
+    "ar": "تم تفعيل الكوبون!",
+    "he": "הקופון הופעל!"
+  },
+  "coupon_for": {
+    "en": "Coupon for",
+    "ar": "كوبون لـ",
+    "he": "קופון עבור"
+  },
+  "show_at_store": {
+    "en": "Show this at the store",
+    "ar": "أظهر هذا في المتجر",
+    "he": "הצג זאת בחנות"
+  },
+  "my_documents": {
+    "en": "My Documents",
+    "ar": "مستنداتي",
+    "he": "המסמכים שלי"
+  },
+  "no_documents_yet": {
+    "en": "No documents yet",
+    "ar": "لا توجد مستندات حتى الآن",
+    "he": "אין מסמכים עדיין"
+  },
+  "tap_to_upload_document": {
+    "en": "Tap + to upload your first document",
+    "ar": "اضغط + لتحميل مستندك الأول",
+    "he": "לחץ + כדי להעלות את המסמך הראשון שלך"
+  },
+  "no_images_yet": {
+    "en": "No images yet",
+    "ar": "لا توجد صور حتى الآن",
+    "he": "אין תמונות עדיין"
+  },
+  "images": {
+    "en": "images",
+    "ar": "صور",
+    "he": "תמונות"
+  },
+  "tap_to_add_image": {
+    "en": "Tap + to add your first image",
+    "ar": "اضغط + لإضافة صورتك الأولى",
+    "he": "לחץ + כדי להוסיף את התמונה הראשונה שלך"
+  },
+  "upload_document": {
+    "en": "Upload document",
+    "ar": "تحميل مستند",
+    "he": "העלה מסמך"
+  },
+  "take_photo": {
+    "en": "Take photo",
+    "ar": "التقط صورة",
+    "he": "צלם תמונה"
+  },
+  "preview_and_name": {
+    "en": "Preview & Name",
+    "ar": "معاينة والاسم",
+    "he": "תצוגה מקדימה ושם"
+  },
+  "preview_not_available": {
+    "en": "Preview not available",
+    "ar": "المعاينة غير متاحة",
+    "he": "תצוגה מקדימה לא זמינה"
+  },
+  "document_name": {
+    "en": "Document name",
+    "ar": "اسم المستند",
+    "he": "שם המסמך"
+  },
+  "upload": {
+    "en": "Upload",
+    "ar": "تحميل",
+    "he": "העלה"
+  },
+  "view": {
+    "en": "View",
+    "ar": "عرض",
+    "he": "צפה"
+  },
+  "share": {
+    "en": "Share",
+    "ar": "مشاركة",
+    "he": "שתף"
+  },
+  "download": {
+    "en": "Download",
+    "ar": "تنزيل",
+    "he": "הורד"
+  },
+  "could_not_open_file": {
+    "en": "Could not open file",
+    "ar": "تعذر فتح الملف",
+    "he": "לא ניתן לפתוח קובץ"
+  },
+  "could_not_share_file": {
+    "en": "Could not share file",
+    "ar": "تعذر مشاركة الملف",
+    "he": "לא ניתן לשתף קובץ"
+  },
+  "could_not_access_storage": {
+    "en": "Could not access storage",
+    "ar": "تعذر الوصول إلى وحدة التخزين",
+    "he": "לא ניתן לגשת לאחסון"
+  },
+  "downloaded_to": {
+    "en": "Downloaded to",
+    "ar": "تم التنزيل إلى",
+    "he": "הורד אל"
+  },
+  "could_not_download_file": {
+    "en": "Could not download file",
+    "ar": "تعذر تنزيل الملف",
+    "he": "לא ניתן להוריד קובץ"
+  },
+  "delete_document_question": {
+    "en": "Delete Document?",
+    "ar": "حذف المستند؟",
+    "he": "למחוק מסמך?"
+  },
+  "delete_document_confirm": {
+    "en": "Are you sure you want to delete",
+    "ar": "هل أنت متأكد أنك تريد حذف",
+    "he": "האם אתה בטוח שברצונך למחוק"
+  },
+  "document_deleted": {
+    "en": "Document deleted",
+    "ar": "تم حذف المستند",
+    "he": "המסמך נמחק"
+  },
+  "document_no_preview": {
+    "en": "This document cannot be previewed in the app.",
+    "ar": "لا يمكن معاينة هذا المستند في التطبيق.",
+    "he": "לא ניתן להציג תצוגה מקדימה של מסמך זה באפליקציה."
+  },
+  "download_to_open": {
+    "en": "You can download and open it with your device's default app.",
+    "ar": "يمكنك تنزيله وفتحه باستخدام التطبيق الافتراضي لجهازك.",
+    "he": "אתה יכול להוריד ולפתוח אותו עם האפליקציה המוגדרת כברירת מחדל של המכשיר שלך."
+  },
+  "open_document": {
+    "en": "Open Document",
+    "ar": "فتح المستند",
+    "he": "פתח מסמך"
+  },
+  "today": {
+    "en": "Today",
+    "ar": "اليوم",
+    "he": "היום"
+  },
+  "yesterday": {
+    "en": "Yesterday",
+    "ar": "أمس",
+    "he": "אתמול"
+  },
+  "at": {
+    "en": "at",
+    "ar": "في",
+    "he": "ב"
+  },
+  "change_password": {
+    "en": "Change Password",
+    "ar": "تغيير كلمة المرور",
+    "he": "שנה סיסמה"
+  },
+  "current_password": {
+    "en": "Current Password",
+    "ar": "كلمة المرور الحالية",
+    "he": "סיסמה נוכחית"
+  },
+  "new_password": {
+    "en": "New Password",
+    "ar": "كلمة المرور الجديدة",
+    "he": "סיסמה חדשה"
+  },
+  "confirm_password": {
+    "en": "Confirm Password",
+    "ar": "تأكيد كلمة المرور",
+    "he": "אשר סיסמה"
+  },
+  "passwords_dont_match": {
+    "en": "Passwords don't match!",
+    "ar": "كلمات المرور غير متطابقة!",
+    "he": "הסיסמאות אינן תואמות!"
+  },
+  "password_min_length": {
+    "en": "Password must be at least 6 characters!",
+    "ar": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل!",
+    "he": "הסיסמה חייבת להכיל לפחות 6 תווים!"
+  },
+  "password_change_coming_soon": {
+    "en": "Password change feature coming soon!",
+    "ar": "ميزة تغيير كلمة المرور قريبًا!",
+    "he": "תכונת שינוי סיסמה בקרוב!"
+  },
+  "logout_failed": {
+    "en": "Logout failed",
+    "ar": "فشل تسجيل الخروج",
+    "he": "ההתנתקות נכשלה"
+  },
+  "cannot_edit_email": {
+    "en": "Cannot Edit Email",
+    "ar": "لا يمكن تعديل البريد الإلكتروني",
+    "he": "לא ניתן לערוך אימייל"
+  },
+  "email_change_restriction": {
+    "en": "Email address is linked to your account and cannot be changed from here. Please contact support if you need to update your email.",
+    "ar": "عنوان البريد الإلكتروني مرتبط بحسابك ولا يمكن تغييره من هنا. يرجى الاتصال بالدعم إذا كنت بحاجة إلى تحديث بريدك الإلكتروني.",
+    "he": "כתובת האימייל מקושרת לחשבון שלך ולא ניתן לשנות אותה מכאן. אנא צור קשר עם התמיכה אם אתה צריך לעדכן את האימייל שלך."
+  },
+  "relatives_feature_coming_soon": {
+    "en": "Relatives management feature is coming soon! You'll be able to add family members to book appointments for them.",
+    "ar": "ميزة إدارة الأقارب قريبًا! ستتمكن من إضافة أفراد العائلة لحجز المواعيد لهم.",
+    "he": "תכונת ניהול קרובי משפחה בקרוב! תוכל להוסיף בני משפחה כדי לקבוע להם תורים."
+  },
+  "notification_settings": {
+    "en": "Notification Settings",
+    "ar": "إعدادات الإشعارات",
+    "he": "הגדרות התראות"
+  },
+  "notifications_feature_coming_soon": {
+    "en": "Notification preferences feature is coming soon! You'll be able to customize appointment reminders and alerts.",
+    "ar": "ميزة تفضيلات الإشعارات قريبًا! ستتمكن من تخصيص تذكيرات المواعيد والتنبيهات.",
+    "he": "תכונת העדפות התראות בקרוב! תוכל להתאים אישית תזכורות ותורים והתראות."
+  },
+  "language_settings": {
+    "en": "Language Settings",
+    "ar": "إعدادات اللغة",
+    "he": "הגדרות שפה"
+  },
+  "language_changed": {
+    "en": "Language changed successfully",
+    "ar": "تم تغيير اللغة بنجاح",
+    "he": "השפה שונתה בהצלחה"
+  },
+  "terms_content": {
+    "en": "Terms and conditions will be displayed here. This section will include all legal terms, user agreements, and conditions for using the Asnani dental app.",
+    "ar": "سيتم عرض الشروط والأحكام هنا. سيتضمن هذا القسم جميع الشروط القانونية واتفاقيات المستخدم وشروط استخدام تطبيق أسناني.",
+    "he": "התנאים וההגבלות יוצגו כאן. קטע זה יכלול את כל התנאים המשפטיים, הסכמי משתמש ותנאים לשימוש באפליקציית אסנאני."
+  },
+  "privacy_content": {
+    "en": "Privacy policy information will be displayed here. This section will detail how user data is collected, stored, and protected in the Asnani dental app.",
+    "ar": "سيتم عرض معلومات سياسة الخصوصية هنا. سيوضح هذا القسم كيفية جمع بيانات المستخدم وتخزينها وحمايتها في تطبيق أسناني.",
+    "he": "מידע על מדיניות הפרטיות יוצג כאן. קטע זה יפרט כיצד נאספים, מאוחסנים ומוגנים נתוני משתמש באפליקציית אסנאני."
+  },
+  "relative": {
+    "en": "relative",
+    "ar": "قريب",
+    "he": "קרוב משפחה"
+  },
+  "relatives": {
+    "en": "relatives",
+    "ar": "أقارب",
+    "he": "קרובי משפחה"
+  },
+  "example_patient_1": {
+    "en": "Mr. Patient",
+    "ar": "السيد مريض",
+    "he": "מר מטופל"
+  },
+  "example_doctor_1": {
+    "en": "Dr. Dentist",
+    "ar": "د. طبيب أسنان",
+    "he": "ד\"ר רופא שיניים"
+  }
+}

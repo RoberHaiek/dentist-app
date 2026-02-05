@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../services/LocalizationProvider.dart';
 
 class ForgotPage extends StatefulWidget {
   const ForgotPage({super.key});
@@ -41,9 +42,9 @@ class _ForgotPageState extends State<ForgotPage> {
       await FirebaseAuth.instance
           .sendPasswordResetEmail(email: emailController.text.trim());
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text(
-              "Password reset email sent! Check your inbox and spam folder."),
+              context.tr('check_email')),
         ),
       );
     } on FirebaseAuthException catch (e) {
@@ -68,7 +69,7 @@ class _ForgotPageState extends State<ForgotPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Forgot Password")),
+      appBar: AppBar(title: Text(context.tr('forgot_password'))),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -77,13 +78,13 @@ class _ForgotPageState extends State<ForgotPage> {
             TextField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(labelText: "Enter your email"),
+              decoration: InputDecoration(labelText: context.tr('email')),
             ),
             if (!emailValid)
-              const Padding(
+              Padding(
                 padding: EdgeInsets.only(top: 4.0),
                 child: Text(
-                  "Email is invalid",
+                  context.tr('email_invalid'),
                   style: TextStyle(color: Colors.red, fontSize: 12),
                 ),
               ),
@@ -92,7 +93,7 @@ class _ForgotPageState extends State<ForgotPage> {
               onPressed: isButtonEnabled && !isLoading ? _sendResetEmail : null,
               child: isLoading
                   ? const CircularProgressIndicator(color: Colors.white)
-                  : const Text("Send Reset Link"),
+                  : Text(context.tr('reset_link')),
             ),
           ],
         ),

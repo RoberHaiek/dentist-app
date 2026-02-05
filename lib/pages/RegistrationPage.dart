@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'HomePage.dart';
+import 'LoginPage.dart';
+import '../services/LocalizationProvider.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -95,15 +96,19 @@ class RegistrationPageState extends State<RegistrationPage> {
         // continue — don't block navigation
       }
 
+      // ✅ ADDED: Sign out the user so they have to login manually
+      await FirebaseAuth.instance.signOut();
+      debugPrint('registerUser: signed out user after registration');
+
       // final UI update and navigation must run on the main/UI frame
       if (!mounted) return;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Registration successful! Check your email.')),
+          const SnackBar(content: Text('Registration successful! Please login.')),
         );
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const HomePage()),
+          MaterialPageRoute(builder: (_) => const LoginPage()),
         );
       });
     } on FirebaseAuthException catch (e, st) {
@@ -135,7 +140,15 @@ class RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Register")),
+      appBar: AppBar(
+        title: Text(context.tr('register')),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);  // ✅ Just pop back to LoginPage
+          },
+        ),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -143,15 +156,15 @@ class RegistrationPageState extends State<RegistrationPage> {
             key: _formKey,
             child: Column(
               children: [
-                TextField(controller: firstNameController, decoration: const InputDecoration(labelText: "First Name")),
-                TextField(controller: emailController, decoration: const InputDecoration(labelText: "Email")),
-                TextField(controller: passwordController, decoration: const InputDecoration(labelText: "Password"), obscureText: true),
-                TextField(controller: lastNameController, decoration: const InputDecoration(labelText: "Last Name")),
+                TextField(controller: firstNameController, decoration: InputDecoration(labelText: context.tr('first_name'))),
+                TextField(controller: lastNameController, decoration: InputDecoration(labelText: context.tr('last_name'))),
+                TextField(controller: emailController, decoration: InputDecoration(labelText: context.tr('email'))),
+                TextField(controller: passwordController, decoration: InputDecoration(labelText: context.tr('password')), obscureText: true),
                 TextField(
                   controller: dobController,
                   readOnly: true, // prevents keyboard from opening
-                  decoration: const InputDecoration(
-                    labelText: "Date of Birth",
+                  decoration: InputDecoration(
+                    labelText: context.tr('date_of_birth'),
                     suffixIcon: Icon(Icons.calendar_today),
                   ),
                   onTap: () async {
@@ -175,20 +188,18 @@ class RegistrationPageState extends State<RegistrationPage> {
                     }
                   },
                 ),
-                TextField(controller: addressController, decoration: const InputDecoration(labelText: "Address")),
-                TextField(controller: phoneNumberController, decoration: const InputDecoration(labelText: "Phone Number")),
-                TextField(controller: repeatPasswordController, decoration: const InputDecoration(labelText: "Repeat Password"), obscureText: true),
+                TextField(controller: addressController, decoration: InputDecoration(labelText: context.tr('address'))),
+                TextField(controller: phoneNumberController, decoration: InputDecoration(labelText: context.tr('phone'))),
 
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: isLoading ? null : registerUser,
                   child: isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text("Register"),
+                      : Text(context.tr('register')),
                 ),
               ],
-            )
-            ,
+            ),
           ),
         ),
       ),

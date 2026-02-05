@@ -21,6 +21,7 @@ class Images extends StatelessWidget{
     return Image.asset(
       imageName,
       fit: BoxFit.cover,
+      alignment: Alignment.center,
     );
   }
 

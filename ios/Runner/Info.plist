@@ -45,5 +45,22 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- Camera/Photo permissions (if you add document upload later) -->
+    <key>NSCameraUsageDescription</key>
+    <string>We need camera access to upload documents</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>We need photo library access to upload documents</string>
+    <!-- If using phone calls in ContactClinicPage -->
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>tel</string>
+        <string>mailto</string>
+    </array>
+    <!-- Display name -->
+    <key>CFBundleDisplayName</key>
+    <string>Asnani Dentist</string>
+    <!-- Deployment target (minimum iOS version) -->
+    <key>MinimumOSVersion</key>
+    <string>12.0</string>
 </dict>
 </plist>
