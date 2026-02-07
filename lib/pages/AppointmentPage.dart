@@ -399,39 +399,22 @@ class _AppointmentPageState extends State<AppointmentPage>
 
                 // Action buttons
                 if (isUpcoming) ...[
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          onPressed: () => _cancelAppointment(appointment),
-                          icon: const Icon(Icons.close, size: 18),
-                          label: Text(context.tr('cancel')),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: const Color(0xFFFF6B6B),
-                            side: const BorderSide(color: Color(0xFFFF6B6B)),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: ElevatedButton.icon(
-                          onPressed: () => _rescheduleAppointment(appointment),
-                          icon: const Icon(Icons.edit_calendar, size: 18),
-                          label: Text(context.tr('reschedule')),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF7DD3C0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+//                   const SizedBox(height: 16),
+//                   SizedBox(
+//                     width: double.infinity,
+//                     child: OutlinedButton.icon(
+//                       onPressed: () => _cancelAppointment(appointment),
+//                       icon: const Icon(Icons.close, size: 18),
+//                       label: Text(context.tr('cancel')),
+//                       style: OutlinedButton.styleFrom(
+//                         foregroundColor: const Color(0xFFFF6B6B),
+//                         side: const BorderSide(color: Color(0xFFFF6B6B)),
+//                         shape: RoundedRectangleBorder(
+//                           borderRadius: BorderRadius.circular(12),
+//                         ),
+//                       ),
+//                     ),
+//                   ),
                 ] else ...[
                   const SizedBox(height: 16),
                   SizedBox(
@@ -583,7 +566,7 @@ class _AppointmentPageState extends State<AppointmentPage>
   void _bookAgain(AppointmentItem appointment) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => AppointmentPage()),
+      MaterialPageRoute(builder: (context) => BookAppointmentPage()),
     );
   }
 }

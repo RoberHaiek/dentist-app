@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../Images.dart';
 import '../services/LocalizationProvider.dart';
 import 'AppointmentPage.dart';
+import 'BookAppointmentPage.dart';
 import 'HomePage.dart';
 
 class ContactClinicPage extends StatelessWidget {
@@ -99,6 +100,29 @@ class ContactClinicPage extends StatelessWidget {
     );
   }
 
+  Future<void> _launchWaze(BuildContext context) async {
+    final Uri wazeUri = Uri.parse('https://waze.com/ul/hsvbgqm1we');
+    try {
+      if (await canLaunchUrl(wazeUri)) {
+        await launchUrl(wazeUri, mode: LaunchMode.externalApplication);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(context.tr('could_not_open_waze')),
+            backgroundColor: const Color(0xFFFF6B6B),
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${context.tr('error')}: $e'),
+          backgroundColor: const Color(0xFFFF6B6B),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     const clinicAddress = "עפרוני 38, עכו";
@@ -184,7 +208,7 @@ class ContactClinicPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const AppointmentPage()),
+                            builder: (context) => const BookAppointmentPage()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -303,6 +327,59 @@ class ContactClinicPage extends StatelessWidget {
                           },
                         ),
                       ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // Waze Navigation Button
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF33CCFF), Color(0xFF00B8D4)],
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF00B8D4).withOpacity(0.3),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () => _launchWaze(context),
+                        borderRadius: BorderRadius.circular(12),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.asset(
+                                  'images/waze_icon.jpg',
+                                  width: 32,
+                                  height: 32,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                context.tr('navigate_with_waze'),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   ),
 

@@ -2,15 +2,17 @@ import 'package:dentist_app/pages/AboutPage.dart';
 import 'package:dentist_app/pages/AppointmentPage.dart';
 import 'package:dentist_app/pages/BookAppointmentPage.dart';
 import 'package:dentist_app/pages/ContactClinicPage.dart';
+import 'package:dentist_app/pages/ClinicProfilePage.dart';
 import 'package:dentist_app/pages/CouponPage.dart';
 import 'package:dentist_app/pages/LoginPage.dart';
+import 'package:dentist_app/pages/InstructionsPage.dart';
 import 'package:dentist_app/pages/MyMedicalReportPage.dart';
 import 'package:dentist_app/pages/SettingsPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../CurrentPatient.dart';
 import '../Images.dart';
-import '../services/LocalizationProvider.dart';
+import 'package:dentist_app/services/LocalizationProvider.dart';
 import 'MyDocumentsPage.dart';
 
 class HomePage extends StatefulWidget {
@@ -59,7 +61,7 @@ class HomePageState extends State<HomePage> {
                     child: CustomScrollView(
                       slivers: [
                         SliverAppBar(
-                          expandedHeight: 320,
+                          expandedHeight: 200,
                           pinned: false,
                           floating: false,
                           backgroundColor: Colors.transparent,
@@ -132,8 +134,8 @@ class HomePageState extends State<HomePage> {
             child: Column(
               children: [
                 Text(
-//                   "${context.tr('welcome')} ${currentPatient.firstName}! ✨",
-                "היי מר. מטופל! ✨",
+//                   "${context.tr('welcome')} ${currentPatient.firstName}!",
+                "היי מר. מטופל!",
                   style: const TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -149,27 +151,6 @@ class HomePageState extends State<HomePage> {
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-                const SizedBox(height: 20),
-
-                // Mascot tooth character
-                Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(50),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.15),
-                        blurRadius: 15,
-                        offset: const Offset(0, 5),
-                      ),
-                    ],
-                  ),
-                  child: Center(
-                    child: _buildToothMascot(),
-                  ),
-                ),
               ],
             ),
           ),
@@ -178,15 +159,6 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildToothMascot() {
-    return SizedBox(
-      width: 70,
-      height: 70,
-      child: CustomPaint(
-        painter: ToothMascotPainter(),
-      ),
-    );
-  }
 
   Widget _buildAppointmentStatusCard() {
     Color borderColor;
@@ -501,7 +473,7 @@ class HomePageState extends State<HomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const ContactClinicPage()),
+                    builder: (context) => const ClinicProfilePage()),
               );
             },
           ),
@@ -513,14 +485,14 @@ class HomePageState extends State<HomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const AppointmentPage()),
+                    builder: (context) => const InstructionsPage()),
               );
             },
           ),
           _buildActionCard(
             icon: "🦷",
-            title: "השיניים שלי",
-            subtitle: "הצגת מצב השיניים",
+            title: context.tr('my_medical_record'),
+            subtitle: context.tr('see_medical_record'),
             onTap: () {
               Navigator.push(
                 context,
@@ -658,61 +630,4 @@ class HomePageState extends State<HomePage> {
       ),
     );
   }
-}
-
-// Custom painter for tooth mascot
-class ToothMascotPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.white
-      ..style = PaintingStyle.fill;
-
-    final outlinePaint = Paint()
-      ..color = const Color(0xFFA8E6CF)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 3;
-
-    // Draw tooth body (rounded rectangle)
-    final toothPath = Path();
-    toothPath.addRRect(
-      RRect.fromRectAndRadius(
-        Rect.fromLTWH(size.width * 0.2, size.height * 0.1, size.width * 0.6,
-            size.height * 0.7),
-        const Radius.circular(20),
-      ),
-    );
-    canvas.drawPath(toothPath, paint);
-    canvas.drawPath(toothPath, outlinePaint);
-
-    // Draw smile
-    final smilePaint = Paint()
-      ..color = const Color(0xFFFF8B94)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 3
-      ..strokeCap = StrokeCap.round;
-
-    final smilePath = Path();
-    smilePath.moveTo(size.width * 0.3, size.height * 0.5);
-    smilePath.quadraticBezierTo(
-      size.width * 0.5,
-      size.height * 0.6,
-      size.width * 0.7,
-      size.height * 0.5,
-    );
-    canvas.drawPath(smilePath, smilePaint);
-
-    // Draw eyes
-    final eyePaint = Paint()
-      ..color = const Color(0xFF333333)
-      ..style = PaintingStyle.fill;
-
-    canvas.drawCircle(
-        Offset(size.width * 0.35, size.height * 0.35), 3, eyePaint);
-    canvas.drawCircle(
-        Offset(size.width * 0.65, size.height * 0.35), 3, eyePaint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

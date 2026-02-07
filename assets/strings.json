@@ -1,8 +1,8 @@
 {
   "app_name": {
-    "en": "Asnani Dental",
-    "ar": "أسناني لطب الأسنان",
-    "he": "אסנאני לרפואת שיניים"
+    "en": "DenTech",
+    "ar": "دنتيك",
+    "he": "דנטק"
   },
   "welcome": {
     "en": "Welcome",
@@ -185,9 +185,9 @@
     "he": "לבטל תור?"
   },
   "cancel_appointment_confirm": {
-    "en": "Are you sure you want to cancel the appointment on",
-    "ar": "هل أنت متأكد أنك تريد إلغاء الموعد في",
-    "he": "האם אתה בטוח שברצונך לבטל את התור ב"
+    "en": "Are you sure you want to request to cancel the appointment on",
+    "ar": "هل أنت متأكد أنك تريد طلب إلغاء الموعد في",
+    "he": "האם אתה בטוח שברצונך לבקש ביטול התור ב"
   },
   "yes_cancel": {
     "en": "Yes, Cancel",
@@ -200,9 +200,54 @@
     "he": "לא"
   },
   "appointment_cancelled": {
-    "en": "Appointment cancelled",
-    "ar": "تم إلغاء الموعد",
+    "en": "Appointment cancellation requested from the clinic",
+    "ar": "تم طلب إلغاء الموعد من العيادة, الرجاء انتطار القبول",
     "he": "התור בוטל"
+  },
+  "dental_care_tips": {
+    "en": "Dental Care Tips",
+    "ar": "نصائح العناية بالأسنان",
+    "he": "טיפים לטיפול בשיניים"
+  },
+  "tap_to_expand": {
+    "en": "Tap any question to see the answer",
+    "ar": "انقر على أي سؤال لرؤية الإجابة",
+    "he": "לחץ על שאלה כדי לראות את התשובה"
+  },
+  "more_questions_contact": {
+    "en": "Have more questions? Contact us anytime!",
+    "ar": "هل لديك المزيد من الأسئلة؟ اتصل بنا في أي وقت!",
+    "he": "יש לך עוד שאלות? צור איתנו קשר בכל עת!"
+  },
+  "faq_brush_teeth_q": {
+    "en": "How to brush the teeth?",
+    "ar": "كيف أغسل أسناني؟",
+    "he": "איך לצחצח את השיניים?"
+  },
+  "faq_brush_teeth_a": {
+    "en": "You need to brush your teeth 3 times a day for 5 minutes at least",
+    "ar": "يجب عليك غسل أسنانك 3 مرات في اليوم لمدة 5 دقائق على الأقل",
+    "he": "צריך לצחצח את השיניים 3 פעמים ביום למשך 5 דקות לפחות"
+  },
+  "faq_tooth_hurts_q": {
+    "en": "Tooth hurts, what should I do?",
+    "ar": "سني يؤلمني، ماذا أفعل؟",
+    "he": "השן כואבת, מה עלי לעשות?"
+  },
+  "faq_tooth_hurts_a": {
+    "en": "If it hurts for 1 day, just wait a little bit, otherwise call us",
+    "ar": "إذا كان يؤلمك ليوم واحد، انتظر قليلاً، وإلا اتصل بنا",
+    "he": "אם זה כואב יום אחד, רק חכה קצת, אחרת התקשר אלינו"
+  },
+  "faq_floss_q": {
+    "en": "How often should I floss?",
+    "ar": "كم مرة يجب أن أستخدم الخيط؟",
+    "he": "באיזו תדירות עלי להשתמש בחוט דנטלי?"
+  },
+  "faq_floss_a": {
+    "en": "Floss every day",
+    "ar": "استخدم الخيط كل يوم",
+    "he": "השתמש בחוט דנטלי כל יום"
   },
   "select_new_date": {
     "en": "Please select a new date and time",
@@ -390,9 +435,9 @@
     "he": "מידע על האפליקציה"
   },
   "about": {
-    "en": "About Asnani",
-    "ar": "حول أسناني",
-    "he": "אודות אסנאני"
+    "en": "About",
+    "ar": "معلومات",
+    "he": "אודות"
   },
   "version": {
     "en": "Version 1.0.0",
@@ -472,27 +517,27 @@
   "monday": {
     "en": "Monday",
     "ar": "الإثنين",
-    "he": "יום שני"
+    "he": "שני"
   },
   "tuesday": {
     "en": "Tuesday",
     "ar": "الثلاثاء",
-    "he": "יום שלישי"
+    "he": "שלישי"
   },
   "wednesday": {
     "en": "Wednesday",
     "ar": "الأربعاء",
-    "he": "יום רביעי"
+    "he": "רביעי"
   },
   "thursday": {
     "en": "Thursday",
     "ar": "الخميس",
-    "he": "יום חמישי"
+    "he": "חמישי"
   },
   "friday": {
     "en": "Friday",
     "ar": "الجمعة",
-    "he": "יום שישי"
+    "he": "שישי"
   },
   "saturday": {
     "en": "Saturday",
@@ -502,7 +547,7 @@
   "sunday": {
     "en": "Sunday",
     "ar": "الأحد",
-    "he": "יום ראשון"
+    "he": "ראשון"
   },
   "january": {
     "en": "Jan",
@@ -597,12 +642,12 @@
   "contact_clinic": {
     "en": "Contact Clinic",
     "ar": "اتصل بالعيادة",
-    "he": "צור קשר עם המרפאה"
+    "he": "צור קשר"
   },
   "get_in_touch": {
     "en": "Get in touch",
     "ar": "تواصل معنا",
-    "he": "צור קשר"
+    "he": "צור קשר עם המרפאה"
   },
   "emergency": {
     "en": "Emergency",
@@ -639,6 +684,51 @@
     "ar": "إخفاء التعليمات",
     "he": "הסתר הוראות"
   },
+  "all": {
+    "en": "All",
+    "ar": "الكل",
+    "he": "הכל"
+  },
+  "xrays": {
+    "en": "X-rays",
+    "ar": "أشعة",
+    "he": "צילומי רנטגן"
+  },
+  "photos": {
+    "en": "Photos",
+    "ar": "صور",
+    "he": "צילומים"
+  },
+  "xray": {
+    "en": "X-ray",
+    "ar": "أشعة",
+    "he": "רנטגן"
+  },
+  "is_this_xray": {
+    "en": "Is this an X-ray?",
+    "ar": "هل هذه صورة أشعة؟",
+    "he": "האם זה צילום רנטגן?"
+  },
+  "no_xrays_yet": {
+    "en": "No X-rays yet",
+    "ar": "لا توجد صور أشعة حتى الآن",
+    "he": "אין צילומי רנטגן עדיין"
+  },
+  "no_photos_yet": {
+    "en": "No photos yet",
+    "ar": "لا توجد صور حتى الآن",
+    "he": "אין תמונות עדיין"
+  },
+  "cannot_preview_document": {
+    "en": "This document cannot be previewed in the app.",
+    "ar": "لا يمكن معاينة هذا المستند في التطبيق.",
+    "he": "לא ניתן להציג תצוגה מקדימה של מסמך זה באפליקציה."
+  },
+  "can_download_and_open": {
+    "en": "You can download and open it with your device's default app.",
+    "ar": "يمكنك تنزيله وفتحه باستخدام التطبيق الافتراضي لجهازك.",
+    "he": "אתה יכול להוריד ולפתוח אותו עם האפליקציה המוגדרת כברירת מחדל של המכשיר שלך."
+  },
   "whatsapp_error": {
     "en": "Could not open WhatsApp",
     "ar": "تعذّر فتح واتساب",
@@ -654,15 +744,441 @@
     "ar": "قبل أو بعد العلاج",
     "he": "לפני או אחרי הטיפול"
   },
-  "my_teeth": {
-    "en": "My teeth",
-    "ar": "أسناني",
-    "he": "השיניים שלי"
+  "my_medical_record": {
+    "en": "My medical record",
+    "ar": "ملفي الطبي",
+    "he": "התיק הרפואי שלי"
   },
-  "teeth_situation": {
-    "en": "See the teeth situation",
-    "ar": "انظر حالة الأسنان",
-    "he": "צפה במצב השיניים"
+  "see_medical_record": {
+    "en": "See your medical record",
+    "ar": "انظر لملفي الطبي",
+    "he": "צפה בתיק הרפואי שלי"
+  },
+  "open_now": {
+    "en": "Open Now",
+    "ar": "مفتوح الآن",
+    "he": "פתוח עכשיו"
+  },
+  "book": {
+    "en": "Book",
+    "ar": "احجز",
+    "he": "הזמן"
+  },
+  "map": {
+    "en": "Map",
+    "ar": "خريطة",
+    "he": "מפה"
+  },
+  "team": {
+    "en": "Team",
+    "ar": "الفريق",
+    "he": "צוות"
+  },
+  "services": {
+    "en": "Services",
+    "ar": "الخدمات",
+    "he": "שירותים"
+  },
+  "gallery": {
+    "en": "Gallery",
+    "ar": "المعرض",
+    "he": "גלריה"
+  },
+  "more": {
+    "en": "More",
+    "ar": "المزيد",
+    "he": "עוד"
+  },
+  "about_us": {
+    "en": "About Us",
+    "ar": "عنّا",
+    "he": "אודותינו"
+  },
+  "our_team": {
+    "en": "Meet Our Team",
+    "ar": "تعرف على فريقنا",
+    "he": "הצוות שלנו"
+  },
+  "our_services": {
+    "en": "Our Services",
+    "ar": "خدماتنا",
+    "he": "השירותים שלנו"
+  },
+  "photos": {
+    "en": "Photos",
+    "ar": "الصور",
+    "he": "תמונות"
+  },
+  "photo": {
+    "en": "Photo",
+    "ar": "صورة",
+    "he": "תמונה"
+  },
+  "view_all": {
+    "en": "View All",
+    "ar": "عرض الكل",
+    "he": "צפה בהכל"
+  },
+  "feedback": {
+    "en": "Feedback",
+    "ar": "الآراء",
+    "he": "חוות דעת"
+  },
+  "patient_feedback": {
+    "en": "Patient Feedback",
+    "ar": "آراء المرضى",
+    "he": "חוות דעת מטופלים"
+  },
+  "contact": {
+    "en": "Contact",
+    "ar": "تواصل",
+    "he": "צור קשר"
+  },
+  "contact_info": {
+    "en": "Contact Information",
+    "ar": "معلومات التواصل",
+    "he": "פרטי התקשרות"
+  },
+  "teeth_whitening": {
+    "en": "Teeth Whitening",
+    "ar": "تبييض الأسنان",
+    "he": "הלבנת שיניים"
+  },
+  "botox": {
+    "en": "Botox",
+    "ar": "بوتوكس",
+    "he": "בוטוקס"
+  },
+  "clinic_name": {
+    "en": "Dr. Alfred Jarrous",
+    "ar": "د. الفرد جروس",
+    "he": "דר׳ אלפרד גרוס"
+  },
+  "clinic_about_description": {
+    "en": "Founded in 2010, Asnani Dental Clinic has been serving the community with excellence in dental care. Our team of experienced professionals is dedicated to providing comprehensive dental services using the latest technology and techniques. We believe in creating beautiful, healthy smiles in a comfortable and caring environment.",
+    "ar": "تأسست عيادة أسناني لطب الأسنان في عام 2010، وظلت تخدم المجتمع بتميز في رعاية الأسنان. يكرس فريقنا من المهنيين ذوي الخبرة لتقديم خدمات الأسنان الشاملة باستخدام أحدث التقنيات والأساليب. نحن نؤمن بخلق ابتسامات جميلة وصحية في بيئة مريحة ومهتمة.",
+    "he": " דר אלפרד גרוס ,בוגר איטליה מחזור 2008 מנהל המרפאה , בעל נסיון מעל 15 שנה בתחום שיקום הפה. אנחנו מתמחים בהשתלות שיניים ושיקום על גבי שתלים , השתלה ביום אחד והעמסה מיידית ."
+  },
+  "example_doctor_2": {
+    "en": "Dr. Khaled Rabbah",
+    "ar": "د. خالد رباح",
+    "he": "דר׳ חאלד רבאח"
+  },
+  "example_doctor_3": {
+    "en": "Dr. Nizar Sheeti",
+    "ar": "د. نزار شيتي",
+    "he": "דר׳ נזאר שיתי"
+  },
+  "example_doctor_4": {
+    "en": "Dr. Layan Feisal",
+    "ar": "د. ليان فيصل",
+    "he": "דר׳ ליאן פיסל"
+  },
+  "example_doctor_5": {
+    "en": "Yalin Anatoli",
+    "ar": "يالين اناتولي",
+    "he": "ילין אנטולי"
+  },
+  "doctor_description_1": {
+    "en": "General Dentist",
+    "ar": "طبيب أسنان عام",
+    "he": "בוגר איטליה מחזור 2008 מנהל המרפאה , בעל נסיון מעל 15 שנה בתחום שיקום הפה"
+  },
+  "doctor_description_2": {
+    "en": "Orthodontist",
+    "ar": "أخصائي تقويم أسنان",
+    "he": "מומחה לפריודונטיה ואחראי על החלק הכירורגי במרפאה ."
+  },
+  "doctor_description_3": {
+    "en": "Dental Hygienist",
+    "ar": "أخصائي صحة الأسنان",
+    "he": "מחלקת אורתודונטיה בעל נסיון רב ביישור שיניים  ."
+  },
+  "doctor_description_4": {
+    "en": "Dental Hygienist",
+    "ar": "أخصائي صحة الأسنان",
+    "he": "משמרת ושיקום קל"
+  },
+  "doctor_description_5": {
+    "en": "Dental Hygienist",
+    "ar": "أخصائي صحة الأسنان",
+    "he": "טכנאי שיניים עם המון נסיון וידע "
+  },
+  "15_years_experience": {
+    "en": "15 years experience",
+    "ar": "15 سنة خبرة",
+    "he": "15 שנות ניסיון"
+  },
+  "10_years_experience": {
+    "en": "10 years experience",
+    "ar": "10 سنوات خبرة",
+    "he": "10 שנות ניסיון"
+  },
+  "8_years_experience": {
+    "en": "8 years experience",
+    "ar": "8 سنوات خبرة",
+    "he": "8 שנות ניסיון"
+  },
+  "cosmetic_dentistry": {
+    "en": "Cosmetic Dentistry",
+    "ar": "طب الأسنان التجميلي",
+    "he": "רפואת שיניים אסתטית"
+  },
+  "implants": {
+    "en": "Implants",
+    "ar": "زراعة الأسنان",
+    "he": "שתלים"
+  },
+  "braces": {
+    "en": "Braces",
+    "ar": "تقويم الأسنان",
+    "he": "גשר"
+  },
+  "aligners": {
+    "en": "Aligners",
+    "ar": "مصففات الأسنان",
+    "he": "יישור שיניים"
+  },
+  "prevention": {
+    "en": "Prevention",
+    "ar": "الوقاية",
+    "he": "מניעה"
+  },
+  "from": {
+    "en": "From",
+    "ar": "من",
+    "he": "החל מ"
+  },
+  "dental_implant": {
+    "en": "Dental Implant",
+    "ar": "زراعة الأسنان",
+    "he": "שתל שיניים"
+  },
+  "root_canal": {
+    "en": "Root Canal",
+    "ar": "علاج قناة الجذر",
+    "he": "טיפול שורש"
+  },
+  "veneers": {
+    "en": "Veneers",
+    "ar": "قشور الأسنان",
+    "he": "ציפויים"
+  },
+  "technology_equipment": {
+    "en": "Technology & Equipment",
+    "ar": "التكنولوجيا والمعدات",
+    "he": "טכנולוגיה וציוד"
+  },
+  "digital_xrays": {
+    "en": "Digital X-Rays",
+    "ar": "الأشعة السينية الرقمية",
+    "he": "צילומי רנטגן דיגיטליים"
+  },
+  "digital_xrays_desc": {
+    "en": "Less radiation, instant results",
+    "ar": "إشعاع أقل، نتائج فورية",
+    "he": "פחות קרינה, תוצאות מיידיות"
+  },
+  "3d_imaging": {
+    "en": "3D Imaging",
+    "ar": "التصوير ثلاثي الأبعاد",
+    "he": "הדמיה תלת מימדית"
+  },
+  "avnit": {
+    "en": "Precise treatment planning",
+    "ar": "تخطيط علاجي دقيق",
+    "he": "ניקוי אבנית"
+  },
+
+  "mshmeret": {
+    "en": "Precise treatment planning",
+    "ar": "تخطيط علاجي دقيق",
+    "he": "משמרת"
+  },
+  "shoresh": {
+    "en": "Precise treatment planning",
+    "ar": "تخطيط علاجي دقيق",
+    "he": "טיפולי שורש"
+  },
+  "akirot": {
+    "en": "Precise treatment planning",
+    "ar": "تخطيط علاجي دقيق",
+    "he": "עקירות"
+  },
+  "shikum": {
+    "en": "Precise treatment planning",
+    "ar": "تخطيط علاجي دقيق",
+    "he": "שיקום"
+  },
+  "hashtala": {
+    "en": "Precise treatment planning",
+    "ar": "تخطيط علاجي دقيق",
+    "he": "השתלת שיניים"
+  },
+  "esthetica": {
+    "en": "Precise treatment planning",
+    "ar": "تخطيط علاجي دقيق",
+    "he": "אסתטיקה "
+  },
+  "botox": {
+    "en": "Precise treatment planning",
+    "ar": "تخطيط علاجي دقيق",
+    "he": "בוטוקס"
+  },
+  "laser_dentistry": {
+    "en": "Laser Dentistry",
+    "ar": "طب الأسنان بالليزر",
+    "he": "רפואת שיניים בלייזר"
+  },
+  "laser_dentistry_desc": {
+    "en": "Minimally invasive procedures",
+    "ar": "إجراءات طفيفة التوغل",
+    "he": "הליכים זעיר פולשניים"
+  },
+  "cad_cam": {
+    "en": "CAD/CAM Technology",
+    "ar": "تقنية CAD/CAM",
+    "he": "טכנולוגיית CAD/CAM"
+  },
+  "cad_cam_desc": {
+    "en": "Same-day dental restorations",
+    "ar": "ترميمات الأسنان في نفس اليوم",
+    "he": "שיקומי שיניים ביום אחד"
+  },
+  "before_after_gallery": {
+    "en": "Before & After Gallery",
+    "ar": "معرض قبل وبعد",
+    "he": "גלריית לפני ואחרי"
+  },
+  "before_after": {
+    "en": "Before/After",
+    "ar": "قبل/بعد",
+    "he": "לפני/אחרי"
+  },
+  "view_all_photos": {
+    "en": "View All Photos",
+    "ar": "عرض جميع الصور",
+    "he": "צפה בכל התמונות"
+  },
+  "patient_reviews": {
+    "en": "Patient Reviews",
+    "ar": "تقييمات المرضى",
+    "he": "ביקורות מטופלים"
+  },
+  "2_weeks_ago": {
+    "en": "2 weeks ago",
+    "ar": "قبل أسبوعين",
+    "he": "לפני שבועיים"
+  },
+  "1_month_ago": {
+    "en": "1 month ago",
+    "ar": "قبل شهر",
+    "he": "לפני חודש"
+  },
+  "2_months_ago": {
+    "en": "2 months ago",
+    "ar": "قبل شهرين",
+    "he": "לפני חודשיים"
+  },
+  "review_1": {
+    "en": "Amazing experience! Dr. Dentist was very professional and made me feel comfortable throughout the entire procedure. The clinic is modern and clean. Highly recommend!",
+    "ar": "تجربة رائعة! كان الدكتور محترفًا جدًا وجعلني أشعر بالراحة طوال الإجراء بأكمله. العيادة حديثة ونظيفة. أوصي بشدة!",
+    "he": "חוויה מדהימה! הדוקטור היה מאוד מקצועי וגרם לי להרגיש בנוח לאורך כל ההליך. המרפאה מודרנית ונקייה. ממליץ בחום!"
+  },
+  "review_2": {
+    "en": "Great service and friendly staff. The teeth whitening results exceeded my expectations. Will definitely come back for future treatments.",
+    "ar": "خدمة رائعة وموظفون ودودون. نتائج تبييض الأسنان فاقت توقعاتي. سأعود بالتأكيد للعلاجات المستقبلية.",
+    "he": "שירות מעולה וצוות ידידותי. תוצאות ההלבנה עלו על הציפיות שלי. בהחלט אחזור לטיפולים עתידיים."
+  },
+  "review_3": {
+    "en": "Professional and caring dentist. The only downside was the wait time, but the quality of care made up for it.",
+    "ar": "طبيب أسنان محترف ومهتم. الجانب السلبي الوحيد كان وقت الانتظار، لكن جودة الرعاية عوضت عن ذلك.",
+    "he": "רופא שיניים מקצועי ואכפתי. החיסרון היחיד היה זמן ההמתנה, אבל איכות הטיפול פיצתה על כך."
+  },
+  "read_all_reviews": {
+    "en": "Read All Reviews",
+    "ar": "اقرأ جميع التقييمات",
+    "he": "קרא את כל הביקורות"
+  },
+  "certifications_awards": {
+    "en": "Certifications & Awards",
+    "ar": "الشهادات والجوائز",
+    "he": "אישורים ופרסים"
+  },
+  "certificate": {
+    "en": "Certificate",
+    "ar": "شهادة",
+    "he": "תעודה"
+  },
+  "more_information": {
+    "en": "More Information",
+    "ar": "معلومات إضافية",
+    "he": "מידע נוסף"
+  },
+  "insurance_payment": {
+    "en": "Insurance & Payment",
+    "ar": "التأمين والدفع",
+    "he": "ביטוח ותשלום"
+  },
+  "insurance_accepted": {
+    "en": "Insurance Accepted",
+    "ar": "التأمين المقبول",
+    "he": "ביטוחים מקובלים"
+  },
+  "insurance_list": {
+    "en": "Clalit, Maccabi, Meuhedet, Leumit",
+    "ar": "كلاليت، مكابي، مئوحيدت، لئوميت",
+    "he": "כללית, מכבי, מאוחדת, לאומית"
+  },
+  "payment_methods": {
+    "en": "Payment Methods",
+    "ar": "طرق الدفع",
+    "he": "אמצעי תשלום"
+  },
+  "payment_methods_list": {
+    "en": "Cash, Credit Cards, Installments",
+    "ar": "نقداً، بطاقات الائتمان، تقسيط",
+    "he": "מזומן, כרטיסי אשראי, תשלומים"
+  },
+  "languages_spoken": {
+    "en": "Languages Spoken",
+    "ar": "اللغات المحكية",
+    "he": "שפות מדוברות"
+  },
+  "parking_accessibility": {
+    "en": "Parking & Accessibility",
+    "ar": "مواقف السيارات وسهولة الوصول",
+    "he": "חניה ונגישות"
+  },
+  "parking": {
+    "en": "Parking",
+    "ar": "مواقف السيارات",
+    "he": "חניה"
+  },
+  "parking_info": {
+    "en": "Free street parking available",
+    "ar": "مواقف مجانية في الشارع",
+    "he": "חניה חינם ברחוב"
+  },
+  "accessibility": {
+    "en": "Accessibility",
+    "ar": "سهولة الوصول",
+    "he": "נגישות"
+  },
+  "wheelchair_accessible": {
+    "en": "Wheelchair accessible",
+    "ar": "مناسب للكراسي المتحركة",
+    "he": "נגיש לכיסאות גלגלים"
+  },
+  "contact_hours": {
+    "en": "Contact & Hours",
+    "ar": "الاتصال والساعات",
+    "he": "יצירת קשר ושעות"
+  },
+  "closed": {
+    "en": "Closed",
+    "ar": "مغلق",
+    "he": "סגור"
   },
   "post_surgery_care": {
     "en": "Post-Surgery Care",
@@ -863,6 +1379,16 @@
     "en": "View",
     "ar": "عرض",
     "he": "צפה"
+  },
+  "navigate_with_waze": {
+    "en": "Navigate with Waze",
+    "ar": "التنقل باستخدام Waze",
+    "he": "נווט עם Waze"
+  },
+  "could_not_open_waze": {
+    "en": "Could not open Waze",
+    "ar": "تعذر فتح Waze",
+    "he": "לא ניתן לפתוח את Waze"
   },
   "share": {
     "en": "Share",

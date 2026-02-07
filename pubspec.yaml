@@ -88,6 +88,21 @@ flutter:
     - images/barcode.png
     - images/coupons/colgate_toothpaste.jpg
     - images/coupons/electric_toothbrush.jpg
+    - images/waze_icon.jpg
+    - images/clients/alfred/clinic_logo.jpg
+    - images/clients/alfred/certificate_1.jpeg
+    - images/clients/alfred/certificate_2.jpeg
+    - images/clients/alfred/certificate_3.jpeg
+    - images/clients/alfred/before_after_1.jpeg
+    - images/clients/alfred/before_after_2.jpeg
+    - images/clients/alfred/before_after_3.jpeg
+    - images/clients/alfred/before_after_4.jpeg
+    - images/clients/alfred/before_after_5.jpeg
+    - images/clients/alfred/before_after_6.jpeg
+    - images/clients/alfred/before_after_7.jpeg
+    - images/clients/alfred/before_after_8.jpeg
+    - images/clients/alfred/before_after_9.jpeg
+    - images/whatsapp_icon.png
     - assets/strings.json
     #   - images/a_dot_ham.jpeg
 

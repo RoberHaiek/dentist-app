@@ -11,6 +11,11 @@ import 'package:path_provider/path_provider.dart';
 import '../services/LocalizationProvider.dart';
 import 'HomePage.dart';
 
+enum ImageType {
+  photo,
+  xray,
+}
+
 class MyDocumentsPage extends StatefulWidget {
   const MyDocumentsPage({Key? key}) : super(key: key);
 
@@ -22,6 +27,9 @@ class _DocumentsPageState extends State<MyDocumentsPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final List<_DocItem> _documents = [];
+
+  // Filter state for images tab
+  String selectedImageFilter = 'all'; // 'all', 'xray', 'photo'
 
   @override
   void initState() {
@@ -181,76 +189,226 @@ class _DocumentsPageState extends State<MyDocumentsPage>
   }
 
   Widget _buildImagesTab() {
-    final images = _documents.where((d) => d.isImage).toList();
-    if (images.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.image, size: 90, color: Color(0xFFBBBBBB)),
-              const SizedBox(height: 18),
-              Text(
-                context.tr('no_images_yet'),
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF333333),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                context.tr('tap_to_add_image'),
-                style: const TextStyle(
-                  color: Color(0xFF999999),
-                  fontSize: 16,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-      );
+    // Get all images
+    final allImages = _documents.where((d) => d.isImage).toList();
+
+    // Filter images based on selected filter
+    final List<_DocItem> filteredImages;
+    if (selectedImageFilter == 'xray') {
+      filteredImages = allImages.where((d) => d.imageType == ImageType.xray).toList();
+    } else if (selectedImageFilter == 'photo') {
+      filteredImages = allImages.where((d) => d.imageType == ImageType.photo).toList();
+    } else {
+      filteredImages = allImages;
     }
-    return GridView.builder(
-      padding: const EdgeInsets.all(16),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        mainAxisSpacing: 12,
-        crossAxisSpacing: 12,
-      ),
-      itemCount: images.length,
-      itemBuilder: (ctx, i) {
-        final d = images[i];
-        Widget thumb;
-        if (d.path != null) {
-          thumb = Image.file(File(d.path!), fit: BoxFit.cover);
-        } else if (d.bytes != null) {
-          thumb = Image.memory(d.bytes!, fit: BoxFit.cover);
-        } else {
-          thumb = const Icon(Icons.broken_image, color: Color(0xFF999999));
-        }
-        return GestureDetector(
-          onTap: () => _openDocumentActions(d),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.08),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
+
+    return Column(
+      children: [
+        // Filter chips
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                _buildFilterChip(
+                  label: context.tr('all'),
+                  value: 'all',
+                  count: allImages.length,
+                ),
+                const SizedBox(width: 8),
+                _buildFilterChip(
+                  label: context.tr('xrays'),
+                  value: 'xray',
+                  count: allImages.where((d) => d.imageType == ImageType.xray).length,
+                ),
+                const SizedBox(width: 8),
+                _buildFilterChip(
+                  label: context.tr('photos'),
+                  value: 'photo',
+                  count: allImages.where((d) => d.imageType == ImageType.photo).length,
                 ),
               ],
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: thumb,
-            ),
           ),
-        );
+        ),
+
+        // Images grid
+        Expanded(
+          child: filteredImages.isEmpty
+              ? Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.image, size: 90, color: Color(0xFFBBBBBB)),
+                  const SizedBox(height: 18),
+                  Text(
+                    selectedImageFilter == 'all'
+                        ? context.tr('no_images_yet')
+                        : selectedImageFilter == 'xray'
+                        ? context.tr('no_xrays_yet')
+                        : context.tr('no_photos_yet'),
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF333333),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    context.tr('tap_to_add_image'),
+                    style: const TextStyle(
+                      color: Color(0xFF999999),
+                      fontSize: 16,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          )
+              : GridView.builder(
+            padding: const EdgeInsets.all(16),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+            ),
+            itemCount: filteredImages.length,
+            itemBuilder: (ctx, i) {
+              final d = filteredImages[i];
+              Widget thumb;
+              if (d.path != null) {
+                thumb = Image.file(File(d.path!), fit: BoxFit.cover);
+              } else if (d.bytes != null) {
+                thumb = Image.memory(d.bytes!, fit: BoxFit.cover);
+              } else {
+                thumb = const Icon(Icons.broken_image, color: Color(0xFF999999));
+              }
+              return GestureDetector(
+                onTap: () => _openDocumentActions(d),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.08),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: thumb,
+                      ),
+                      // Badge to show if it's an X-ray
+                      if (d.imageType == ImageType.xray)
+                        Positioned(
+                          top: 4,
+                          right: 4,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.7),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              context.tr('xray'),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFilterChip({
+    required String label,
+    required String value,
+    required int count,
+  }) {
+    final isSelected = selectedImageFilter == value;
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedImageFilter = value;
+        });
       },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          gradient: isSelected
+              ? const LinearGradient(
+                  colors: [Color(0xFFA8E6CF), Color(0xFF7DD3C0)],
+                )
+              : null,
+          color: isSelected ? null : Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isSelected ? const Color(0xFF7DD3C0) : Colors.grey.shade300,
+            width: isSelected ? 2 : 1,
+          ),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: const Color(0xFF7DD3C0).withOpacity(0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ]
+              : [],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
+                color: isSelected ? Colors.white : const Color(0xFF666666),
+              ),
+            ),
+            const SizedBox(width: 4),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? Colors.white.withOpacity(0.3)
+                    : const Color(0xFFA8E6CF).withOpacity(0.2),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                count.toString(),
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: isSelected ? Colors.white : const Color(0xFF7DD3C0),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -325,24 +483,26 @@ class _DocumentsPageState extends State<MyDocumentsPage>
       final mimeType = lookupMimeType(path ?? name) ?? "application/octet-stream";
       final isImage = mimeType.startsWith("image/");
 
-      final newName = await _showPreviewAndAskUpload(
+      final uploadData = await _showPreviewAndAskUpload(
         titleSuggestion: name,
         previewPath: path,
         previewBytes: bytes,
         isImage: isImage,
       );
-      if (newName == null || newName.isEmpty) return;
+
+      if (uploadData == null || uploadData['name'] == null || uploadData['name'].isEmpty) return;
 
       setState(() {
         _documents.insert(
           0,
           _DocItem(
             id: DateTime.now().millisecondsSinceEpoch.toString(),
-            title: newName,
+            title: uploadData['name'],
             date: DateTime.now(),
             path: path,
             bytes: bytes,
             mimeType: mimeType,
+            imageType: uploadData['imageType'],
           ),
         );
       });
@@ -356,111 +516,230 @@ class _DocumentsPageState extends State<MyDocumentsPage>
       final bytes = await picked.readAsBytes();
       final mimeType = lookupMimeType(path) ?? "image/jpeg";
 
-      final newName = await _showPreviewAndAskUpload(
+      final uploadData = await _showPreviewAndAskUpload(
         titleSuggestion: "photo.jpg",
         previewPath: path,
         previewBytes: bytes,
         isImage: true,
       );
-      if (newName == null || newName.isEmpty) return;
+
+      if (uploadData == null || uploadData['name'] == null || uploadData['name'].isEmpty) return;
 
       setState(() {
         _documents.insert(
           0,
           _DocItem(
             id: DateTime.now().millisecondsSinceEpoch.toString(),
-            title: newName,
+            title: uploadData['name'],
             date: DateTime.now(),
             path: path,
             bytes: bytes,
             mimeType: mimeType,
+            imageType: uploadData['imageType'],
           ),
         );
       });
     }
   }
 
-  Future<String?> _showPreviewAndAskUpload({
+  Future<Map<String, dynamic>?> _showPreviewAndAskUpload({
     required String titleSuggestion,
     String? previewPath,
     Uint8List? previewBytes,
     required bool isImage,
   }) async {
     final TextEditingController nameCtrl = TextEditingController(text: titleSuggestion);
+    ImageType? selectedImageType = isImage ? ImageType.photo : null;
 
-    return showDialog<String?>(
+    return showDialog<Map<String, dynamic>?>(
       context: context,
       builder: (ctx) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: Text(
-            context.tr('preview_and_name'),
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF2EBE2),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  padding: const EdgeInsets.all(16),
-                  child: isImage && (previewPath != null || previewBytes != null)
-                      ? SizedBox(
-                          height: 180,
-                          child: previewPath != null
-                              ? Image.file(File(previewPath), fit: BoxFit.contain)
-                              : Image.memory(previewBytes!, fit: BoxFit.contain),
-                        )
-                      : Column(
-                          children: [
-                            const Icon(Icons.insert_drive_file, size: 80, color: Color(0xFF7DD3C0)),
-                            const SizedBox(height: 8),
-                            Text(
-                              context.tr('preview_not_available'),
-                              style: const TextStyle(color: Color(0xFF999999)),
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              title: Text(
+                context.tr('preview_and_name'),
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF2EBE2),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.all(16),
+                      child: isImage && (previewPath != null || previewBytes != null)
+                          ? SizedBox(
+                              height: 180,
+                              child: previewPath != null
+                                  ? Image.file(File(previewPath), fit: BoxFit.contain)
+                                  : Image.memory(previewBytes!, fit: BoxFit.contain),
+                            )
+                          : Column(
+                              children: [
+                                const Icon(Icons.insert_drive_file, size: 80, color: Color(0xFF7DD3C0)),
+                                const SizedBox(height: 8),
+                                Text(
+                                  context.tr('preview_not_available'),
+                                  style: const TextStyle(color: Color(0xFF999999)),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: nameCtrl,
-                  decoration: InputDecoration(
-                    labelText: context.tr('document_name'),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
                     ),
-                    focusedBorder: OutlineInputBorder(
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: nameCtrl,
+                      decoration: InputDecoration(
+                        labelText: context.tr('document_name'),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: Color(0xFF7DD3C0), width: 2),
+                        ),
+                      ),
+                    ),
+
+                    // Image type selection (only for images)
+                    if (isImage) ...[
+                      const SizedBox(height: 16),
+                      Text(
+                        context.tr('is_this_xray'),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF333333),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                setDialogState(() {
+                                  selectedImageType = ImageType.photo;
+                                });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: selectedImageType == ImageType.photo
+                                      ? const Color(0xFFA8E6CF).withOpacity(0.3)
+                                      : Colors.grey.shade100,
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: selectedImageType == ImageType.photo
+                                        ? const Color(0xFF7DD3C0)
+                                        : Colors.grey.shade300,
+                                    width: 2,
+                                  ),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Icon(
+                                      Icons.photo_camera,
+                                      color: selectedImageType == ImageType.photo
+                                          ? const Color(0xFF7DD3C0)
+                                          : Colors.grey.shade600,
+                                      size: 32,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      context.tr('photo'),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: selectedImageType == ImageType.photo
+                                            ? const Color(0xFF7DD3C0)
+                                            : Colors.grey.shade600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                setDialogState(() {
+                                  selectedImageType = ImageType.xray;
+                                });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: selectedImageType == ImageType.xray
+                                      ? const Color(0xFFA8E6CF).withOpacity(0.3)
+                                      : Colors.grey.shade100,
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: selectedImageType == ImageType.xray
+                                        ? const Color(0xFF7DD3C0)
+                                        : Colors.grey.shade300,
+                                    width: 2,
+                                  ),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Icon(
+                                      Icons.local_hospital,
+                                      color: selectedImageType == ImageType.xray
+                                          ? const Color(0xFF7DD3C0)
+                                          : Colors.grey.shade600,
+                                      size: 32,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      context.tr('xray'),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: selectedImageType == ImageType.xray
+                                            ? const Color(0xFF7DD3C0)
+                                            : Colors.grey.shade600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(ctx).pop(null),
+                  child: Text(
+                    context.tr('cancel'),
+                    style: const TextStyle(color: Color(0xFF999999)),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.of(ctx).pop({
+                    'name': nameCtrl.text.trim(),
+                    'imageType': selectedImageType,
+                  }),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF7DD3C0),
+                    shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Color(0xFF7DD3C0), width: 2),
                     ),
                   ),
+                  child: Text(context.tr('upload')),
                 ),
               ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(null),
-              child: Text(
-                context.tr('cancel'),
-                style: const TextStyle(color: Color(0xFF999999)),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.of(ctx).pop(nameCtrl.text.trim()),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF7DD3C0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              child: Text(context.tr('upload')),
-            ),
-          ],
+            );
+          },
         );
       },
     );
@@ -750,13 +1029,40 @@ class _DocumentsPageState extends State<MyDocumentsPage>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: Text(
-                        doc.title,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            doc.title,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          if (doc.isImage && doc.imageType == ImageType.xray)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 4),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.3),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  context.tr('xray'),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
                     ),
                     IconButton(
@@ -905,6 +1211,7 @@ class _DocItem {
   final String? path;
   final Uint8List? bytes;
   final String mimeType;
+  final ImageType? imageType; // null for documents, Photo/Xray for images
 
   _DocItem({
     required this.id,
@@ -913,6 +1220,7 @@ class _DocItem {
     this.path,
     this.bytes,
     required this.mimeType,
+    this.imageType,
   });
 
   bool get isImage => mimeType.startsWith("image/");
