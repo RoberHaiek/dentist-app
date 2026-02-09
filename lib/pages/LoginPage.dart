@@ -210,7 +210,7 @@ class LoginPageState extends State<LoginPage> {
                     // Logo
                     Images.getImage("images/tooth_icon.png", 120.0, 120.0),
                     const Text(
-                      "אסנאני",
+                      "דנטק",
                       style: TextStyle(color: Colors.white, fontSize: 26.0),
                     ),
                     const SizedBox(height: 8),

@@ -309,6 +309,38 @@ class _SettingsPageState extends State<SettingsPage> {
             ]),
             const SizedBox(height: 20),
 
+            _buildSectionTitle(context.tr('medical_history'), Icons.local_hospital),
+            _buildPanel([
+              _buildSettingTile(
+                context.tr('allergies'),
+                _getMedicalInfo('allergies'),
+                Icons.warning_amber,
+                    () => _editMedicalField("allergies", context.tr('allergies'), userData?['allergies']),
+              ),
+              const Divider(height: 1),
+              _buildSettingTile(
+                context.tr('current_medications'),
+                _getMedicalInfo('medications'),
+                Icons.medication,
+                    () => _editMedicalField("medications", context.tr('current_medications'), userData?['medications']),
+              ),
+              const Divider(height: 1),
+              _buildSettingTile(
+                context.tr('chronic_conditions'),
+                _getMedicalInfo('conditions'),
+                Icons.favorite,
+                    () => _editMedicalField("conditions", context.tr('chronic_conditions'), userData?['conditions']),
+              ),
+              const Divider(height: 1),
+              _buildSettingTile(
+                context.tr('additional_medical_info'),
+                _getMedicalInfo('additionalInfo'),
+                Icons.note_add,
+                    () => _editMedicalField("additionalInfo", context.tr('additional_medical_info'), userData?['additionalInfo']),
+              ),
+            ]),
+            const SizedBox(height: 20),
+
             _buildSectionTitle(context.tr('security'), Icons.lock),
             _buildPanel([
               _buildSettingTile(
@@ -389,6 +421,67 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
     );
+  }
+
+  String _getMedicalInfo(String key) {
+    final value = userData?[key];
+    if (value == null || value.toString().isEmpty) {
+      return context.tr('none_specified');
+    }
+    return value.toString();
+  }
+
+  Future<void> _editMedicalField(String fieldKey, String fieldLabel, String? currentValue) async {
+    final controller = TextEditingController(text: currentValue ?? "");
+    final result = await showDialog<String>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Text(
+            "${context.tr('edit')} $fieldLabel",
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          content: TextField(
+            controller: controller,
+            maxLines: 3,
+            decoration: InputDecoration(
+              labelText: fieldLabel,
+              hintText: context.tr('enter_details'),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(color: Color(0xFF7DD3C0), width: 2),
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(
+                context.tr('cancel'),
+                style: const TextStyle(color: Color(0xFF999999)),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context, controller.text.trim()),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF7DD3C0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: Text(context.tr('save')),
+            ),
+          ],
+        );
+      },
+    );
+    if (result != null) {
+      await _updateField(fieldKey, result);
+    }
   }
 
   Widget _buildProfileCard() {

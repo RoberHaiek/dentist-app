@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:open_file/open_file.dart';
@@ -9,11 +10,23 @@ import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../services/LocalizationProvider.dart';
-import 'HomePage.dart';
+import '../CurrentPatient.dart';
+import 'SettingsPage.dart';
 
-enum ImageType {
-  photo,
-  xray,
+enum DocumentCategory {
+  xrays,
+  treatmentPlans,
+  beforeAfter,
+  receipts,
+  other,
+}
+
+enum XrayType {
+  panoramic,
+  periapical,
+  bitewing,
+  cbct,
+  other,
 }
 
 class MyDocumentsPage extends StatefulWidget {
@@ -23,27 +36,94 @@ class MyDocumentsPage extends StatefulWidget {
   State<MyDocumentsPage> createState() => _DocumentsPageState();
 }
 
-class _DocumentsPageState extends State<MyDocumentsPage>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+class _DocumentsPageState extends State<MyDocumentsPage> {
   final List<_DocItem> _documents = [];
-
-  // Filter state for images tab
-  String selectedImageFilter = 'all'; // 'all', 'xray', 'photo'
+  final CurrentPatient currentPatient = CurrentPatient();
+  bool loading = true;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _loadPatient();
+    _addDemoDocuments();
   }
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
+  Future<void> _addDemoDocuments() async {
+    try {
+      // Load the actual images
+      final panoramicData = await rootBundle.load('images/panoramic1.jpg');
+      final periapicalData = await rootBundle.load('images/panoramic2.jpg');
+      final bitewingData = await rootBundle.load('images/panoramic3.jpg');
+      final receiptData = await rootBundle.load('images/receipt1.png');
+      final otherData = await rootBundle.load('images/insurance1.jpg');
+
+      setState(() {
+        _documents.addAll([
+          _DocItem(
+            id: "demo_1",
+            title: "Panoramic X-ray",
+            date: DateTime(2026, 1, 15),
+            mimeType: "image/jpeg",
+            category: DocumentCategory.xrays,
+            xrayType: XrayType.panoramic,
+            bytes: panoramicData.buffer.asUint8List(), // ← This is the key!
+          ),
+          _DocItem(
+            id: "demo_2",
+            title: "Periapical - Upper Right",
+            date: DateTime(2026, 1, 20),
+            mimeType: "image/jpeg",
+            category: DocumentCategory.xrays,
+            xrayType: XrayType.periapical,
+            bytes: periapicalData.buffer.asUint8List(), // ← Real image data
+          ),
+          _DocItem(
+            id: "demo_3",
+            title: "Bitewing - Left Side",
+            date: DateTime(2025, 12, 10),
+            mimeType: "image/jpeg",
+            category: DocumentCategory.xrays,
+            xrayType: XrayType.bitewing,
+            bytes: bitewingData.buffer.asUint8List(), // ← Real image data
+          ),
+          _DocItem(
+            id: "demo_4",
+            title: "Cleaning Receipt - Jan 15.pdf",
+            date: DateTime(2026, 1, 15),
+            mimeType: "image/jpeg",
+            category: DocumentCategory.receipts,
+            bytes: receiptData.buffer.asUint8List(),
+          ),
+          _DocItem(
+            id: "demo_5",
+            title: "Root Canal Payment.pdf",
+            date: DateTime(2025, 12, 5),
+            mimeType: "image/jpeg",
+            category: DocumentCategory.receipts,
+            bytes: receiptData.buffer.asUint8List(),
+          ),
+          // Add 1 other
+          _DocItem(
+            id: "demo_6",
+            title: "Insurance Form 2026.pdf",
+            date: DateTime(2026, 1, 10),
+            mimeType: "image/jpeg",
+            category: DocumentCategory.other,
+            bytes: otherData.buffer.asUint8List(),
+          ),
+        ]);
+      });
+    } catch (e) {
+      print('Error loading demo images: $e');
+    }
   }
 
-  bool get docsExist => _documents.isNotEmpty;
+  Future<void> _loadPatient() async {
+    await currentPatient.loadFromFirestore();
+    setState(() {
+      loading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +131,7 @@ class _DocumentsPageState extends State<MyDocumentsPage>
       backgroundColor: const Color(0xFFF2EBE2),
       appBar: AppBar(
         title: Text(
-          context.tr('my_documents'),
+          context.tr('medical_files'),
           style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
@@ -68,24 +148,17 @@ class _DocumentsPageState extends State<MyDocumentsPage>
           ),
         ),
         elevation: 0,
-        bottom: TabBar(
-          controller: _tabController,
-          indicatorColor: Colors.white,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
-          labelStyle: const TextStyle(fontWeight: FontWeight.bold),
-          tabs: [
-            Tab(text: context.tr('documents')),
-            Tab(text: context.tr('images')),
+      ),
+      body: loading
+          ? const Center(child: CircularProgressIndicator(color: Color(0xFF7DD3C0)))
+          : SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            _buildCategoryList(),
+            const SizedBox(height: 80),
           ],
         ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _buildDocumentsTab(),
-          _buildImagesTab(),
-        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddOptions,
@@ -95,325 +168,269 @@ class _DocumentsPageState extends State<MyDocumentsPage>
     );
   }
 
-  Widget _buildDocumentsTab() {
-    final docs = _documents.where((d) => !d.isImage).toList();
-    if (docs.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.insert_drive_file, size: 90, color: Color(0xFFBBBBBB)),
-              const SizedBox(height: 18),
-              Text(
-                context.tr('no_documents_yet'),
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF333333),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                context.tr('tap_to_upload_document'),
-                style: const TextStyle(
-                  color: Color(0xFF999999),
-                  fontSize: 16,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: docs.length,
-      itemBuilder: (ctx, i) {
-        final d = docs[i];
-        return Container(
-          margin: const EdgeInsets.only(bottom: 12),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.08),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: ListTile(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            leading: Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                color: const Color(0xFFA8E6CF).withOpacity(0.2),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Icon(
-                Icons.insert_drive_file,
-                color: Color(0xFF7DD3C0),
-                size: 28,
-              ),
-            ),
-            title: Text(
-              d.title,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: Color(0xFF333333),
-              ),
-            ),
-            subtitle: Text(
-              _formatDate(d.date),
-              style: const TextStyle(
-                color: Color(0xFF999999),
-                fontSize: 14,
-              ),
-            ),
-            trailing: const Icon(
-              Icons.arrow_forward_ios,
-              size: 16,
-              color: Color(0xFF999999),
-            ),
-            onTap: () => _openDocumentActions(d),
-          ),
-        );
-      },
+  Widget _buildCategoryList() {
+    return Column(
+      children: DocumentCategory.values.map((category) {
+        return _buildCategoryListItem(category);
+      }).toList(),
     );
   }
 
-  Widget _buildImagesTab() {
-    // Get all images
-    final allImages = _documents.where((d) => d.isImage).toList();
+  Widget _buildCategoryListItem(DocumentCategory category) {
+    final categoryData = _getCategoryData(category);
+    final count = _getDocumentCount(category);
 
-    // Filter images based on selected filter
-    final List<_DocItem> filteredImages;
-    if (selectedImageFilter == 'xray') {
-      filteredImages = allImages.where((d) => d.imageType == ImageType.xray).toList();
-    } else if (selectedImageFilter == 'photo') {
-      filteredImages = allImages.where((d) => d.imageType == ImageType.photo).toList();
-    } else {
-      filteredImages = allImages;
-    }
-
-    return Column(
-      children: [
-        // Filter chips
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => _openCategory(category),
+          borderRadius: BorderRadius.circular(16),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
             child: Row(
               children: [
-                _buildFilterChip(
-                  label: context.tr('all'),
-                  value: 'all',
-                  count: allImages.length,
+                // Icon container
+                Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    color: categoryData['color'].withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    categoryData['icon'],
+                    color: categoryData['color'],
+                    size: 28,
+                  ),
                 ),
-                const SizedBox(width: 8),
-                _buildFilterChip(
-                  label: context.tr('xrays'),
-                  value: 'xray',
-                  count: allImages.where((d) => d.imageType == ImageType.xray).length,
+                const SizedBox(width: 16),
+                // Title and count
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        categoryData['title'],
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF333333),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        "$count ${context.tr('files')}",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(width: 8),
-                _buildFilterChip(
-                  label: context.tr('photos'),
-                  value: 'photo',
-                  count: allImages.where((d) => d.imageType == ImageType.photo).length,
+                // Arrow
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: 18,
+                  color: Colors.grey[400],
                 ),
               ],
             ),
           ),
         ),
-
-        // Images grid
-        Expanded(
-          child: filteredImages.isEmpty
-              ? Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.image, size: 90, color: Color(0xFFBBBBBB)),
-                  const SizedBox(height: 18),
-                  Text(
-                    selectedImageFilter == 'all'
-                        ? context.tr('no_images_yet')
-                        : selectedImageFilter == 'xray'
-                        ? context.tr('no_xrays_yet')
-                        : context.tr('no_photos_yet'),
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF333333),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    context.tr('tap_to_add_image'),
-                    style: const TextStyle(
-                      color: Color(0xFF999999),
-                      fontSize: 16,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-          )
-              : GridView.builder(
-            padding: const EdgeInsets.all(16),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-            ),
-            itemCount: filteredImages.length,
-            itemBuilder: (ctx, i) {
-              final d = filteredImages[i];
-              Widget thumb;
-              if (d.path != null) {
-                thumb = Image.file(File(d.path!), fit: BoxFit.cover);
-              } else if (d.bytes != null) {
-                thumb = Image.memory(d.bytes!, fit: BoxFit.cover);
-              } else {
-                thumb = const Icon(Icons.broken_image, color: Color(0xFF999999));
-              }
-              return GestureDetector(
-                onTap: () => _openDocumentActions(d),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.08),
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Stack(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: thumb,
-                      ),
-                      // Badge to show if it's an X-ray
-                      if (d.imageType == ImageType.xray)
-                        Positioned(
-                          top: 4,
-                          right: 4,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 6,
-                              vertical: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.7),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              context.tr('xray'),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildFilterChip({
-    required String label,
-    required String value,
-    required int count,
-  }) {
-    final isSelected = selectedImageFilter == value;
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedImageFilter = value;
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          gradient: isSelected
-              ? const LinearGradient(
-                  colors: [Color(0xFFA8E6CF), Color(0xFF7DD3C0)],
-                )
-              : null,
-          color: isSelected ? null : Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: isSelected ? const Color(0xFF7DD3C0) : Colors.grey.shade300,
-            width: isSelected ? 2 : 1,
-          ),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: const Color(0xFF7DD3C0).withOpacity(0.3),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ]
-              : [],
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-                color: isSelected ? Colors.white : const Color(0xFF666666),
-              ),
-            ),
-            const SizedBox(width: 4),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              decoration: BoxDecoration(
-                color: isSelected
-                    ? Colors.white.withOpacity(0.3)
-                    : const Color(0xFFA8E6CF).withOpacity(0.2),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Text(
-                count.toString(),
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: isSelected ? Colors.white : const Color(0xFF7DD3C0),
-                ),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
 
+  Map<String, dynamic> _getCategoryData(DocumentCategory category) {
+    switch (category) {
+      case DocumentCategory.xrays:
+        return {
+          'title': context.tr('xrays_scans'),
+          'icon': Icons.medical_information,
+          'color': const Color(0xFF2196F3),
+        };
+      case DocumentCategory.treatmentPlans:
+        return {
+          'title': context.tr('treatment_plans'),
+          'icon': Icons.assignment,
+          'color': const Color(0xFF7DD3C0),
+        };
+      case DocumentCategory.beforeAfter:
+        return {
+          'title': context.tr('before_after'),
+          'icon': Icons.compare,
+          'color': const Color(0xFF9C27B0),
+        };
+      case DocumentCategory.receipts:
+        return {
+          'title': context.tr('receipts'),
+          'icon': Icons.receipt_long,
+          'color': const Color(0xFFFF9800),
+        };
+      case DocumentCategory.other:
+        return {
+          'title': context.tr('other_documents'),
+          'icon': Icons.folder,
+          'color': const Color(0xFF607D8B),
+        };
+    }
+  }
+
+  int _getDocumentCount(DocumentCategory category) {
+    return _documents.where((doc) => doc.category == category).length;
+  }
+
+  void _openCategory(DocumentCategory category) {
+    final categoryDocs = _documents.where((doc) => doc.category == category).toList();
+    final categoryData = _getCategoryData(category);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => _CategoryViewPage(
+          category: category,
+          categoryTitle: categoryData['title'],
+          categoryColor: categoryData['color'],
+          documents: categoryDocs,
+          onDocumentAction: (doc, action) => _handleDocumentAction(doc, action),
+          onAddDocument: () => _showAddOptionsForCategory(category),
+        ),
+      ),
+    ).then((_) => setState(() {}));
+  }
+
   Future<void> _showAddOptions() async {
-    showModalBottomSheet(
+    final category = await showModalBottomSheet<DocumentCategory>(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                context.tr('select_category'),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF333333),
+                ),
+              ),
+              const SizedBox(height: 20),
+              ...DocumentCategory.values.map((cat) {
+                final data = _getCategoryData(cat);
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () => Navigator.pop(ctx, cat),
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey[300]!),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: data['color'].withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Icon(data['icon'], color: data['color']),
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              data['title'],
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    if (category != null) {
+      _showUploadOptions(category);
+    }
+  }
+
+  Future<void> _showAddOptionsForCategory(DocumentCategory category) async {
+    _showUploadOptions(category);
+  }
+
+  Future<void> _showUploadOptions(DocumentCategory category) async {
+    // If xrays, also ask for xray type
+    XrayType? xrayType;
+    if (category == DocumentCategory.xrays) {
+      xrayType = await showModalBottomSheet<XrayType>(
+        context: context,
+        backgroundColor: Colors.white,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        builder: (ctx) => SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  context.tr('select_xray_type'),
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF333333),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ...XrayType.values.map((type) {
+                  return ListTile(
+                    title: Text(_getXrayTypeName(type)),
+                    onTap: () => Navigator.pop(ctx, type),
+                  );
+                }),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      if (xrayType == null) return; // User cancelled
+    }
+
+    final source = await showModalBottomSheet<String>(
       context: context,
       backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
@@ -431,19 +448,13 @@ class _DocumentsPageState extends State<MyDocumentsPage>
                     color: const Color(0xFFA8E6CF).withOpacity(0.2),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Icon(
-                    Icons.insert_drive_file,
-                    color: Color(0xFF7DD3C0),
-                  ),
+                  child: const Icon(Icons.camera_alt, color: Color(0xFF7DD3C0)),
                 ),
                 title: Text(
-                  context.tr('upload_document'),
+                  context.tr('take_photo'),
                   style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
-                onTap: () {
-                  Navigator.pop(ctx);
-                  _addDocumentFromFilePicker();
-                },
+                onTap: () => Navigator.pop(ctx, 'camera'),
               ),
               ListTile(
                 leading: Container(
@@ -452,28 +463,43 @@ class _DocumentsPageState extends State<MyDocumentsPage>
                     color: const Color(0xFFA8E6CF).withOpacity(0.2),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Icon(
-                    Icons.camera_alt,
-                    color: Color(0xFF7DD3C0),
-                  ),
+                  child: const Icon(Icons.insert_drive_file, color: Color(0xFF7DD3C0)),
                 ),
                 title: Text(
-                  context.tr('take_photo'),
+                  context.tr('upload_file'),
                   style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
-                onTap: () {
-                  Navigator.pop(ctx);
-                  _addDocumentFromCamera();
-                },
+                onTap: () => Navigator.pop(ctx, 'file'),
               ),
             ],
           ),
         ),
       ),
     );
+
+    if (source == 'camera') {
+      await _addDocumentFromCamera(category, xrayType: xrayType);
+    } else if (source == 'file') {
+      await _addDocumentFromFilePicker(category, xrayType: xrayType);
+    }
   }
 
-  Future<void> _addDocumentFromFilePicker() async {
+  String _getXrayTypeName(XrayType type) {
+    switch (type) {
+      case XrayType.panoramic:
+        return context.tr('panoramic');
+      case XrayType.periapical:
+        return context.tr('periapical');
+      case XrayType.bitewing:
+        return context.tr('bitewing');
+      case XrayType.cbct:
+        return context.tr('cbct');
+      case XrayType.other:
+        return context.tr('other');
+    }
+  }
+
+  Future<void> _addDocumentFromFilePicker(DocumentCategory category, {XrayType? xrayType}) async {
     final result = await FilePicker.platform.pickFiles(withData: true);
     if (result != null && result.files.isNotEmpty) {
       final f = result.files.first;
@@ -481,368 +507,314 @@ class _DocumentsPageState extends State<MyDocumentsPage>
       final bytes = f.bytes;
       final path = f.path;
       final mimeType = lookupMimeType(path ?? name) ?? "application/octet-stream";
-      final isImage = mimeType.startsWith("image/");
 
-      final uploadData = await _showPreviewAndAskUpload(
+      final newName = await _showPreviewAndAskUpload(
         titleSuggestion: name,
         previewPath: path,
         previewBytes: bytes,
-        isImage: isImage,
+        isImage: mimeType.startsWith("image/"),
       );
-
-      if (uploadData == null || uploadData['name'] == null || uploadData['name'].isEmpty) return;
+      if (newName == null || newName.isEmpty) return;
 
       setState(() {
         _documents.insert(
           0,
           _DocItem(
             id: DateTime.now().millisecondsSinceEpoch.toString(),
-            title: uploadData['name'],
+            title: newName,
             date: DateTime.now(),
             path: path,
             bytes: bytes,
             mimeType: mimeType,
-            imageType: uploadData['imageType'],
+            category: category,
+            xrayType: xrayType,
           ),
         );
       });
+
+      // Navigate to the category after adding
+      _openCategory(category);
     }
   }
 
-  Future<void> _addDocumentFromCamera() async {
+  Future<void> _addDocumentFromCamera(DocumentCategory category, {XrayType? xrayType}) async {
     final picked = await ImagePicker().pickImage(source: ImageSource.camera);
     if (picked != null) {
       final path = picked.path;
       final bytes = await picked.readAsBytes();
       final mimeType = lookupMimeType(path) ?? "image/jpeg";
 
-      final uploadData = await _showPreviewAndAskUpload(
-        titleSuggestion: "photo.jpg",
+      final newName = await _showPreviewAndAskUpload(
+        titleSuggestion: "photo_${DateTime.now().millisecondsSinceEpoch}.jpg",
         previewPath: path,
         previewBytes: bytes,
         isImage: true,
       );
-
-      if (uploadData == null || uploadData['name'] == null || uploadData['name'].isEmpty) return;
+      if (newName == null || newName.isEmpty) return;
 
       setState(() {
         _documents.insert(
           0,
           _DocItem(
             id: DateTime.now().millisecondsSinceEpoch.toString(),
-            title: uploadData['name'],
+            title: newName,
             date: DateTime.now(),
             path: path,
             bytes: bytes,
             mimeType: mimeType,
-            imageType: uploadData['imageType'],
+            category: category,
+            xrayType: xrayType,
           ),
         );
       });
+
+      // Navigate to the category after adding
+      _openCategory(category);
     }
   }
 
-  Future<Map<String, dynamic>?> _showPreviewAndAskUpload({
+  Future<String?> _showPreviewAndAskUpload({
     required String titleSuggestion,
     String? previewPath,
     Uint8List? previewBytes,
     required bool isImage,
   }) async {
     final TextEditingController nameCtrl = TextEditingController(text: titleSuggestion);
-    ImageType? selectedImageType = isImage ? ImageType.photo : null;
 
-    return showDialog<Map<String, dynamic>?>(
+    return showDialog<String?>(
       context: context,
       builder: (ctx) {
-        return StatefulBuilder(
-          builder: (context, setDialogState) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-              title: Text(
-                context.tr('preview_and_name'),
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              content: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF2EBE2),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: const EdgeInsets.all(16),
-                      child: isImage && (previewPath != null || previewBytes != null)
-                          ? SizedBox(
-                              height: 180,
-                              child: previewPath != null
-                                  ? Image.file(File(previewPath), fit: BoxFit.contain)
-                                  : Image.memory(previewBytes!, fit: BoxFit.contain),
-                            )
-                          : Column(
-                              children: [
-                                const Icon(Icons.insert_drive_file, size: 80, color: Color(0xFF7DD3C0)),
-                                const SizedBox(height: 8),
-                                Text(
-                                  context.tr('preview_not_available'),
-                                  style: const TextStyle(color: Color(0xFF999999)),
-                                ),
-                              ],
-                            ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: nameCtrl,
-                      decoration: InputDecoration(
-                        labelText: context.tr('document_name'),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Color(0xFF7DD3C0), width: 2),
-                        ),
-                      ),
-                    ),
-
-                    // Image type selection (only for images)
-                    if (isImage) ...[
-                      const SizedBox(height: 16),
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Text(
+            context.tr('preview_and_name'),
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF2EBE2),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: const EdgeInsets.all(16),
+                  child: isImage && (previewPath != null || previewBytes != null)
+                      ? SizedBox(
+                    height: 180,
+                    child: previewPath != null
+                        ? Image.file(File(previewPath), fit: BoxFit.contain)
+                        : Image.memory(previewBytes!, fit: BoxFit.contain),
+                  )
+                      : Column(
+                    children: [
+                      const Icon(Icons.insert_drive_file, size: 80, color: Color(0xFF7DD3C0)),
+                      const SizedBox(height: 8),
                       Text(
-                        context.tr('is_this_xray'),
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF333333),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                setDialogState(() {
-                                  selectedImageType = ImageType.photo;
-                                });
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  color: selectedImageType == ImageType.photo
-                                      ? const Color(0xFFA8E6CF).withOpacity(0.3)
-                                      : Colors.grey.shade100,
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: selectedImageType == ImageType.photo
-                                        ? const Color(0xFF7DD3C0)
-                                        : Colors.grey.shade300,
-                                    width: 2,
-                                  ),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Icon(
-                                      Icons.photo_camera,
-                                      color: selectedImageType == ImageType.photo
-                                          ? const Color(0xFF7DD3C0)
-                                          : Colors.grey.shade600,
-                                      size: 32,
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      context.tr('photo'),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: selectedImageType == ImageType.photo
-                                            ? const Color(0xFF7DD3C0)
-                                            : Colors.grey.shade600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                setDialogState(() {
-                                  selectedImageType = ImageType.xray;
-                                });
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  color: selectedImageType == ImageType.xray
-                                      ? const Color(0xFFA8E6CF).withOpacity(0.3)
-                                      : Colors.grey.shade100,
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: selectedImageType == ImageType.xray
-                                        ? const Color(0xFF7DD3C0)
-                                        : Colors.grey.shade300,
-                                    width: 2,
-                                  ),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Icon(
-                                      Icons.local_hospital,
-                                      color: selectedImageType == ImageType.xray
-                                          ? const Color(0xFF7DD3C0)
-                                          : Colors.grey.shade600,
-                                      size: 32,
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      context.tr('xray'),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: selectedImageType == ImageType.xray
-                                            ? const Color(0xFF7DD3C0)
-                                            : Colors.grey.shade600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                        context.tr('preview_not_available'),
+                        style: const TextStyle(color: Color(0xFF999999)),
                       ),
                     ],
-                  ],
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(ctx).pop(null),
-                  child: Text(
-                    context.tr('cancel'),
-                    style: const TextStyle(color: Color(0xFF999999)),
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () => Navigator.of(ctx).pop({
-                    'name': nameCtrl.text.trim(),
-                    'imageType': selectedImageType,
-                  }),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF7DD3C0),
-                    shape: RoundedRectangleBorder(
+                const SizedBox(height: 16),
+                TextField(
+                  controller: nameCtrl,
+                  decoration: InputDecoration(
+                    labelText: context.tr('document_name'),
+                    border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: Color(0xFF7DD3C0), width: 2),
+                    ),
                   ),
-                  child: Text(context.tr('upload')),
                 ),
               ],
-            );
-          },
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(null),
+              child: Text(
+                context.tr('cancel'),
+                style: const TextStyle(color: Color(0xFF999999)),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(ctx).pop(nameCtrl.text.trim()),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF7DD3C0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: Text(context.tr('upload')),
+            ),
+          ],
         );
       },
     );
   }
 
-  Future<void> _openDocumentActions(_DocItem doc) async {
-    showModalBottomSheet(
+  void _handleDocumentAction(_DocItem doc, String action) {
+    switch (action) {
+      case 'view':
+        _viewDocument(doc);
+        break;
+      case 'share':
+        _shareDocument(doc);
+        break;
+      case 'download':
+        _downloadDocument(doc);
+        break;
+      case 'delete':
+        _confirmDelete(doc);
+        break;
+    }
+  }
+
+  Future<void> _viewDocument(_DocItem doc) async {
+    await showDialog(
       context: context,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (ctx) => SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Wrap(
+      builder: (ctx) => Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: MediaQuery.of(ctx).size.height * 0.8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              ListTile(
-                leading: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFA8E6CF).withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(8),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Color(0xFFA8E6CF), Color(0xFF7DD3C0)],
                   ),
-                  child: const Icon(
-                    Icons.visibility,
-                    color: Color(0xFF7DD3C0),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
                   ),
                 ),
-                title: Text(
-                  context.tr('view'),
-                  style: const TextStyle(fontWeight: FontWeight.w600),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        doc.title,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close, color: Colors.white),
+                      onPressed: () => Navigator.of(ctx).pop(),
+                    ),
+                  ],
                 ),
-                onTap: () {
-                  Navigator.pop(ctx);
-                  _viewDocument(doc);
-                },
               ),
-              ListTile(
-                leading: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFA8E6CF).withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Icon(
-                    Icons.share,
-                    color: Color(0xFF7DD3C0),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: doc.isImage
+                        ? (doc.path != null
+                        ? Image.file(File(doc.path!), fit: BoxFit.contain)
+                        : doc.bytes != null
+                        ? Image.memory(doc.bytes!, fit: BoxFit.contain)
+                        : const Icon(Icons.broken_image, size: 80))
+                        : Column(
+                      children: [
+                        const SizedBox(height: 20),
+                        Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFA8E6CF).withOpacity(0.2),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.insert_drive_file,
+                            size: 80,
+                            color: Color(0xFF7DD3C0),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        Text(
+                          doc.title,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF333333),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 12),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF2EBE2),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            _getFileExtension(doc.title).toUpperCase(),
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF7DD3C0),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          _formatDate(doc.date),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Color(0xFF999999),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        Text(
+                          context.tr('cannot_preview_document'),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Color(0xFF666666),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          context.tr('can_download_and_open'),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Color(0xFF999999),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 24),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.of(ctx).pop();
+                            _openInExternalApp(doc);
+                          },
+                          icon: const Icon(Icons.open_in_new),
+                          label: Text(context.tr('open_document')),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF7DD3C0),
+                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
                   ),
                 ),
-                title: Text(
-                  context.tr('share'),
-                  style: const TextStyle(fontWeight: FontWeight.w600),
-                ),
-                onTap: () {
-                  Navigator.pop(ctx);
-                  _shareDocument(doc);
-                },
-              ),
-              ListTile(
-                leading: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFA8E6CF).withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Icon(
-                    Icons.download,
-                    color: Color(0xFF7DD3C0),
-                  ),
-                ),
-                title: Text(
-                  context.tr('download'),
-                  style: const TextStyle(fontWeight: FontWeight.w600),
-                ),
-                onTap: () {
-                  Navigator.pop(ctx);
-                  _downloadDocument(doc);
-                },
-              ),
-              ListTile(
-                leading: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFF8B94).withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Icon(
-                    Icons.delete,
-                    color: Color(0xFFFF6B6B),
-                  ),
-                ),
-                title: Text(
-                  context.tr('delete'),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFFFF6B6B),
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pop(ctx);
-                  _confirmDelete(doc);
-                },
               ),
             ],
           ),
@@ -864,7 +836,6 @@ class _DocumentsPageState extends State<MyDocumentsPage>
           );
         }
       } else if (doc.bytes != null) {
-        // Save bytes to temp file and open
         final tempDir = await getTemporaryDirectory();
         final tempFile = File('${tempDir.path}/${doc.title}');
         await tempFile.writeAsBytes(doc.bytes!);
@@ -893,7 +864,6 @@ class _DocumentsPageState extends State<MyDocumentsPage>
       if (doc.path != null) {
         await Share.shareXFiles([XFile(doc.path!)], text: doc.title);
       } else if (doc.bytes != null) {
-        // Save bytes to temp file and share
         final tempDir = await getTemporaryDirectory();
         final tempFile = File('${tempDir.path}/${doc.title}');
         await tempFile.writeAsBytes(doc.bytes!);
@@ -911,7 +881,6 @@ class _DocumentsPageState extends State<MyDocumentsPage>
 
   Future<void> _downloadDocument(_DocItem doc) async {
     try {
-      // For mobile, "download" typically means save to Downloads folder
       final directory = await getExternalStorageDirectory();
       if (directory == null) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -923,7 +892,6 @@ class _DocumentsPageState extends State<MyDocumentsPage>
         return;
       }
 
-      // Navigate to Downloads folder (parent directories)
       final downloadsPath = directory.path.split('Android')[0] + 'Download';
       final downloadsDir = Directory(downloadsPath);
 
@@ -1003,186 +971,6 @@ class _DocumentsPageState extends State<MyDocumentsPage>
     }
   }
 
-  Future<void> _viewDocument(_DocItem doc) async {
-    await showDialog(
-      context: context,
-      builder: (ctx) => Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: MediaQuery.of(ctx).size.height * 0.8),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Header
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Color(0xFFA8E6CF), Color(0xFF7DD3C0)],
-                  ),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            doc.title,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          ),
-                          if (doc.isImage && doc.imageType == ImageType.xray)
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.3),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  context.tr('xray'),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.close, color: Colors.white),
-                      onPressed: () => Navigator.of(ctx).pop(),
-                    ),
-                  ],
-                ),
-              ),
-              // Content
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: doc.isImage
-                        ? (doc.path != null
-                            ? Image.file(File(doc.path!), fit: BoxFit.contain)
-                            : Image.memory(doc.bytes!, fit: BoxFit.contain))
-                        : Column(
-                            children: [
-                              const SizedBox(height: 20),
-                              Container(
-                                padding: const EdgeInsets.all(20),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFA8E6CF).withOpacity(0.2),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.insert_drive_file,
-                                  size: 80,
-                                  color: Color(0xFF7DD3C0),
-                                ),
-                              ),
-                              const SizedBox(height: 24),
-                              Text(
-                                doc.title,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF333333),
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 12),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 8,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFF2EBE2),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Text(
-                                  _getFileExtension(doc.title).toUpperCase(),
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF7DD3C0),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                _formatDate(doc.date),
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xFF999999),
-                                ),
-                              ),
-                              const SizedBox(height: 24),
-                              Text(
-                                context.tr('cannot_preview_document'),
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xFF666666),
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                context.tr('can_download_and_open'),
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xFF999999),
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 24),
-                              ElevatedButton.icon(
-                                onPressed: () {
-                                  Navigator.of(ctx).pop();
-                                  _openInExternalApp(doc);
-                                },
-                                icon: const Icon(Icons.open_in_new),
-                                label: Text(context.tr('open_document')),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF7DD3C0),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 24,
-                                    vertical: 12,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                            ],
-                          ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   String _getFileExtension(String filename) {
     final parts = filename.split('.');
     return parts.length > 1 ? parts.last : 'file';
@@ -1204,6 +992,289 @@ class _DocumentsPageState extends State<MyDocumentsPage>
   }
 }
 
+// Category View Page with Filter for X-rays
+class _CategoryViewPage extends StatefulWidget {
+  final DocumentCategory category;
+  final String categoryTitle;
+  final Color categoryColor;
+  final List<_DocItem> documents;
+  final Function(_DocItem, String) onDocumentAction;
+  final VoidCallback onAddDocument;
+
+  const _CategoryViewPage({
+    required this.category,
+    required this.categoryTitle,
+    required this.categoryColor,
+    required this.documents,
+    required this.onDocumentAction,
+    required this.onAddDocument,
+  });
+
+  @override
+  State<_CategoryViewPage> createState() => _CategoryViewPageState();
+}
+
+class _CategoryViewPageState extends State<_CategoryViewPage> with SingleTickerProviderStateMixin {
+  TabController? _tabController;
+  XrayType? _selectedFilter;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.category == DocumentCategory.xrays) {
+      _tabController = TabController(length: XrayType.values.length + 1, vsync: this);
+    }
+  }
+
+  @override
+  void dispose() {
+    _tabController?.dispose();
+    super.dispose();
+  }
+
+  List<_DocItem> _getFilteredDocuments() {
+    if (widget.category != DocumentCategory.xrays || _selectedFilter == null) {
+      return widget.documents;
+    }
+    return widget.documents.where((doc) => doc.xrayType == _selectedFilter).toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final filteredDocs = _getFilteredDocuments();
+
+    return Scaffold(
+      backgroundColor: const Color(0xFFF2EBE2),
+      appBar: AppBar(
+        title: Text(
+          widget.categoryTitle,
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [widget.categoryColor.withOpacity(0.8), widget.categoryColor],
+            ),
+          ),
+        ),
+        elevation: 0,
+        bottom: widget.category == DocumentCategory.xrays && _tabController != null
+            ? TabBar(
+          controller: _tabController,
+          isScrollable: true,
+          indicatorColor: Colors.white,
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.white70,
+          onTap: (index) {
+            setState(() {
+              if (index == 0) {
+                _selectedFilter = null;
+              } else {
+                _selectedFilter = XrayType.values[index - 1];
+              }
+            });
+          },
+          tabs: [
+            Tab(text: context.tr('all')),
+            ...XrayType.values.map((type) => Tab(text: _getXrayTypeName(type))),
+          ],
+        )
+            : null,
+      ),
+      body: filteredDocs.isEmpty
+          ? Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.folder_open, size: 80, color: Colors.grey[400]),
+              const SizedBox(height: 16),
+              Text(
+                context.tr('no_documents_in_category'),
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.grey[600],
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      )
+          : ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: filteredDocs.length,
+        itemBuilder: (ctx, i) {
+          final doc = filteredDocs[i];
+          return Container(
+            margin: const EdgeInsets.only(bottom: 12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.08),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              leading: doc.isImage && (doc.path != null || doc.bytes != null)
+                  ? ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: doc.path != null
+                      ? Image.file(File(doc.path!), fit: BoxFit.cover)
+                      : doc.bytes != null
+                      ? Image.memory(doc.bytes!, fit: BoxFit.cover)
+                      : const Icon(Icons.broken_image),
+                ),
+              )
+                  : Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: widget.categoryColor.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  Icons.insert_drive_file,
+                  color: widget.categoryColor,
+                  size: 28,
+                ),
+              ),
+              title: Text(
+                doc.title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Color(0xFF333333),
+                ),
+              ),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _formatDate(doc.date),
+                    style: const TextStyle(
+                      color: Color(0xFF999999),
+                      fontSize: 14,
+                    ),
+                  ),
+                  if (doc.xrayType != null)
+                    Container(
+                      margin: const EdgeInsets.only(top: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: widget.categoryColor.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        _getXrayTypeName(doc.xrayType!),
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: widget.categoryColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+              trailing: PopupMenuButton<String>(
+                icon: const Icon(Icons.more_vert, color: Color(0xFF999999)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                onSelected: (action) => widget.onDocumentAction(doc, action),
+                itemBuilder: (ctx) => [
+                  PopupMenuItem(
+                    value: 'view',
+                    child: Row(
+                      children: [
+                        const Icon(Icons.visibility, color: Color(0xFF7DD3C0)),
+                        const SizedBox(width: 12),
+                        Text(context.tr('view')),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 'share',
+                    child: Row(
+                      children: [
+                        const Icon(Icons.share, color: Color(0xFF7DD3C0)),
+                        const SizedBox(width: 12),
+                        Text(context.tr('share')),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 'download',
+                    child: Row(
+                      children: [
+                        const Icon(Icons.download, color: Color(0xFF7DD3C0)),
+                        const SizedBox(width: 12),
+                        Text(context.tr('download')),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 'delete',
+                    child: Row(
+                      children: [
+                        const Icon(Icons.delete, color: Color(0xFFFF6B6B)),
+                        const SizedBox(width: 12),
+                        Text(
+                          context.tr('delete'),
+                          style: const TextStyle(color: Color(0xFFFF6B6B)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              onTap: () => widget.onDocumentAction(doc, 'view'),
+            ),
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: widget.onAddDocument,
+        backgroundColor: widget.categoryColor,
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
+    );
+  }
+
+  String _getXrayTypeName(XrayType type) {
+    switch (type) {
+      case XrayType.panoramic:
+        return context.tr('panoramic');
+      case XrayType.periapical:
+        return context.tr('periapical');
+      case XrayType.bitewing:
+        return context.tr('bitewing');
+      case XrayType.cbct:
+        return context.tr('cbct');
+      case XrayType.other:
+        return context.tr('other');
+    }
+  }
+
+  String _formatDate(DateTime date) {
+    return "${date.day}/${date.month}/${date.year}";
+  }
+}
+
+// Document Item Model
 class _DocItem {
   final String id;
   final String title;
@@ -1211,7 +1282,8 @@ class _DocItem {
   final String? path;
   final Uint8List? bytes;
   final String mimeType;
-  final ImageType? imageType; // null for documents, Photo/Xray for images
+  final DocumentCategory category;
+  final XrayType? xrayType;
 
   _DocItem({
     required this.id,
@@ -1220,7 +1292,8 @@ class _DocItem {
     this.path,
     this.bytes,
     required this.mimeType,
-    this.imageType,
+    required this.category,
+    this.xrayType,
   });
 
   bool get isImage => mimeType.startsWith("image/");

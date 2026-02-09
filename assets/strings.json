@@ -626,7 +626,7 @@
   },
   "active_deals": {
     "en": "Active deals",
-    "ar": "عروض نشطة",
+    "ar": "عروض متاحة",
     "he": "הטבות פעילות"
   },
   "appointments": {
@@ -642,7 +642,132 @@
   "contact_clinic": {
     "en": "Contact Clinic",
     "ar": "اتصل بالعيادة",
-    "he": "צור קשר"
+    "he": "פנייה למרפאה"
+  },
+  "medical_history": {
+    "en": "Medical History",
+    "ar": "التاريخ الطبي",
+    "he": "היסטוריה רפואית"
+  },
+  "allergies": {
+    "en": "Allergies",
+    "ar": "الحساسية",
+    "he": "אלרגיות"
+  },
+  "current_medications": {
+    "en": "Current Medications",
+    "ar": "الأدوية الحالية",
+    "he": "תרופות נוכחיות"
+  },
+  "chronic_conditions": {
+    "en": "Chronic Conditions",
+    "ar": "الحالات المزمنة",
+    "he": "מחלות כרוניות"
+  },
+  "additional_medical_info": {
+    "en": "Additional Medical Info",
+    "ar": "معلومات طبية إضافية",
+    "he": "מידע רפואי נוסף"
+  },
+  "none_specified": {
+    "en": "None specified",
+    "ar": "لم يتم التحديد",
+    "he": "לא צוין"
+  },
+  "enter_details": {
+    "en": "Enter details",
+    "ar": "أدخل التفاصيل",
+    "he": "הזן פרטים"
+  },
+  "medical_files": {
+    "en": "Medical Files",
+    "ar": "الملفات الطبية",
+    "he": "תיקים רפואיים"
+  },
+  "medical_summary": {
+    "en": "Medical Summary",
+    "ar": "ملخص طبي",
+    "he": "סיכום רפואי"
+  },
+  "no_medical_concerns": {
+    "en": "No medical concerns reported",
+    "ar": "لم يتم الإبلاغ عن مشاكل طبية",
+    "he": "לא דווחו בעיות רפואיות"
+  },
+  "xrays_scans": {
+    "en": "X-rays & Scans",
+    "ar": "الأشعة السينية والفحوصات",
+    "he": "צילומי רנטגן וסריקות"
+  },
+  "treatment_plans": {
+    "en": "Treatment Plans",
+    "ar": "خطط العلاج",
+    "he": "תוכניות טיפול"
+  },
+  "before_after": {
+    "en": "Before/After",
+    "ar": "قبل/بعد",
+    "he": "לפני/אחרי"
+  },
+  "receipts": {
+    "en": "Receipts",
+    "ar": "إيصالات",
+    "he": "קבלות"
+  },
+  "other_documents": {
+    "en": "Other Documents",
+    "ar": "مستندات أخرى",
+    "he": "מסמכים אחרים"
+  },
+  "files": {
+    "en": "files",
+    "ar": "ملفات",
+    "he": "קבצים"
+  },
+  "all": {
+    "en": "All",
+    "ar": "الكل",
+    "he": "הכל"
+  },
+  "select_xray_type": {
+    "en": "Select X-ray Type",
+    "ar": "اختر نوع الأشعة السينية",
+    "he": "בחר סוג צילום"
+  },
+  "panoramic": {
+    "en": "Panoramic",
+    "ar": "بانورامي",
+    "he": "פנורמי"
+  },
+  "periapical": {
+    "en": "Periapical",
+    "ar": "حول القمة",
+    "he": "פריאפיקלי"
+  },
+  "bitewing": {
+    "en": "Bitewing",
+    "ar": "جناح العضة",
+    "he": "בייטווינג"
+  },
+  "cbct": {
+    "en": "CBCT/3D Scan",
+    "ar": "مسح ثلاثي الأبعاد",
+    "he": "סריקת CBCT/תלת מימד"
+  },
+  "select_category": {
+    "en": "Select Category",
+    "ar": "اختر الفئة",
+    "he": "בחר קטגוריה"
+  },
+  "upload_file": {
+    "en": "Upload File",
+    "ar": "تحميل ملف",
+    "he": "העלה קובץ"
+  },
+  "no_documents_in_category": {
+    "en": "No documents in this category yet",
+    "ar": "لا توجد مستندات في هذه الفئة حتى الآن",
+    "he": "אין מסמכים בקטגוריה זו עדיין"
   },
   "get_in_touch": {
     "en": "Get in touch",
@@ -749,10 +874,20 @@
     "ar": "ملفي الطبي",
     "he": "התיק הרפואי שלי"
   },
-  "see_medical_record": {
-    "en": "See your medical record",
-    "ar": "انظر لملفي الطبي",
-    "he": "צפה בתיק הרפואי שלי"
+  "special_discounts": {
+    "en": "Special discounts",
+    "ar": "خصومات خاصة",
+    "he": "הטבות מיוחדות"
+  },
+  "clinic_deals": {
+    "en": "Clinic deals",
+    "ar": "عروض العيادة",
+    "he": "מבצעי המרפאה"
+  },
+  "view_documents": {
+    "en": "View documents",
+    "ar": "عرض المستندات",
+    "he": "צפייה במסמכים"
   },
   "open_now": {
     "en": "Open Now",
@@ -803,11 +938,6 @@
     "en": "Our Services",
     "ar": "خدماتنا",
     "he": "השירותים שלנו"
-  },
-  "photos": {
-    "en": "Photos",
-    "ar": "الصور",
-    "he": "תמונות"
   },
   "photo": {
     "en": "Photo",
@@ -1019,11 +1149,6 @@
     "en": "Precise treatment planning",
     "ar": "تخطيط علاجي دقيق",
     "he": "אסתטיקה "
-  },
-  "botox": {
-    "en": "Precise treatment planning",
-    "ar": "تخطيط علاجي دقيق",
-    "he": "בוטוקס"
   },
   "laser_dentistry": {
     "en": "Laser Dentistry",
@@ -1546,14 +1671,14 @@
     "he": "השפה שונתה בהצלחה"
   },
   "terms_content": {
-    "en": "Terms and conditions will be displayed here. This section will include all legal terms, user agreements, and conditions for using the Asnani dental app.",
-    "ar": "سيتم عرض الشروط والأحكام هنا. سيتضمن هذا القسم جميع الشروط القانونية واتفاقيات المستخدم وشروط استخدام تطبيق أسناني.",
-    "he": "התנאים וההגבלות יוצגו כאן. קטע זה יכלול את כל התנאים המשפטיים, הסכמי משתמש ותנאים לשימוש באפליקציית אסנאני."
+    "en": "Terms and conditions will be displayed here. This section will include all legal terms, user agreements, and conditions for using the DenTech dental app.",
+    "ar": "سيتم عرض الشروط والأحكام هنا. سيتضمن هذا القسم جميع الشروط القانونية واتفاقيات المستخدم وشروط استخدام تطبيق دنتيك.",
+    "he": "התנאים וההגבלות יוצגו כאן. קטע זה יכלול את כל התנאים המשפטיים, הסכמי משתמש ותנאים לשימוש באפליקציית דנטק."
   },
   "privacy_content": {
-    "en": "Privacy policy information will be displayed here. This section will detail how user data is collected, stored, and protected in the Asnani dental app.",
-    "ar": "سيتم عرض معلومات سياسة الخصوصية هنا. سيوضح هذا القسم كيفية جمع بيانات المستخدم وتخزينها وحمايتها في تطبيق أسناني.",
-    "he": "מידע על מדיניות הפרטיות יוצג כאן. קטע זה יפרט כיצד נאספים, מאוחסנים ומוגנים נתוני משתמש באפליקציית אסנאני."
+    "en": "Privacy policy information will be displayed here. This section will detail how user data is collected, stored, and protected in the DenTech dental app.",
+    "ar": "سيتم عرض معلومات سياسة الخصوصية هنا. سيوضح هذا القسم كيفية جمع بيانات المستخدم وتخزينها وحمايتها في تطبيق دنتيك.",
+    "he": "מידע על מדיניות הפרטיות יוצג כאן. קטע זה יפרט כיצד נאספים, מאוחסנים ומוגנים נתוני משתמש באפליקציית דנטק."
   },
   "relative": {
     "en": "relative",

@@ -9,6 +9,10 @@ class CurrentPatient {
   String firstName = "";
   String lastName = "";
   String email = "";
+  String allergies = "";
+  String medications = "";
+  String conditions = "";
+  String additionalInfo = "";
 
   bool _loaded = false;
 
@@ -27,6 +31,13 @@ class CurrentPatient {
         firstName = userDoc.data()?['firstName'] ?? "";
         lastName = userDoc.data()?['lastName'] ?? "";
         email = userDoc.data()?['email'] ?? "";
+
+        // Load medical fields
+        allergies = userDoc.data()?['allergies'] ?? "";
+        medications = userDoc.data()?['medications'] ?? "";
+        conditions = userDoc.data()?['conditions'] ?? "";
+        additionalInfo = userDoc.data()?['additionalInfo'] ?? "";
+
         _loaded = true;
       }
     } catch (e) {

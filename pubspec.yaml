@@ -85,8 +85,19 @@ flutter:
     - images/dentist_icon.png
     - images/login_wallpaper.png
     - images/asnani_app_icon.png
+    - images/discount.jpg
+    - images/coupon.png
+    - images/medical_record.png
     - images/barcode.png
     - images/coupons/colgate_toothpaste.jpg
+    - images/tooth_cleaning.jpg
+    - images/botox.jpg
+    - images/insurance1.jpg
+    - images/panoramic1.jpg
+    - images/panoramic2.jpg
+    - images/panoramic3.jpg
+    - images/receipt1.png
+    - images/esthetica.png
     - images/coupons/electric_toothbrush.jpg
     - images/waze_icon.jpg
     - images/clients/alfred/clinic_logo.jpg

@@ -1,52 +1,54 @@
 import 'package:flutter/material.dart';
 import '../Images.dart';
 import '../services/LocalizationProvider.dart';
+import 'BookAppointmentPage.dart';
 import 'HomePage.dart';
 
-class CouponPage extends StatefulWidget {
-  const CouponPage({super.key});
+class ClinicDealsPage extends StatefulWidget {
+  const ClinicDealsPage({super.key});
 
   @override
-  State<CouponPage> createState() => _CouponPageState();
+  State<ClinicDealsPage> createState() => _ClinicDealsPageState();
 }
 
-class _CouponPageState extends State<CouponPage> with SingleTickerProviderStateMixin {
+class _ClinicDealsPageState extends State<ClinicDealsPage> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   // Sample data - replace with your actual data source
   final List<Coupon> availableCoupons = [
     Coupon(
       id: "1",
-      serviceName: "משחת שיניים קולגייט",
+      serviceName: "ניקוי אבנית",
       discount: "20%",
       expirationDate: DateTime(2025, 12, 31),
       terms: "תקף למשחת שיניים קולגייט רגילה בלבד. לא ניתן לשלב עם מבצעים אחרים.",
       discountType: DiscountType.percentage,
-      imagePath: "images/coupons/colgate_toothpaste.jpg",
+      imagePath: "images/tooth_cleaning.jpg",
     ),
     Coupon(
       id: "2",
-      serviceName: "מברשת שיניים חשמלית",
+      serviceName: "בוטוקס",
       discount: "₪150",
       expirationDate: DateTime(2025, 11, 30),
       terms: "תקף למשחת שיניים קולגייט רגילה בלבד. לא ניתן לשלב עם מבצעים אחרים.",
       discountType: DiscountType.fixed,
-      imagePath: "images/coupons/electric_toothbrush.jpg",
+      imagePath: "images/botox.jpg",
     ),
     Coupon(
       id: "3",
-      serviceName: "מברשת שיניים חשמלית",
-      discount: "Free",
+      serviceName: "אסתטיקה",
+      discount: "₪300",
       expirationDate: DateTime(2025, 1, 15),
       terms: "תקף למשחת שיניים קולגייט רגילה בלבד. לא ניתן לשלב עם מבצעים אחרים.",
-      discountType: DiscountType.free,
+      discountType: DiscountType.fixed,
+      imagePath: "images/esthetica.png",
     ),
   ];
 
   final List<Coupon> usedCoupons = [
     Coupon(
       id: "4",
-      serviceName: "מברשת שיניים חשמלית",
+      serviceName: "בוטוקס",
       discount: "10%",
       expirationDate: DateTime(2025, 10, 20),
       terms: "שומש ב־15 באוקטובר 2025",
@@ -75,7 +77,7 @@ class _CouponPageState extends State<CouponPage> with SingleTickerProviderStateM
         backgroundColor: const Color(0xFFA8E6CF),
         elevation: 0,
         title: Text(
-          context.tr('my_coupons'),
+          context.tr('special_discounts'),
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
@@ -240,22 +242,22 @@ class _CouponPageState extends State<CouponPage> with SingleTickerProviderStateM
                       Icons.schedule,
                       size: 16,
                       color: _isExpiringSoon(coupon.expirationDate)
-                        ? Colors.red
-                        : Colors.grey[600],
+                          ? Colors.red
+                          : Colors.grey[600],
                     ),
                     const SizedBox(width: 6),
                     Text(
                       isUsedTab
-                        ? context.tr('used')
-                        : "${context.tr('valid_until')} ${_formatDate(coupon.expirationDate)}",
+                          ? context.tr('used')
+                          : "${context.tr('valid_until')} ${_formatDate(coupon.expirationDate)}",
                       style: TextStyle(
                         fontSize: 14,
                         color: _isExpiringSoon(coupon.expirationDate)
-                          ? Colors.red
-                          : Colors.grey[600],
+                            ? Colors.red
+                            : Colors.grey[600],
                         fontWeight: _isExpiringSoon(coupon.expirationDate)
-                          ? FontWeight.bold
-                          : FontWeight.normal,
+                            ? FontWeight.bold
+                            : FontWeight.normal,
                       ),
                     ),
                   ],
@@ -291,7 +293,13 @@ class _CouponPageState extends State<CouponPage> with SingleTickerProviderStateM
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () => _activateCoupon(coupon),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const BookAppointmentPage()),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF5FC4AD),
                         foregroundColor: Colors.white,
@@ -301,7 +309,7 @@ class _CouponPageState extends State<CouponPage> with SingleTickerProviderStateM
                         ),
                       ),
                       child: Text(
-                        context.tr('activate_coupon'),
+                        context.tr('book_appointment'),
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -343,68 +351,6 @@ class _CouponPageState extends State<CouponPage> with SingleTickerProviderStateM
       builder: (context) => AlertDialog(
         title: Text(context.tr('terms_conditions')),
         content: Text(coupon.terms),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(context.tr('close')),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _activateCoupon(Coupon coupon) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(context.tr('activate_coupon_question')),
-        content: Text(
-          "${context.tr('activate_coupon_confirm')} ${coupon.serviceName}?\n\n"
-          "${context.tr('barcode_message')}"
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(context.tr('cancel')),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              _showBarcodeScreen(coupon);
-            },
-            child: Text(context.tr('activate')),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showBarcodeScreen(Coupon coupon) {
-    // Navigate to barcode screen or show barcode dialog
-    // You'll need to implement barcode generation here
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(context.tr('coupon_activated')),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text("${context.tr('coupon_for')} ${coupon.serviceName}"),
-            const SizedBox(height: 16),
-            Container(
-              height: 100,
-              color: Colors.grey[300],
-              child: Center(
-                child: Images.getImage("images/barcode.png", 200.0, 200.0),
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              context.tr('show_at_store'),
-              style: TextStyle(color: Colors.grey[600]),
-            ),
-          ],
-        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),

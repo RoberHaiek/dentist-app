@@ -814,7 +814,7 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
         'startIndex': 4, // Uses images 4, 5, 6
       },
       {
-        'name': 'שיקם - כתרים זירקוניה',
+        'name': 'שיקום - כתרים זירקוניה',
         'count': 3,
         'startIndex': 7, // Uses images 7, 8, 9
       },

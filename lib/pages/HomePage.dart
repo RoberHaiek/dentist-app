@@ -1,15 +1,13 @@
-import 'package:dentist_app/pages/AboutPage.dart';
 import 'package:dentist_app/pages/AppointmentPage.dart';
 import 'package:dentist_app/pages/BookAppointmentPage.dart';
 import 'package:dentist_app/pages/ContactClinicPage.dart';
 import 'package:dentist_app/pages/ClinicProfilePage.dart';
 import 'package:dentist_app/pages/CouponPage.dart';
-import 'package:dentist_app/pages/LoginPage.dart';
 import 'package:dentist_app/pages/InstructionsPage.dart';
-import 'package:dentist_app/pages/MyMedicalReportPage.dart';
 import 'package:dentist_app/pages/SettingsPage.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:dentist_app/pages/ClinicDealsPage.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../CurrentPatient.dart';
 import '../Images.dart';
 import 'package:dentist_app/services/LocalizationProvider.dart';
@@ -430,38 +428,38 @@ class HomePageState extends State<HomePage> {
         crossAxisSpacing: 15,
         childAspectRatio: 1.1,
         children: [
-          _buildActionCard(
-            icon: "📄",
-            title: context.tr('documents'),
-            subtitle: context.tr('view_files'),
+          _buildActionCardWithImage(
+            icon: Images.getImage("images/discount.jpg", 36.0, 36.0),
+            title: context.tr('special_discounts'),
+            subtitle: context.tr('clinic_deals'),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const MyDocumentsPage()),
-              );
-            },
-          ),
-          _buildActionCard(
-            icon: "🏷️",
-            title: context.tr('coupons'),
-            subtitle: context.tr('active_deals'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const CouponPage()),
+                    builder: (context) => const ClinicDealsPage()),
               );
             },
           ),
           _buildActionCard(
             icon: "🗓️",
-            title: context.tr('appointments'),
+            title: context.tr('my_appointments'),
             subtitle: context.tr('view_schedule'),
             onTap: () {
               Navigator.push(
                 context,
+                MaterialPageRoute(builder: (context) => const AppointmentPage()),
+              );
+            },
+          ),
+          _buildActionCardWithImage(
+            icon: Images.getImage("images/medical_record.png", 36.0, 36.0),
+            title: context.tr('my_medical_record'),
+            subtitle: context.tr('view_documents'),
+            onTap: () {
+              Navigator.push(
+                context,
                 MaterialPageRoute(
-                    builder: (context) => const AppointmentPage()),
+                    builder: (context) => const MyDocumentsPage()),
               );
             },
           ),
@@ -480,7 +478,7 @@ class HomePageState extends State<HomePage> {
           _buildActionCard(
             icon: "📋",
             title: context.tr('instructions'),
-            subtitle: "לפני או אחרי הטיפול",
+            subtitle: "לפני ואחרי הטיפול",
             onTap: () {
               Navigator.push(
                 context,
@@ -489,15 +487,15 @@ class HomePageState extends State<HomePage> {
               );
             },
           ),
-          _buildActionCard(
-            icon: "🦷",
-            title: context.tr('my_medical_record'),
-            subtitle: context.tr('see_medical_record'),
+          _buildActionCardWithImage(
+            icon: Images.getImage("images/coupon.png", 36.0, 36.0),
+            title: context.tr('coupons'),
+            subtitle: context.tr('active_deals'),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const ContactClinicPage()),
+                    builder: (context) => const CouponPage()),
               );
             },
           ),
@@ -564,18 +562,74 @@ class HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _buildActionCardWithImage({
+    required Widget icon,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            icon,  // Now directly using the Widget
+            const SizedBox(height: 8),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF333333),
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 2),
+            Text(
+              subtitle,
+              style: const TextStyle(
+                fontSize: 11,
+                color: Color(0xFF999999),
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _callEmergency() async {
+    final Uri phoneUri = Uri(scheme: 'tel', path: '100');
+    if (await canLaunchUrl(phoneUri)) {
+      await launchUrl(phoneUri);
+    }
+  }
+
   Widget _buildEmergencyButton() {
     return Positioned(
       bottom: 30,
       right: 20,
       child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const ContactClinicPage()),
-          );
-        },
+        onTap: _callEmergency,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
