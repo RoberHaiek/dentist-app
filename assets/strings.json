@@ -754,6 +754,301 @@
     "ar": "مسح ثلاثي الأبعاد",
     "he": "סריקת CBCT/תלת מימד"
   },
+  "instructions_and_tips": {
+    "en": "Instructions & Tips",
+    "ar": "التعليمات والنصائح",
+    "he": "הוראות וטיפים"
+  },
+  "educational_videos": {
+    "en": "Educational Videos",
+    "ar": "مقاطع فيديو تعليمية",
+    "he": "סרטוני הדרכה"
+  },
+  "personal_hygiene": {
+    "en": "Personal Hygiene",
+    "ar": "النظافة الشخصية",
+    "he": "היגיינה אישית"
+  },
+  "food_and_drink": {
+    "en": "Food & Drink",
+    "ar": "الطعام والشراب",
+    "he": "אוכל ושתייה"
+  },
+  "emotional_preparation": {
+    "en": "Emotional Preparation",
+    "ar": "الاستعداد النفسي",
+    "he": "הכנה רגשית"
+  },
+  "brush_before_treatment": {
+    "en": "Brush your teeth thoroughly before your appointment",
+    "ar": "اغسل أسنانك جيداً قبل موعدك",
+    "he": "צחצח את השיניים היטב לפני התור"
+  },
+  "floss_before_treatment": {
+    "en": "Use dental floss to clean between teeth",
+    "ar": "استخدم خيط الأسنان لتنظيف ما بين الأسنان",
+    "he": "השתמש בחוט דנטלי לניקוי בין השיניים"
+  },
+  "rinse_mouthwash": {
+    "en": "Rinse with mouthwash for fresh breath",
+    "ar": "اشطف فمك بغسول الفم للحصول على نفس منعش",
+    "he": "שטוף עם מי פה לריח נעים"
+  },
+  "light_meal_before": {
+    "en": "Eat a light meal 1-2 hours before treatment",
+    "ar": "تناول وجبة خفيفة قبل 1-2 ساعة من العلاج",
+    "he": "אכול ארוחה קלה שעה-שעתיים לפני הטיפול"
+  },
+  "avoid_alcohol_24h": {
+    "en": "Avoid alcohol 24 hours before procedure",
+    "ar": "تجنب الكحول قبل 24 ساعة من الإجراء",
+    "he": "הימנע מאלכוהול 24 שעות לפני הטיפול"
+  },
+  "stay_hydrated": {
+    "en": "Drink plenty of water to stay hydrated",
+    "ar": "اشرب الكثير من الماء للبقاء رطباً",
+    "he": "שתה הרבה מים כדי להישאר לחות"
+  },
+  "share_concerns_doctor": {
+    "en": "Share any concerns or fears with your dentist",
+    "ar": "شارك أي مخاوف مع طبيب الأسنان",
+    "he": "שתף את החששות שלך עם הרופא"
+  },
+  "ask_questions": {
+    "en": "Don't hesitate to ask questions about the procedure",
+    "ar": "لا تتردد في طرح الأسئلة حول الإجراء",
+    "he": "אל תהסס לשאול שאלות על הטיפול"
+  },
+  "relax_breathe": {
+    "en": "Practice deep breathing to help you relax",
+    "ar": "مارس التنفس العميق لمساعدتك على الاسترخاء",
+    "he": "תרגל נשימות עמוקות כדי להירגע"
+  },
+  "filling_cavity": {
+    "en": "After Filling / Cavity",
+    "ar": "بعد الحشو",
+    "he": "אחרי סתימה"
+  },
+  "root_canal": {
+    "en": "After Root Canal",
+    "ar": "بعد علاج قناة الجذر",
+    "he": "אחרי טיפול שורש"
+  },
+  "tooth_extraction": {
+    "en": "After Tooth Extraction",
+    "ar": "بعد خلع السن",
+    "he": "אחרי עקירת שן"
+  },
+  "dental_implant": {
+    "en": "After Dental Implant",
+    "ar": "بعد زراعة الأسنان",
+    "he": "אחרי שתל שיניים"
+  },
+  "avoid_eating_2h": {
+    "en": "Avoid eating for 2 hours until numbness wears off",
+    "ar": "تجنب الأكل لمدة ساعتين حتى يزول التخدير",
+    "he": "הימנע מאכילה למשך שעתיים עד שההרדמה תחלוף"
+  },
+  "no_hard_foods_24h": {
+    "en": "Avoid hard or sticky foods for 24 hours",
+    "ar": "تجنب الأطعمة الصلبة أو اللزجة لمدة 24 ساعة",
+    "he": "הימנע ממזונות קשים או דביקים למשך 24 שעות"
+  },
+  "gentle_brushing": {
+    "en": "Brush gently around the treated area",
+    "ar": "اغسل بلطف حول المنطقة المعالجة",
+    "he": "צחצח בעדינות סביב האזור המטופל"
+  },
+  "pain_normal_24h": {
+    "en": "Mild sensitivity is normal for 24-48 hours",
+    "ar": "الحساسية الخفيفة طبيعية لمدة 24-48 ساعة",
+    "he": "רגישות קלה היא נורמלית למשך 24-48 שעות"
+  },
+  "take_prescribed_meds": {
+    "en": "Take prescribed pain medication as directed",
+    "ar": "خذ الدواء الموصوف حسب التوجيهات",
+    "he": "קח את התרופות שנקבעו לפי ההוראות"
+  },
+  "avoid_chewing_side": {
+    "en": "Avoid chewing on the treated side for a few days",
+    "ar": "تجنب المضغ على الجانب المعالج لبضعة أيام",
+    "he": "הימנע מלעיסה בצד המטופל למספר ימים"
+  },
+  "salt_water_rinse": {
+    "en": "Rinse with warm salt water 2-3 times daily",
+    "ar": "اشطف بماء الملح الدافئ 2-3 مرات يومياً",
+    "he": "שטוף עם מי מלח פושרים 2-3 פעמים ביום"
+  },
+  "expect_mild_discomfort": {
+    "en": "Expect mild discomfort for a few days",
+    "ar": "توقع انزعاجاً خفيفاً لبضعة أيام",
+    "he": "צפה לאי נוחות קלה למספר ימים"
+  },
+  "bite_gauze_30min": {
+    "en": "Bite on gauze for 30-45 minutes to stop bleeding",
+    "ar": "عض على الشاش لمدة 30-45 دقيقة لوقف النزيف",
+    "he": "נשוך על גזה למשך 30-45 דקות לעצירת דימום"
+  },
+  "no_smoking_72h": {
+    "en": "Do NOT smoke for at least 72 hours",
+    "ar": "لا تدخن لمدة 72 ساعة على الأقل",
+    "he": "אל תעשן למשך 72 שעות לפחות"
+  },
+  "soft_foods_only": {
+    "en": "Eat only soft foods for the first few days",
+    "ar": "تناول الأطعمة اللينة فقط في الأيام الأولى",
+    "he": "אכול רק מזונות רכים בימים הראשונים"
+  },
+  "avoid_straw": {
+    "en": "Do NOT use a straw - it can dislodge the blood clot",
+    "ar": "لا تستخدم القش - يمكن أن يزيل الجلطة الدموية",
+    "he": "אל תשתמש בקש - זה יכול להזיז את קריש הדם"
+  },
+  "ice_pack_swelling": {
+    "en": "Apply ice pack to reduce swelling (20 min on/off)",
+    "ar": "ضع كيس ثلج لتقليل التورم (20 دقيقة)",
+    "he": "הנח שקית קרח להפחתת נפיחות (20 דקות)"
+  },
+  "follow_medication_plan": {
+    "en": "Follow the medication plan strictly",
+    "ar": "اتبع خطة الدواء بدقة",
+    "he": "עקוב אחר תכנית התרופות בקפדנות"
+  },
+  "soft_diet_week": {
+    "en": "Maintain a soft diet for one week",
+    "ar": "حافظ على نظام غذائي لين لمدة أسبوع",
+    "he": "שמור על תזונה רכה למשך שבוע"
+  },
+  "avoid_exercise_24h": {
+    "en": "Avoid strenuous exercise for 24-48 hours",
+    "ar": "تجنب التمارين الشاقة لمدة 24-48 ساعة",
+    "he": "הימנע מפעילות גופנית מאומצת למשך 24-48 שעות"
+  },
+  "attend_followups": {
+    "en": "Attend all follow-up appointments",
+    "ar": "احضر جميع مواعيد المتابعة",
+    "he": "הגע לכל התורים לבדיקות המעקב"
+  },
+  "how_often_dental_visit": {
+    "en": "How often should I visit the dentist?",
+    "ar": "كم مرة يجب أن أزور طبيب الأسنان؟",
+    "he": "כמה פעמים צריך לבקר אצל רופא שיניים?"
+  },
+  "twice_yearly_recommended": {
+    "en": "It's recommended to visit your dentist twice a year for regular checkups and cleanings. However, your dentist may suggest more frequent visits depending on your oral health needs.",
+    "ar": "يُنصح بزيارة طبيب الأسنان مرتين في السنة للفحوصات والتنظيف المنتظم. ومع ذلك، قد يقترح طبيبك زيارات أكثر تواتراً حسب احتياجات صحة فمك.",
+    "he": "מומלץ לבקר אצל רופא השיניים פעמיים בשנה לבדיקות וניקויים שוטפים. עם זאת, הרופא שלך עשוי להציע ביקורים תכופים יותר בהתאם לצרכי בריאות הפה שלך."
+  },
+  "is_xray_safe": {
+    "en": "Are dental X-rays safe?",
+    "ar": "هل الأشعة السينية للأسنان آمنة؟",
+    "he": "האם צילומי רנטגן דנטליים בטוחים?"
+  },
+  "xray_safe_minimal_radiation": {
+    "en": "Yes, dental X-rays are very safe. They use minimal radiation and modern digital X-rays use even less. Your dentist only recommends X-rays when necessary for diagnosis.",
+    "ar": "نعم، الأشعة السينية للأسنان آمنة جداً. تستخدم الحد الأدنى من الإشعاع والأشعة السينية الرقمية الحديثة تستخدم أقل. يوصي طبيبك بالأشعة السينية فقط عند الضرورة للتشخيص.",
+    "he": "כן, צילומי רנטגן דנטליים בטוחים מאוד. הם משתמשים בקרינה מינימלית וצילומי רנטגן דיגיטליים מודרניים משתמשים אפילו פחות. הרופא ממליץ על צילומים רק כאשר הם נחוצים לאבחון."
+  },
+  "what_if_pain_after": {
+    "en": "What if I have pain after treatment?",
+    "ar": "ماذا لو كان لدي ألم بعد العلاج؟",
+    "he": "מה אם יש לי כאב אחרי הטיפול?"
+  },
+  "mild_pain_normal": {
+    "en": "Mild pain or sensitivity is normal for 24-48 hours after dental work. Take over-the-counter pain medication as needed. If pain persists or worsens after 48 hours, contact your dentist.",
+    "ar": "الألم الخفيف أو الحساسية أمر طبيعي لمدة 24-48 ساعة بعد عمل الأسنان. تناول مسكنات الألم المتاحة دون وصفة طبية حسب الحاجة. إذا استمر الألم أو ازداد سوءاً بعد 48 ساعة، اتصل بطبيبك.",
+    "he": "כאב קל או רגישות הם נורמליים למשך 24-48 שעות לאחר עבודת שיניים. קח משככי כאבים ללא מרשם לפי הצורך. אם הכאב נמשך או מחמיר לאחר 48 שעות, צור קשר עם הרופא."
+  },
+  "can_i_eat_after": {
+    "en": "Can I eat immediately after treatment?",
+    "ar": "هل يمكنني الأكل فوراً بعد العلاج؟",
+    "he": "האם אני יכול לאכול מיד אחרי הטיפול?"
+  },
+  "wait_2_hours_eating": {
+    "en": "It's best to wait 2 hours after treatment, especially if you received anesthesia, to avoid accidentally biting your cheek or tongue. Start with soft foods and gradually return to your normal diet.",
+    "ar": "من الأفضل الانتظار ساعتين بعد العلاج، خاصة إذا تلقيت تخديراً، لتجنب عض خدك أو لسانك عن طريق الخطأ. ابدأ بالأطعمة اللينة وارجع تدريجياً إلى نظامك الغذائي الطبيعي.",
+    "he": "עדיף לחכות שעתיים אחרי הטיפול, במיוחד אם קיבלת הרדמה, כדי להימנע מנשיכה בטעות של הלחי או הלשון. התחל עם מזונות רכים וחזור בהדרגה לתזונה הרגילה."
+  },
+  "how_long_filling_last": {
+    "en": "How long does a filling last?",
+    "ar": "كم من الوقت يستمر الحشو؟",
+    "he": "כמה זמן מחזיקה סתימה?"
+  },
+  "before_treatment": {
+    "en": "Before\nTreatment",
+    "ar": "قبل\nالعلاج",
+    "he": "לפני\nטיפול"
+  },
+  "after_treatment": {
+    "en": "After\nTreatment",
+    "ar": "بعد\nالعلاج",
+    "he": "אחרי\nטיפול"
+  },
+  "faq": {
+    "en": "FAQ",
+    "ar": "أسئلة\nشائعة",
+    "he": "שאלות\nנפוצות"
+  },
+  "videos": {
+    "en": "Videos",
+    "ar": "فيديوهات",
+    "he": "סרטונים"
+  },
+  "filling_lasts_years": {
+    "en": "Depending on the material, fillings can last 5-15 years or more with proper care. Composite fillings typically last 5-7 years, while amalgam fillings can last 10-15 years. Regular dental visits help monitor their condition.",
+    "ar": "اعتماداً على المادة، يمكن أن تستمر الحشوات من 5-15 سنة أو أكثر مع العناية المناسبة. عادة ما تستمر حشوات المركبات 5-7 سنوات، بينما يمكن أن تستمر حشوات الملغم 10-15 سنة. تساعد الزيارات المنتظمة للأسنان في مراقبة حالتها.",
+    "he": "בהתאם לחומר, סתימות יכולות להחזיק 5-15 שנים או יותר עם טיפול מתאים. סתימות קומפוזיט מחזיקות בדרך כלל 5-7 שנים, בעוד שסתימות אמלגם יכולות להחזיק 10-15 שנים. ביקורים רגילים אצל הרופא עוזרים לעקוב אחר מצבן."
+  },
+  "proper_brushing_technique": {
+    "en": "Proper Brushing Technique",
+    "ar": "تقنية التنظيف الصحيحة",
+    "he": "טכניקת צחצוח נכונה"
+  },
+  "learn_correct_brushing": {
+    "en": "Learn the correct way to brush your teeth for optimal oral health",
+    "ar": "تعلم الطريقة الصحيحة لتنظيف أسنانك لصحة الفم المثلى",
+    "he": "למד את הדרך הנכונה לצחצח שיניים לבריאות פה מיטבית"
+  },
+  "flossing_tutorial": {
+    "en": "How to Floss Correctly",
+    "ar": "كيفية استخدام خيط الأسنان بشكل صحيح",
+    "he": "איך להשתמש בחוט דנטלי נכון"
+  },
+  "master_flossing_technique": {
+    "en": "Master the technique of flossing to prevent cavities between teeth",
+    "ar": "أتقن تقنية الخيط لمنع التسوس بين الأسنان",
+    "he": "שלוט בטכניקת החוט דנטלי למניעת עששת בין השיניים"
+  },
+  "understanding_root_canal": {
+    "en": "Understanding Root Canal Treatment",
+    "ar": "فهم علاج قناة الجذر",
+    "he": "הבנת טיפול שורש"
+  },
+  "what_happens_root_canal": {
+    "en": "Learn what happens during a root canal procedure and why it's necessary",
+    "ar": "تعرف على ما يحدث أثناء إجراء قناة الجذر ولماذا هو ضروري",
+    "he": "למד מה קורה במהלך טיפול שורש ולמה הוא נחוץ"
+  },
+  "dental_implant_process": {
+    "en": "Dental Implant Process Explained",
+    "ar": "شرح عملية زراعة الأسنان",
+    "he": "תהליך שתל שיניים מוסבר"
+  },
+  "implant_procedure_explained": {
+    "en": "Understand the step-by-step process of getting a dental implant",
+    "ar": "فهم عملية الحصول على زراعة الأسنان خطوة بخطوة",
+    "he": "הבן את התהליך שלב אחר שלב של קבלת שתל שיניים"
+  },
+  "watch_video": {
+    "en": "Watch Video",
+    "ar": "شاهد الفيديو",
+    "he": "צפה בסרטון"
+  },
+  "video_feature_coming_soon": {
+    "en": "Video feature coming soon!",
+    "ar": "ميزة الفيديو قريباً!",
+    "he": "תכונת הסרטון בקרוב!"
+  },
   "select_category": {
     "en": "Select Category",
     "ar": "اختر الفئة",
@@ -808,11 +1103,6 @@
     "en": "Hide Instructions",
     "ar": "إخفاء التعليمات",
     "he": "הסתר הוראות"
-  },
-  "all": {
-    "en": "All",
-    "ar": "الكل",
-    "he": "הכל"
   },
   "xrays": {
     "en": "X-rays",
@@ -1079,16 +1369,6 @@
     "ar": "من",
     "he": "החל מ"
   },
-  "dental_implant": {
-    "en": "Dental Implant",
-    "ar": "زراعة الأسنان",
-    "he": "שתל שיניים"
-  },
-  "root_canal": {
-    "en": "Root Canal",
-    "ar": "علاج قناة الجذر",
-    "he": "טיפול שורש"
-  },
   "veneers": {
     "en": "Veneers",
     "ar": "قشور الأسنان",
@@ -1174,11 +1454,6 @@
     "en": "Before & After Gallery",
     "ar": "معرض قبل وبعد",
     "he": "גלריית לפני ואחרי"
-  },
-  "before_after": {
-    "en": "Before/After",
-    "ar": "قبل/بعد",
-    "he": "לפני/אחרי"
   },
   "view_all_photos": {
     "en": "View All Photos",

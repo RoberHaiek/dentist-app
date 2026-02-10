@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../Images.dart';
 import '../services/LocalizationProvider.dart';
 import 'BookAppointmentPage.dart';
-import 'HomePage.dart';
 
 class ClinicDealsPage extends StatefulWidget {
   const ClinicDealsPage({super.key});
@@ -14,48 +13,40 @@ class ClinicDealsPage extends StatefulWidget {
 class _ClinicDealsPageState extends State<ClinicDealsPage> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  // Sample data - replace with your actual data source
   final List<Coupon> availableCoupons = [
     Coupon(
       id: "1",
-      serviceName: "ניקוי אבנית",
-      discount: "20%",
-      expirationDate: DateTime(2025, 12, 31),
-      terms: "תקף למשחת שיניים קולגייט רגילה בלבד. לא ניתן לשלב עם מבצעים אחרים.",
-      discountType: DiscountType.percentage,
-      imagePath: "images/tooth_cleaning.jpg",
+      campaignName: "מבצע יום האהבה",
+      serviceName: "הלבנת שיניים",
+      originalPrice: "1200",
+      discountedPrice: "750",
+      expirationDate: DateTime(2026, 2, 14),
+      terms: "המבצע תקף עד 14 בפברואר 2026. יש לתאם פגישה מראש. לא ניתן לשלב עם מבצעים אחרים.",
+      imagePath: "images/teeth_whitening.png",
     ),
     Coupon(
       id: "2",
-      serviceName: "בוטוקס",
-      discount: "₪150",
-      expirationDate: DateTime(2025, 11, 30),
-      terms: "תקף למשחת שיניים קולגייט רגילה בלבד. לא ניתן לשלב עם מבצעים אחרים.",
-      discountType: DiscountType.fixed,
-      imagePath: "images/botox.jpg",
+      campaignName: "מבצע ראש השנה",
+      serviceName: "1+1 על ניקוי שיניים",
+      originalPrice: null,
+      discountedPrice: null,
+      expirationDate: DateTime(2026, 9, 30),
+      terms: "תקף לחודש ספטמבר 2026. הטיפול השני חייב להתבצע תוך 30 יום מהראשון.",
+      imagePath: "images/tooth_cleaning.jpg",
     ),
     Coupon(
       id: "3",
-      serviceName: "אסתטיקה",
-      discount: "₪300",
-      expirationDate: DateTime(2025, 1, 15),
-      terms: "תקף למשחת שיניים קולגייט רגילה בלבד. לא ניתן לשלב עם מבצעים אחרים.",
-      discountType: DiscountType.fixed,
+      campaignName: "מבצע חורף",
+      serviceName: "טיפולי אסתטיקה",
+      originalPrice: "1500",
+      discountedPrice: "1200",
+      expirationDate: DateTime(2026, 3, 31),
+      terms: "המבצע תקף עד סוף מרץ 2026. כולל ייעוץ חינם.",
       imagePath: "images/esthetica.png",
     ),
   ];
 
-  final List<Coupon> usedCoupons = [
-    Coupon(
-      id: "4",
-      serviceName: "בוטוקס",
-      discount: "10%",
-      expirationDate: DateTime(2025, 10, 20),
-      terms: "שומש ב־15 באוקטובר 2025",
-      discountType: DiscountType.percentage,
-      isUsed: true,
-    ),
-  ];
+  final List<Coupon> usedCoupons = [];
 
   @override
   void initState() {
@@ -74,23 +65,27 @@ class _ClinicDealsPageState extends State<ClinicDealsPage> with SingleTickerProv
     return Scaffold(
       backgroundColor: const Color(0xFFF2EBE2),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFA8E6CF),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFFA8E6CF), Color(0xFF7DD3C0)],
+            ),
+          ),
+        ),
         elevation: 0,
         title: Text(
           context.tr('special_discounts'),
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
         ),
         bottom: TabBar(
           controller: _tabController,
-          indicatorColor: Colors.blue[600],
-          labelColor: Colors.blue[600],
-          unselectedLabelColor: Colors.white,
+          indicatorColor: Colors.white,
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.white70,
           tabs: [
             Tab(text: context.tr('available')),
             Tab(text: context.tr('used')),
@@ -100,9 +95,7 @@ class _ClinicDealsPageState extends State<ClinicDealsPage> with SingleTickerProv
       body: TabBarView(
         controller: _tabController,
         children: [
-          // Available Coupons Tab
           _buildCouponList(availableCoupons, isUsedTab: false),
-          // Used Coupons Tab
           _buildCouponList(usedCoupons, isUsedTab: true),
         ],
       ),
@@ -117,16 +110,13 @@ class _ClinicDealsPageState extends State<ClinicDealsPage> with SingleTickerProv
           children: [
             Icon(
               isUsedTab ? Icons.check_circle_outline : Icons.discount_outlined,
-              size: 80,
+              size: 70,
               color: Colors.grey[400],
             ),
             const SizedBox(height: 16),
             Text(
               isUsedTab ? context.tr('no_used_coupons') : context.tr('no_available_coupons'),
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.grey[600],
-              ),
+              style: TextStyle(fontSize: 16, color: Colors.grey[600]),
             ),
           ],
         ),
@@ -137,181 +127,165 @@ class _ClinicDealsPageState extends State<ClinicDealsPage> with SingleTickerProv
       padding: const EdgeInsets.all(16),
       itemCount: coupons.length,
       itemBuilder: (context, index) {
-        return _buildCouponCard(coupons[index], isUsedTab: isUsedTab);
+        return _buildCompactCouponCard(coupons[index], isUsedTab: isUsedTab);
       },
     );
   }
 
-  Widget _buildCouponCard(Coupon coupon, {required bool isUsedTab}) {
+  Widget _buildCompactCouponCard(Coupon coupon, {required bool isUsedTab}) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.08),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
           ),
         ],
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header with colored stripe based on discount type
-          Container(
-            height: 8,
-            decoration: BoxDecoration(
-              color: _getDiscountColor(coupon.discountType),
+          // Photo - small and compact
+          if (coupon.imagePath != null)
+            ClipRRect(
               borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(16),
-                topRight: Radius.circular(16),
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12),
+              ),
+              child: Container(
+                width: double.infinity,
+                height: 140,
+                color: Colors.grey[100],
+                child: Image.asset(
+                  coupon.imagePath!,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      color: Colors.grey[200],
+                      child: Center(
+                        child: Icon(Icons.image, size: 40, color: Colors.grey[400]),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
-          ),
 
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(14),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Image (if available)
-                if (coupon.imagePath != null)
-                  Column(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Container(
-                          width: double.infinity,
-                          constraints: const BoxConstraints(
-                            maxHeight: 200,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[100],
-                          ),
-                          child: Image.asset(
-                            coupon.imagePath!,
-                            fit: BoxFit.contain, // Shows full image without cropping
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                    ],
+                // Campaign name - smaller font
+                Text(
+                  coupon.campaignName,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF7DD3C0),
                   ),
+                ),
+                const SizedBox(height: 8),
 
-                // Service name and discount
+                // Service name and price on SAME LINE
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
                       child: Text(
                         coupon.serviceName,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: isUsedTab ? Colors.grey[600] : Colors.blue[900],
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF333333),
                         ),
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
-                      decoration: BoxDecoration(
-                        color: _getDiscountColor(coupon.discountType).withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        coupon.discount,
-                        style: TextStyle(
+                    if (coupon.originalPrice != null && coupon.discountedPrice != null) ...[
+                      const SizedBox(width: 8),
+                      Text(
+                        "${coupon.discountedPrice}₪",
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: _getDiscountColor(coupon.discountType),
+                          color: Color(0xFF7DD3C0),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-
-                // Expiration date
-                Row(
-                  children: [
-                    Icon(
-                      Icons.schedule,
-                      size: 16,
-                      color: _isExpiringSoon(coupon.expirationDate)
-                          ? Colors.red
-                          : Colors.grey[600],
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      isUsedTab
-                          ? context.tr('used')
-                          : "${context.tr('valid_until')} ${_formatDate(coupon.expirationDate)}",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: _isExpiringSoon(coupon.expirationDate)
-                            ? Colors.red
-                            : Colors.grey[600],
-                        fontWeight: _isExpiringSoon(coupon.expirationDate)
-                            ? FontWeight.bold
-                            : FontWeight.normal,
+                      const SizedBox(width: 4),
+                      Text(
+                        "${coupon.originalPrice}₪",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[600],
+                          decoration: TextDecoration.lineThrough,
+                        ),
                       ),
-                    ),
+                    ],
                   ],
+                ),
+                const SizedBox(height: 10),
+
+                // Terms text
+                Text(
+                  coupon.terms,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey[700],
+                    height: 1.4,
+                  ),
                 ),
                 const SizedBox(height: 12),
 
-                // Terms & Conditions (collapsible)
+                // Terms and conditions link
                 GestureDetector(
                   onTap: () => _showTermsDialog(context, coupon),
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.info_outline,
-                        size: 16,
-                        color: Colors.blue[700],
-                      ),
+                      Icon(Icons.info_outline, size: 16, color: Colors.blue[700]),
                       const SizedBox(width: 6),
                       Text(
-                        context.tr('tap_for_terms'),
-                        style: const TextStyle(
+                        context.tr('terms_conditions'),
+                        style: TextStyle(
                           fontSize: 13,
-                          color: Color(0xFF629C86),
+                          color: Colors.blue[700],
                           decoration: TextDecoration.underline,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 14),
 
-                // Action button
+                // Make appointment button
                 if (!isUsedTab)
                   SizedBox(
                     width: double.infinity,
+                    height: 44,
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const BookAppointmentPage()),
+                            builder: (context) => const BookAppointmentPage(),
+                          ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF5FC4AD),
+                        backgroundColor: const Color(0xFF7DD3C0),
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(10),
                         ),
+                        elevation: 0,
                       ),
                       child: Text(
                         context.tr('book_appointment'),
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 15,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -325,32 +299,13 @@ class _ClinicDealsPageState extends State<ClinicDealsPage> with SingleTickerProv
     );
   }
 
-  Color _getDiscountColor(DiscountType type) {
-    switch (type) {
-      case DiscountType.percentage:
-        return const Color(0xFFA8E6CF);
-      case DiscountType.fixed:
-        return const Color(0xFFFF8B94);
-      case DiscountType.free:
-        return const Color(0xFF7DD3C0);
-    }
-  }
-
-  bool _isExpiringSoon(DateTime expirationDate) {
-    final daysUntilExpiration = expirationDate.difference(DateTime.now()).inDays;
-    return daysUntilExpiration <= 7 && daysUntilExpiration >= 0;
-  }
-
-  String _formatDate(DateTime date) {
-    return "${date.day}/${date.month}/${date.year}";
-  }
-
   void _showTermsDialog(BuildContext context, Coupon coupon) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text(context.tr('terms_conditions')),
-        content: Text(coupon.terms),
+        content: Text(coupon.terms, style: const TextStyle(height: 1.5)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -362,31 +317,24 @@ class _ClinicDealsPageState extends State<ClinicDealsPage> with SingleTickerProv
   }
 }
 
-// Data models
-enum DiscountType {
-  percentage,
-  fixed,
-  free,
-}
-
 class Coupon {
   final String id;
+  final String campaignName;
   final String serviceName;
-  final String discount;
+  final String? originalPrice;
+  final String? discountedPrice;
   final DateTime expirationDate;
   final String terms;
-  final DiscountType discountType;
-  final bool isUsed;
   final String? imagePath;
 
   Coupon({
     required this.id,
+    required this.campaignName,
     required this.serviceName,
-    required this.discount,
+    this.originalPrice,
+    this.discountedPrice,
     required this.expirationDate,
     required this.terms,
-    required this.discountType,
-    this.isUsed = false,
     this.imagePath,
   });
 }

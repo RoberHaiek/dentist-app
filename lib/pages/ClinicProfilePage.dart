@@ -106,7 +106,7 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return [
             SliverAppBar(
-              expandedHeight: 340,
+              expandedHeight: 380,
               pinned: true,
               backgroundColor: const Color(0xFF7DD3C0),
               leading: IconButton(
