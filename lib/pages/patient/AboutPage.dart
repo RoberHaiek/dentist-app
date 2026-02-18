@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../Images.dart';
-import 'HomePage.dart';
+import '../../Images.dart';
 import 'SettingsPage.dart';
 import 'package:dentist_app/services/LocalizationProvider.dart';
 

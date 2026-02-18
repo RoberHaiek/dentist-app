@@ -9,8 +9,8 @@ import 'package:open_file/open_file.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../services/LocalizationProvider.dart';
-import '../CurrentPatient.dart';
+import '../../services/LocalizationProvider.dart';
+import '../../CurrentPatient.dart';
 import 'SettingsPage.dart';
 
 enum DocumentCategory {

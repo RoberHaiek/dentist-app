@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../Images.dart';
-import '../services/LocalizationProvider.dart';
+import '../../Images.dart';
+import '../../services/LocalizationProvider.dart';
 import 'BookAppointmentPage.dart';
 
 class ClinicDealsPage extends StatefulWidget {

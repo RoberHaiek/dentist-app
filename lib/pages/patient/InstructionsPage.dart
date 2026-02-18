@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/LocalizationProvider.dart';
+import '../../services/LocalizationProvider.dart';
 
 class InstructionsPage extends StatefulWidget {
   const InstructionsPage({super.key});
@@ -51,11 +51,11 @@ class _InstructionsPageState extends State<InstructionsPage> with SingleTickerPr
           unselectedLabelColor: Colors.white70,
           labelStyle: const TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 18,
+            fontSize: 16,
             height: 1.2,
           ),
           unselectedLabelStyle: const TextStyle(
-            fontSize: 18,
+            fontSize: 16,
             height: 1.2,
           ),
           tabs: [

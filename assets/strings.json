@@ -144,6 +144,76 @@
     "ar": "لا توجد مواعيد سابقة",
     "he": "אין תורים קודמים"
   },
+  "welcome_back": {
+    "en": "Welcome Back!",
+    "ar": "مرحبًا بعودتك!",
+    "he": "ברוך שובך!"
+  },
+  "analytics": {
+    "en": "Analytics",
+    "ar": "التحليلات",
+    "he": "ניתוחים"
+  },
+  "view_insights": {
+    "en": "View insights",
+    "ar": "عرض الرؤى",
+    "he": "צפה בתובנות"
+  },
+  "calendar": {
+    "en": "Calendar",
+    "ar": "التقويم",
+    "he": "יומן"
+  },
+  "manage_schedule": {
+    "en": "Manage schedule",
+    "ar": "إدارة الجدول",
+    "he": "נהל לוח זמנים"
+  },
+  "edit_business_page": {
+    "en": "Edit Business Page",
+    "ar": "تحرير صفحة العمل",
+    "he": "ערוך דף עסק"
+  },
+  "update_info": {
+    "en": "Update info",
+    "ar": "تحديث المعلومات",
+    "he": "עדכן מידע"
+  },
+  "manage_files": {
+    "en": "Manage files",
+    "ar": "إدارة الملفات",
+    "he": "נהל קבצים"
+  },
+  "create_offers": {
+    "en": "Create offers",
+    "ar": "إنشاء عروض",
+    "he": "צור הצעות"
+  },
+  "patient_list": {
+    "en": "Patient List",
+    "ar": "قائمة المرضى",
+    "he": "רשימת מטופלים"
+  },
+  "view_patients": {
+    "en": "View patients",
+    "ar": "عرض المرضى",
+    "he": "צפה במטופלים"
+  },
+  "colleague_list": {
+    "en": "Colleague List",
+    "ar": "فريق العمل",
+    "he": "הצוות"
+  },
+  "view_colleagues": {
+    "en": "View colleagues",
+    "ar": "عرض فريق العمل",
+    "he": "צפה בצוות העובדים"
+  },
+  "coming_soon": {
+    "en": "Coming soon!",
+    "ar": "قريبًا!",
+    "he": "בקרוב!"
+  },
   "appointment_history": {
     "en": "Your appointment history will appear here",
     "ar": "سيظهر سجل مواعيدك هنا",
@@ -1454,6 +1524,621 @@
     "en": "Before & After Gallery",
     "ar": "معرض قبل وبعد",
     "he": "גלריית לפני ואחרי"
+  },
+  "welcome_to_dentech": {
+    "en": "Welcome to DenTech Setup! 🎉",
+    "ar": "مرحبًا بك في إعداد DenTech! 🎉",
+    "he": "ברוכים הבאים להתקנת DenTech! 🎉"
+  },
+  "your_account_manager": {
+    "en": "Your account manager",
+    "ar": "مدير حسابك",
+    "he": "מנהל החשבון שלך"
+  },
+  "clinic_registration_subtitle": {
+    "en": "Manage your dental practice with ease",
+    "ar": "إدارة عيادة الأسنان الخاصة بك بسهولة",
+    "he": "נהל את מרפאת השיניים שלך בקלות"
+  },
+  "manage_appointments": {
+    "en": "Manage Appointments",
+    "ar": "إدارة المواعيد",
+    "he": "ניהול תורים"
+  },
+  "easy_scheduling": {
+    "en": "Easy scheduling for your patients",
+    "ar": "جدولة سهلة لمرضاك",
+    "he": "תזמון קל למטופלים שלך"
+  },
+  "patient_management": {
+    "en": "Patient Management",
+    "ar": "إدارة المرضى",
+    "he": "ניהול מטופלים"
+  },
+  "all_in_one_place": {
+    "en": "All records in one place",
+    "ar": "جميع السجلات في مكان واحد",
+    "he": "כל הרשומות במקום אחד"
+  },
+  "track_performance": {
+    "en": "Track Performance",
+    "ar": "تتبع الأداء",
+    "he": "מעקב אחר ביצועים"
+  },
+  "insights_analytics": {
+    "en": "Insights and analytics",
+    "ar": "رؤى وتحليلات",
+    "he": "תובנות וניתוחים"
+  },
+  "get_started": {
+    "en": "Get Started",
+    "ar": "ابدأ",
+    "he": "התחל"
+  },
+  "already_have_account": {
+    "en": "Already have an account? Sign in",
+    "ar": "هل لديك حساب؟ تسجيل الدخول",
+    "he": "כבר יש לך חשבון? התחבר"
+  },
+  "create_your_account": {
+    "en": "Create Your Account",
+    "ar": "إنشاء حسابك",
+    "he": "צור את החשבון שלך"
+  },
+  "fill_details_below": {
+    "en": "Fill in the details below to get started",
+    "ar": "املأ التفاصيل أدناه للبدء",
+    "he": "מלא את הפרטים למטה כדי להתחיל"
+  },
+  "please_enter_clinic_name": {
+    "en": "Please enter clinic name",
+    "ar": "يرجى إدخال اسم العيادة",
+    "he": "אנא הזן שם מרפאה"
+  },
+  "please_enter_address": {
+    "en": "Please enter address",
+    "ar": "يرجى إدخال العنوان",
+    "he": "אנא הזן כתובת"
+  },
+  "please_enter_phone": {
+    "en": "Please enter phone number",
+    "ar": "يرجى إدخال رقم الهاتف",
+    "he": "אנא הזן מספר טלפון"
+  },
+  "please_enter_email": {
+    "en": "Please enter email",
+    "ar": "يرجى إدخال البريد الإلكتروني",
+    "he": "אנא הזן אימייל"
+  },
+  "please_enter_valid_email": {
+    "en": "Please enter a valid email",
+    "ar": "يرجى إدخال بريد إلكتروني صالح",
+    "he": "אנא הזן אימייל תקין"
+  },
+  "please_enter_password": {
+    "en": "Please enter password",
+    "ar": "يرجى إدخال كلمة المرور",
+    "he": "אנא הזן סיסמה"
+  },
+  "password_must_be_8_chars": {
+    "en": "Password must be at least 8 characters",
+    "ar": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+    "he": "הסיסמה חייבת להיות לפחות 8 תווים"
+  },
+  "create_account": {
+    "en": "Create Account",
+    "ar": "إنشاء حساب",
+    "he": "צור חשבון"
+  },
+  "complete_setup_later": {
+    "en": "You can complete your clinic setup anytime from the dashboard",
+    "ar": "يمكنك إكمال إعداد عيادتك في أي وقت من لوحة التحكم",
+    "he": "תוכל להשלים את הגדרת המרפאה שלך בכל עת מהלוח"
+  },
+  "registration_successful": {
+    "en": "Registration successful! Please login.",
+    "ar": "تم التسجيل بنجاح! يرجى تسجيل الدخول.",
+    "he": "ההרשמה הצליחה! אנא התחבר."
+  },
+  "remember_me": {
+    "en": "Remember me",
+    "ar": "البقاء مسجّلًا",
+    "he": "הישאר מחובר"
+  },
+  "registration_failed": {
+    "en": "Registration failed",
+    "ar": "فشل التسجيل",
+    "he": "ההרשמה נכשלה"
+  },
+  "email_already_in_use": {
+    "en": "This email is already registered",
+    "ar": "هذا البريد الإلكتروني مسجل بالفعل",
+    "he": "האימייל הזה כבר רשום"
+  },
+  "password_too_weak": {
+    "en": "Password is too weak",
+    "ar": "كلمة المرور ضعيفة جدًا",
+    "he": "הסיסמה חלשה מדי"
+  },
+  "estimated_time": {
+    "en": "Estimated time: 20-30 minutes",
+    "ar": "الوقت المقدر: 20-30 دقيقة",
+    "he": "זמן משוער: 20-30 דקות"
+  },
+  "what_well_setup": {
+    "en": "What we'll set up:",
+    "ar": "ما سنقوم بإعداده:",
+    "he": "מה נגדיר:"
+  },
+  "basic_clinic_information": {
+    "en": "Basic clinic information",
+    "ar": "معلومات العيادة الأساسية",
+    "he": "מידע בסיסי על המרפאה"
+  },
+  "opening_hours_schedule": {
+    "en": "Opening hours & schedule",
+    "ar": "ساعات العمل والجدول الزمني",
+    "he": "שעות פתיחה ולוח זמנים"
+  },
+  "your_dental_team": {
+    "en": "Your dental team",
+    "ar": "فريق طب الأسنان الخاص بك",
+    "he": "צוות השיניים שלך"
+  },
+  "services_you_offer": {
+    "en": "Services you offer",
+    "ar": "الخدمات التي تقدمها",
+    "he": "שירותים שאתה מציע"
+  },
+  "certifications_gallery": {
+    "en": "Certifications & gallery",
+    "ar": "الشهادات والمعرض",
+    "he": "תעודות וגלריה"
+  },
+  "insurance_payment_options": {
+    "en": "Insurance & payment options",
+    "ar": "خيارات التأمين والدفع",
+    "he": "אפשרויות ביטוח ותשלום"
+  },
+  "lets_get_clinic_online": {
+    "en": "Let's get your clinic online!",
+    "ar": "لنجعل عيادتك متصلة بالإنترنت!",
+    "he": "בואו נעלה את המרפאה שלכם לאינטרנט!"
+  },
+  "start_setup": {
+    "en": "Start Setup →",
+    "ar": "ابدأ الإعداد ←",
+    "he": "התחל התקנה ←"
+  },
+  "basic_information": {
+    "en": "Basic Information",
+    "ar": "المعلومات الأساسية",
+    "he": "מידע בסיסי"
+  },
+  "tell_us_about_clinic": {
+    "en": "Tell us about your clinic",
+    "ar": "أخبرنا عن عيادتك",
+    "he": "ספר לנו על המרפאה שלך"
+  },
+  "clinic_name_hint": {
+    "en": "Dr. Smith Dental Clinic",
+    "ar": "عيادة الدكتور سميث للأسنان",
+    "he": "מרפאת שיניים ד\"ר סמית"
+  },
+  "clinic_logo_optional": {
+    "en": "Clinic Logo (Optional)",
+    "ar": "شعار العيادة (اختياري)",
+    "he": "לוגו מרפאה (אופציונלי)"
+  },
+  "upload_logo": {
+    "en": "Upload Logo",
+    "ar": "تحميل الشعار",
+    "he": "העלה לוגו"
+  },
+  "logo_uploaded": {
+    "en": "Logo uploaded",
+    "ar": "تم تحميل الشعار",
+    "he": "הלוגו הועלה"
+  },
+  "address_hint": {
+    "en": "123 Main St, City",
+    "ar": "123 الشارع الرئيسي، المدينة",
+    "he": "רחוב ראשי 123, עיר"
+  },
+  "phone_hint": {
+    "en": "+1 234 567 8900",
+    "ar": "+1 234 567 8900",
+    "he": "+1 234 567 8900"
+  },
+  "email_hint": {
+    "en": "clinic@example.com",
+    "ar": "clinic@example.com",
+    "he": "clinic@example.com"
+  },
+  "password_hint": {
+    "en": "At least 8 characters",
+    "ar": "8 أحرف على الأقل",
+    "he": "לפחות 8 תווים"
+  },
+  "when_is_clinic_open": {
+    "en": "When is your clinic open?",
+    "ar": "متى تكون عيادتك مفتوحة؟",
+    "he": "מתי המרפאה שלך פתוחה?"
+  },
+  "prefilled_hours_info": {
+    "en": "We've pre-filled typical Israeli clinic hours. Feel free to adjust!",
+    "ar": "لقد قمنا بملء ساعات العيادة الإسرائيلية النموذجية مسبقًا. لا تتردد في التعديل!",
+    "he": "מילאנו מראש שעות פתיחה טיפוסיות למרפאות ישראליות. אתם מוזמנים לשנות!"
+  },
+  "open": {
+    "en": "Open",
+    "ar": "افتح",
+    "he": "פתיחה"
+  },
+  "tell_about_team": {
+    "en": "Tell us about your team members",
+    "ar": "أخبرنا عن أعضاء فريقك",
+    "he": "ספר לנו על חברי הצוות שלך"
+  },
+  "clinic_type": {
+    "en": "What type of clinic are you?",
+    "ar": "ما نوع العيادة؟",
+    "he": "איזה סוג מרפאה אתם?"
+  },
+  "solo_practitioner": {
+    "en": "Solo practitioner",
+    "ar": "ممارس منفرد",
+    "he": "רופא יחיד"
+  },
+  "multi_doctor_practice": {
+    "en": "Multi-doctor practice",
+    "ar": "ممارسة متعددة الأطباء",
+    "he": "מרפאה עם מספר רופאים"
+  },
+  "chain_franchise": {
+    "en": "Chain/franchise",
+    "ar": "سلسلة/امتياز",
+    "he": "רשת/זכיינות"
+  },
+  "how_many_dentists": {
+    "en": "How many dentists work here?",
+    "ar": "كم عدد أطباء الأسنان العاملين هنا؟",
+    "he": "כמה רופאי שיניים עובדים כאן?"
+  },
+  "no_team_members_yet": {
+    "en": "No team members added yet",
+    "ar": "لم تتم إضافة أعضاء فريق بعد",
+    "he": "עדיין לא נוספו חברי צוות"
+  },
+  "add_team_member": {
+    "en": "Add Team Member",
+    "ar": "إضافة عضو في الفريق",
+    "he": "הוסף חבר צוות"
+  },
+  "add_another_member": {
+    "en": "Add Another Member",
+    "ar": "إضافة عضو آخر",
+    "he": "הוסף חבר נוסף"
+  },
+  "name": {
+    "en": "Name",
+    "ar": "الاسم",
+    "he": "שם"
+  },
+  "role_position": {
+    "en": "Role/Position",
+    "ar": "الدور/الوظيفة",
+    "he": "תפקיד/עמדה"
+  },
+  "role_hint": {
+    "en": "e.g., General Dentist",
+    "ar": "مثل: طبيب أسنان عام",
+    "he": "לדוגמה: רופא שיניים כללי"
+  },
+  "add": {
+    "en": "Add",
+    "ar": "إضافة",
+    "he": "הוסף"
+  },
+  "services_offered": {
+    "en": "Services Offered",
+    "ar": "الخدمات المقدمة",
+    "he": "שירותים המוצעים"
+  },
+  "what_services_provide": {
+    "en": "What services does your clinic provide?",
+    "ar": "ما الخدمات التي تقدمها عيادتك؟",
+    "he": "אילו שירותים המרפאה שלך מספקת?"
+  },
+  "quick_add_common": {
+    "en": "Quick Add: Common Services",
+    "ar": "إضافة سريعة: خدمات شائعة",
+    "he": "הוספה מהירה: שירותים נפוצים"
+  },
+  "add_custom_service": {
+    "en": "Add Custom Service",
+    "ar": "إضافة خدمة مخصصة",
+    "he": "הוסף שירות מותאם אישית"
+  },
+  "custom_services": {
+    "en": "Custom Services",
+    "ar": "خدمات مخصصة",
+    "he": "שירותים מותאמים אישית"
+  },
+  "service_name": {
+    "en": "Service Name",
+    "ar": "اسم الخدمة",
+    "he": "שם השירות"
+  },
+  "service_name_hint": {
+    "en": "e.g., Dental Implants",
+    "ar": "مثل: زراعة الأسنان",
+    "he": "לדוגמה: שתלים"
+  },
+  "certifications_licenses": {
+    "en": "Certifications & Licenses",
+    "ar": "الشهادات والتراخيص",
+    "he": "תעודות ורישיונות"
+  },
+  "upload_credentials_optional": {
+    "en": "Upload your professional credentials (optional)",
+    "ar": "قم بتحميل بيانات الاعتماد المهنية الخاصة بك (اختياري)",
+    "he": "העלה את האישורים המקצועיים שלך (אופציונלי)"
+  },
+  "no_certificates_uploaded": {
+    "en": "No certificates uploaded yet",
+    "ar": "لم يتم تحميل شهادات بعد",
+    "he": "עדיין לא הועלו תעודות"
+  },
+  "upload_certificate": {
+    "en": "Upload Certificate",
+    "ar": "تحميل الشهادة",
+    "he": "העלה תעודה"
+  },
+  "upload_later": {
+    "en": "I'll upload these later",
+    "ar": "سأقوم بتحميلها لاحقًا",
+    "he": "אעלה אלה מאוחר יותר"
+  },
+  "remind_tomorrow": {
+    "en": "We'll remind you tomorrow",
+    "ar": "سنذكرك غدًا",
+    "he": "נזכיר לך מחר"
+  },
+  "clinic_gallery": {
+    "en": "Clinic Gallery",
+    "ar": "معرض العيادة",
+    "he": "גלריית המרפאה"
+  },
+  "show_off_clinic": {
+    "en": "Show off your clinic (optional)",
+    "ar": "اعرض عيادتك (اختياري)",
+    "he": "הראה את המרפאה שלך (אופציונלי)"
+  },
+  "no_images_added": {
+    "en": "No images added yet",
+    "ar": "لم تتم إضافة صور بعد",
+    "he": "עדיין לא נוספו תמונות"
+  },
+  "add_photos": {
+    "en": "Add Photos",
+    "ar": "إضافة صور",
+    "he": "הוסף תמונות"
+  },
+  "skip_gallery_now": {
+    "en": "Skip gallery for now",
+    "ar": "تخطي المعرض الآن",
+    "he": "דלג על הגלריה כעת"
+  },
+  "add_photos_later_dashboard": {
+    "en": "You can add photos later from your dashboard",
+    "ar": "يمكنك إضافة الصور لاحقًا من لوحة التحكم",
+    "he": "תוכל להוסיף תמונות מאוחר יותר מהלוח שלך"
+  },
+  "additional_information": {
+    "en": "Additional Information",
+    "ar": "معلومات إضافية",
+    "he": "מידע נוסף"
+  },
+  "help_patients_find_you": {
+    "en": "Help patients find you (optional)",
+    "ar": "ساعد المرضى في العثور عليك (اختياري)",
+    "he": "עזור למטופלים למצוא אותך (אופציונלי)"
+  },
+  "parking_available": {
+    "en": "Parking available",
+    "ar": "موقف سيارات متاح",
+    "he": "חניה זמינה"
+  },
+  "skip_this_section": {
+    "en": "Skip this section",
+    "ar": "تخطي هذا القسم",
+    "he": "דלג על חלק זה"
+  },
+  "complete_later": {
+    "en": "You can complete it later",
+    "ar": "يمكنك إكماله لاحقًا",
+    "he": "תוכל להשלים זאת מאוחר יותר"
+  },
+  "step": {
+    "en": "Step",
+    "ar": "خطوة",
+    "he": "שלב"
+  },
+  "saving": {
+    "en": "Saving...",
+    "ar": "جاري الحفظ...",
+    "he": "שומר..."
+  },
+  "saved": {
+    "en": "Saved",
+    "ar": "تم الحفظ",
+    "he": "נשמר"
+  },
+  "just_now": {
+    "en": "just now",
+    "ar": "الآن",
+    "he": "ממש עכשיו"
+  },
+  "minutes_ago": {
+    "en": "m ago",
+    "ar": "د مضت",
+    "he": "דק' לפני"
+  },
+  "hours_ago": {
+    "en": "h ago",
+    "ar": "س مضت",
+    "he": "שעות לפני"
+  },
+  "next": {
+    "en": "Next →",
+    "ar": "التالي ←",
+    "he": "הבא ←"
+  },
+  "skip_for_now": {
+    "en": "Skip for now",
+    "ar": "تخطي الآن",
+    "he": "דלג כעת"
+  },
+  "complete_setup": {
+    "en": "Complete Setup",
+    "ar": "إكمال الإعداد",
+    "he": "השלם התקנה"
+  },
+  "save_continue_later": {
+    "en": "Save & Continue Later",
+    "ar": "حفظ ومتابعة لاحقًا",
+    "he": "שמור והמשך מאוחר יותר"
+  },
+  "progress_saved": {
+    "en": "Your progress has been saved.",
+    "ar": "تم حفظ تقدمك.",
+    "he": "ההתקדמות שלך נשמרה."
+  },
+  "email_resume_link": {
+    "en": "We'll email you a link to resume from exactly where you left off.",
+    "ar": "سنرسل لك رابطًا عبر البريد الإلكتروني لمتابعة من حيث توقفت بالضبط.",
+    "he": "נשלח לך קישור באימייל כדי להמשיך בדיוק מהמקום שבו הפסקת."
+  },
+  "save_exit": {
+    "en": "Save & Exit",
+    "ar": "حفظ وخروج",
+    "he": "שמור וצא"
+  },
+  "back": {
+    "en": "Back",
+    "ar": "رجوع",
+    "he": "חזרה"
+  },
+  "step_basic_info": {
+    "en": "Basic Info",
+    "ar": "معلومات أساسية",
+    "he": "מידע בסיסי"
+  },
+  "step_hours": {
+    "en": "Hours",
+    "ar": "ساعات",
+    "he": "שעות"
+  },
+  "step_team": {
+    "en": "Team",
+    "ar": "فريق",
+    "he": "צוות"
+  },
+  "step_services": {
+    "en": "Services",
+    "ar": "خدمات",
+    "he": "שירותים"
+  },
+  "step_certificates": {
+    "en": "Certificates",
+    "ar": "شهادات",
+    "he": "תעודות"
+  },
+  "step_gallery": {
+    "en": "Gallery",
+    "ar": "معرض",
+    "he": "גלריה"
+  },
+  "step_additional": {
+    "en": "Additional",
+    "ar": "إضافي",
+    "he": "נוסף"
+  },
+  "cash": {
+    "en": "Cash",
+    "ar": "نقدي",
+    "he": "מזומן"
+  },
+  "credit_card": {
+    "en": "Credit Card",
+    "ar": "بطاقة ائتمان",
+    "he": "כרטיס אשראי"
+  },
+  "debit_card": {
+    "en": "Debit Card",
+    "ar": "بطاقة خصم",
+    "he": "כרטיס חיוב"
+  },
+  "check": {
+    "en": "Check",
+    "ar": "شيك",
+    "he": "צ'ק"
+  },
+  "mobile_payment": {
+    "en": "Mobile Payment",
+    "ar": "دفع عبر الهاتف المحمول",
+    "he": "תשלום נייד"
+  },
+  "clalit": {
+    "en": "Clalit",
+    "ar": "كلاليت",
+    "he": "כללית"
+  },
+  "maccabi": {
+    "en": "Maccabi",
+    "ar": "مكابي",
+    "he": "מכבי"
+  },
+  "meuhedet": {
+    "en": "Meuhedet",
+    "ar": "موحيدت",
+    "he": "מאוחדת"
+  },
+  "leumit": {
+    "en": "Leumit",
+    "ar": "ليوميت",
+    "he": "לאומית"
+  },
+  "private_insurance": {
+    "en": "Private Insurance",
+    "ar": "تأمين خاص",
+    "he": "ביטוח פרטי"
+  },
+  "russian": {
+    "en": "Russian",
+    "ar": "الروسية",
+    "he": "רוסית"
+  },
+  "french": {
+    "en": "French",
+    "ar": "الفرنسية",
+    "he": "צרפתית"
+  },
+  "spanish": {
+    "en": "Spanish",
+    "ar": "الإسبانية",
+    "he": "ספרדית"
+  },
+  "team_member": {
+    "en": "Team Member",
+    "ar": "عضو الفريق",
+    "he": "חבר צוות"
+  },
+  "register_as_business": {
+    "en": "Register as a business",
+    "ar": "التسجيل كمؤسسة تجارية",
+    "he": "הרשמה כעסק"
   },
   "view_all_photos": {
     "en": "View All Photos",

@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../services/LocalizationProvider.dart';
-import '../services/LocalizationService.dart';
-import 'HomePage.dart';
+import '../../services/LocalizationProvider.dart';
+import '../../services/LocalizationService.dart';
 import 'AboutPage.dart';
-import 'LoginPage.dart';
+import '../LoginPage.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});

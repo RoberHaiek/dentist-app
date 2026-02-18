@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import '../Images.dart';
-import '../services/LocalizationProvider.dart';
-import 'HomePage.dart';
+import '../../Images.dart';
+import '../../services/LocalizationProvider.dart';
 
 class CouponPage extends StatefulWidget {
   const CouponPage({super.key});

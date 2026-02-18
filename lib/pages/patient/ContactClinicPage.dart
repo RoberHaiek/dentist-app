@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../Images.dart';
-import '../services/LocalizationProvider.dart';
-import 'AppointmentPage.dart';
+import '../../Images.dart';
+import '../../services/LocalizationProvider.dart';
 import 'BookAppointmentPage.dart';
-import 'HomePage.dart';
 
 class ContactClinicPage extends StatelessWidget {
   const ContactClinicPage({super.key});
