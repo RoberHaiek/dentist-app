@@ -3,9 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'BookAppointmentPage.dart';
+import '../../services/LocalizationService.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Data models (mirror exactly what EditClinicPage saves)
+// Data models
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _TeamMember {
@@ -47,8 +48,8 @@ class _DayHours {
     start2: m['start2'] as String? ?? '16:00',
     end2:   m['end2']   as String? ?? '20:00',
   );
-  String get display {
-    if (!open) return 'Closed';
+  String displayLocalized() {
+    if (!open) return localization.get('closed');
     if (!hasBreak) return '$start1 – $end1';
     return '$start1 – $end1,  $start2 – $end2';
   }
@@ -61,9 +62,7 @@ const _kDays = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Sat
 // ─────────────────────────────────────────────────────────────────────────────
 
 class ClinicProfilePage extends StatefulWidget {
-  /// The Firestore document ID of the clinic (= clinic user's UID).
   final String clinicId;
-
   const ClinicProfilePage({super.key, required this.clinicId});
 
   @override
@@ -76,25 +75,24 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
   late TabController _tabController;
   bool _loading = true;
 
-  // Loaded fields
   String _clinicName  = '';
-  String _subtitle    = '';   // e.g. "Dental Specialist"
+  String _subtitle    = '';
   String? _logoUrl;
   String _about       = '';
   String _address     = '';
   String _phone       = '';
   String _email       = '';
 
-  List<String>          _technologies   = [];
-  List<String>          _certUrls       = [];
-  List<String>          _insurances     = [];
-  List<String>          _paymentMethods = [];
-  List<String>          _languages      = [];
-  List<String>          _parking        = [];
-  List<String>          _services       = [];
-  List<_TeamMember>     _team           = [];
-  List<_GalleryCategory>_gallery        = [];
-  Map<String, _DayHours>_hours          = {};
+  List<String>           _technologies   = [];
+  List<String>           _certUrls       = [];
+  List<String>           _insurances     = [];
+  List<String>           _paymentMethods = [];
+  List<String>           _languages      = [];
+  List<String>           _parking        = [];
+  List<String>           _services       = [];
+  List<_TeamMember>      _team           = [];
+  List<_GalleryCategory> _gallery        = [];
+  Map<String, _DayHours> _hours          = {};
 
   @override
   void initState() {
@@ -121,8 +119,7 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
       final Map<String, _DayHours> hours = {};
       for (final day in _kDays) {
         if (hoursMap.containsKey(day)) {
-          hours[day] = _DayHours.fromMap(
-              Map<String, dynamic>.from(hoursMap[day] as Map));
+          hours[day] = _DayHours.fromMap(Map<String, dynamic>.from(hoursMap[day] as Map));
         } else {
           hours[day] = const _DayHours(open: false);
         }
@@ -130,7 +127,7 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
 
       setState(() {
         _clinicName     = d['clinicName']   as String? ?? '';
-        _subtitle       = d['subtitle']     as String? ?? 'Dental Clinic';
+        _subtitle       = d['subtitle']     as String? ?? localization.get('dental_clinic');
         _logoUrl        = d['logoUrl']      as String?;
         _about          = d['about']        as String? ?? '';
         _address        = d['address']      as String? ?? '';
@@ -154,8 +151,6 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
     }
   }
 
-  // ── URL launchers ──────────────────────────────────────────────────────────
-
   Future<void> _launchPhone(String number) async {
     final uri = Uri(scheme: 'tel', path: number);
     if (await canLaunchUrl(uri)) await launchUrl(uri);
@@ -168,7 +163,11 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('WhatsApp not available'), backgroundColor: Color(0xFFFF6B6B)));
+        SnackBar(
+          content: Text(localization.get('whatsapp_not_available')),
+          backgroundColor: const Color(0xFFFF6B6B),
+        ),
+      );
     }
   }
 
@@ -187,7 +186,7 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
           child: Wrap(children: [
             ListTile(
               leading: const Icon(Icons.map, color: Color(0xFF7DD3C0)),
-              title: const Text('Google Maps'),
+              title: Text(localization.get('google_maps')),
               onTap: () async {
                 Navigator.pop(context);
                 final uri = Uri.parse('https://maps.google.com/?q=${Uri.encodeComponent(_address)}');
@@ -196,7 +195,7 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
             ),
             ListTile(
               leading: const Icon(Icons.navigation, color: Color(0xFF7DD3C0)),
-              title: const Text('Waze'),
+              title: Text(localization.get('waze')),
               onTap: () async {
                 Navigator.pop(context);
                 final uri = Uri.parse('https://waze.com/ul?q=${Uri.encodeComponent(_address)}');
@@ -208,8 +207,6 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
       ),
     );
   }
-
-  // ── Build ──────────────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
@@ -233,7 +230,8 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
                 onPressed: () {
                   Clipboard.setData(ClipboardData(text: _clinicName));
                   ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Clinic name copied')));
+                    SnackBar(content: Text(localization.get('clinic_name_copied'))),
+                  );
                 },
               ),
             ],
@@ -251,12 +249,12 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
                   unselectedLabelColor: Colors.grey,
                   labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                   unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-                  tabs: const [
-                    Tab(text: 'About'),
-                    Tab(text: 'Team'),
-                    Tab(text: 'Services'),
-                    Tab(text: 'Gallery'),
-                    Tab(text: 'Contact'),
+                  tabs: [
+                    Tab(text: localization.get('tab_about')),
+                    Tab(text: localization.get('tab_team')),
+                    Tab(text: localization.get('tab_services')),
+                    Tab(text: localization.get('tab_gallery')),
+                    Tab(text: localization.get('tab_contact')),
                   ],
                 ),
               ),
@@ -277,8 +275,6 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
     );
   }
 
-  // ── Hero ───────────────────────────────────────────────────────────────────
-
   Widget _buildHeroSection() {
     return Container(
       decoration: const BoxDecoration(
@@ -292,7 +288,6 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 10),
-            // Logo
             Container(
               width: 100, height: 100,
               padding: const EdgeInsets.all(8),
@@ -311,31 +306,24 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
             ),
             const SizedBox(height: 16),
             Text(
-              _clinicName.isNotEmpty ? _clinicName : 'Clinic',
+              _clinicName.isNotEmpty ? _clinicName : localization.get('clinic'),
               style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.white),
             ),
             const SizedBox(height: 4),
-            Text(
-              _subtitle,
-              style: const TextStyle(fontSize: 15, color: Colors.white),
-            ),
+            Text(_subtitle, style: const TextStyle(fontSize: 15, color: Colors.white)),
             const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(children: [
-                Expanded(child: _quickBtn(Icons.phone, 'Call',
-                        () => _launchPhone(_phone))),
+                Expanded(child: _quickBtn(Icons.phone, localization.get('btn_call'), () => _launchPhone(_phone))),
                 const SizedBox(width: 12),
-                Expanded(child: _quickBtn(Icons.chat, 'WhatsApp',
-                        () => _launchWhatsApp(_phone))),
+                Expanded(child: _quickBtn(Icons.chat, localization.get('btn_whatsapp'), () => _launchWhatsApp(_phone))),
                 const SizedBox(width: 12),
-                Expanded(child: _quickBtn(Icons.calendar_today, 'Book', () {
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (_) => const BookAppointmentPage()));
+                Expanded(child: _quickBtn(Icons.calendar_today, localization.get('btn_book'), () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const BookAppointmentPage()));
                 })),
                 const SizedBox(width: 12),
-                Expanded(child: _quickBtn(Icons.map, 'Map',
-                        () => _showNavOptions())),
+                Expanded(child: _quickBtn(Icons.map, localization.get('btn_map'), () => _showNavOptions())),
               ]),
             ),
             const SizedBox(height: 10),
@@ -358,14 +346,13 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           Icon(icon, color: const Color(0xFF7DD3C0), size: 24),
           const SizedBox(height: 6),
-          Text(label, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Color(0xFF333333)),
+          Text(label,
+              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Color(0xFF333333)),
               textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
         ]),
       ),
     );
   }
-
-  // ── Shared helpers ─────────────────────────────────────────────────────────
 
   Widget _sectionTitle(String title, IconData icon) => Row(children: [
     Icon(icon, color: const Color(0xFF7DD3C0), size: 22),
@@ -388,24 +375,20 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
     ],
   );
 
-  // ── TAB 1: About ───────────────────────────────────────────────────────────
-
   Widget _buildAboutTab() {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
-        // About text
         if (_about.isNotEmpty) ...[
-          _sectionTitle('About Us', Icons.info_outline),
+          _sectionTitle(localization.get('about_us'), Icons.info_outline),
           const SizedBox(height: 12),
           _card(Text(_about, style: const TextStyle(fontSize: 15, color: Color(0xFF666666), height: 1.6))),
           const SizedBox(height: 24),
         ],
 
-        // Technology — show each selected tech as an icon card
         if (_technologies.isNotEmpty) ...[
-          _sectionTitle('Technology & Equipment', Icons.computer_outlined),
+          _sectionTitle(localization.get('technology_equipment'), Icons.computer_outlined),
           const SizedBox(height: 12),
           ..._technologies.map((tech) => Container(
             margin: const EdgeInsets.only(bottom: 10),
@@ -425,9 +408,8 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
           const SizedBox(height: 24),
         ],
 
-        // Certificates
         if (_certUrls.isNotEmpty) ...[
-          _sectionTitle('Certifications & Awards', Icons.workspace_premium_outlined),
+          _sectionTitle(localization.get('certifications_awards'), Icons.workspace_premium_outlined),
           const SizedBox(height: 12),
           GridView.builder(
             shrinkWrap: true,
@@ -450,24 +432,22 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
           const SizedBox(height: 24),
         ],
 
-        // Insurance & Payment
         if (_insurances.isNotEmpty || _paymentMethods.isNotEmpty) ...[
-          _sectionTitle('Insurance & Payment', Icons.account_balance_wallet),
+          _sectionTitle(localization.get('insurance_payment'), Icons.account_balance_wallet),
           const SizedBox(height: 12),
           _card(Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             if (_insurances.isNotEmpty) ...[
-              _infoRow('Insurance', _insurances.join(', ')),
+              _infoRow(localization.get('insurance'), _insurances.join(', ')),
               if (_paymentMethods.isNotEmpty) const Divider(height: 20),
             ],
             if (_paymentMethods.isNotEmpty)
-              _infoRow('Payment', _paymentMethods.join(', ')),
+              _infoRow(localization.get('payment'), _paymentMethods.join(', ')),
           ])),
           const SizedBox(height: 24),
         ],
 
-        // Languages
         if (_languages.isNotEmpty) ...[
-          _sectionTitle('Languages Spoken', Icons.language),
+          _sectionTitle(localization.get('languages_spoken'), Icons.language),
           const SizedBox(height: 12),
           _card(Wrap(spacing: 8, runSpacing: 8,
             children: _languages.map((lang) => Container(
@@ -481,13 +461,12 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
           const SizedBox(height: 24),
         ],
 
-        // Parking & Accessibility
         if (_parking.isNotEmpty) ...[
-          _sectionTitle('Parking & Accessibility', Icons.local_parking),
+          _sectionTitle(localization.get('parking_accessibility'), Icons.local_parking),
           const SizedBox(height: 12),
           _card(Column(crossAxisAlignment: CrossAxisAlignment.start,
             children: _parking.asMap().entries.map((e) => Column(children: [
-              _infoRow(e.key == 0 ? 'Features' : '', e.value),
+              _infoRow(e.key == 0 ? localization.get('features') : '', e.value),
               if (e.key < _parking.length - 1) const Divider(height: 16),
             ])).toList(),
           )),
@@ -496,9 +475,9 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
 
         if (_about.isEmpty && _technologies.isEmpty && _certUrls.isEmpty &&
             _insurances.isEmpty && _languages.isEmpty && _parking.isEmpty)
-          const Center(child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 40),
-            child: Text('No information added yet.', style: TextStyle(color: Color(0xFF999999))),
+          Center(child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 40),
+            child: Text(localization.get('no_info_added'), style: const TextStyle(color: Color(0xFF999999))),
           )),
       ]),
     );
@@ -517,12 +496,10 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
     return Icons.computer;
   }
 
-  // ── TAB 2: Team ────────────────────────────────────────────────────────────
-
   Widget _buildTeamTab() {
     if (_team.isEmpty) {
-      return const Center(child: Text('No team members added yet.',
-          style: TextStyle(color: Color(0xFF999999))));
+      return Center(child: Text(localization.get('no_team_members'),
+          style: const TextStyle(color: Color(0xFF999999))));
     }
     return ListView.builder(
       padding: const EdgeInsets.all(20),
@@ -574,12 +551,10 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
     );
   }
 
-  // ── TAB 3: Services ────────────────────────────────────────────────────────
-
   Widget _buildServicesTab() {
     if (_services.isEmpty) {
-      return const Center(child: Text('No services added yet.',
-          style: TextStyle(color: Color(0xFF999999))));
+      return Center(child: Text(localization.get('no_services_added'),
+          style: const TextStyle(color: Color(0xFF999999))));
     }
     return GridView.builder(
       padding: const EdgeInsets.all(20),
@@ -620,12 +595,10 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
     return Icons.medical_services;
   }
 
-  // ── TAB 4: Gallery ─────────────────────────────────────────────────────────
-
   Widget _buildGalleryTab() {
     if (_gallery.isEmpty) {
-      return const Center(child: Text('No photos added yet.',
-          style: TextStyle(color: Color(0xFF999999))));
+      return Center(child: Text(localization.get('no_photos_added'),
+          style: const TextStyle(color: Color(0xFF999999))));
     }
     return ListView.builder(
       padding: const EdgeInsets.all(20),
@@ -642,8 +615,10 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(color: const Color(0xFFA8E6CF).withOpacity(0.2), borderRadius: BorderRadius.circular(12)),
-                child: Text('${cat.photoUrls.length} photos',
-                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Color(0xFF7DD3C0))),
+                child: Text(
+                  '${cat.photoUrls.length} ${localization.get('photos')}',
+                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Color(0xFF7DD3C0)),
+                ),
               ),
             ]),
           ),
@@ -671,15 +646,12 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
     );
   }
 
-  // ── TAB 5: Contact ─────────────────────────────────────────────────────────
-
   Widget _buildContactTab() {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
-        // Opening hours
-        _sectionTitle('Opening Hours', Icons.access_time),
+        _sectionTitle(localization.get('opening_hours'), Icons.access_time),
         const SizedBox(height: 12),
         _card(Column(children: _kDays.map((day) {
           final h = _hours[day] ?? const _DayHours(open: false);
@@ -692,7 +664,7 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
                 fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
                 color: isToday ? const Color(0xFF7DD3C0) : const Color(0xFF666666),
               )),
-              Text(h.display, style: TextStyle(
+              Text(h.displayLocalized(), style: TextStyle(
                 fontSize: 14,
                 fontWeight: isToday ? FontWeight.bold : FontWeight.w600,
                 color: isToday ? const Color(0xFF7DD3C0) : const Color(0xFF333333),
@@ -702,19 +674,18 @@ class _ClinicProfilePageState extends State<ClinicProfilePage>
         }).toList())),
         const SizedBox(height: 24),
 
-        // Contact info
-        _sectionTitle('Contact Info', Icons.contact_mail),
+        _sectionTitle(localization.get('contact_info'), Icons.contact_mail),
         const SizedBox(height: 12),
         if (_address.isNotEmpty) ...[
-          _contactRow(Icons.location_on, 'Address', _address, () => _showNavOptions()),
+          _contactRow(Icons.location_on, localization.get('address'), _address, () => _showNavOptions()),
           const SizedBox(height: 12),
         ],
         if (_phone.isNotEmpty) ...[
-          _contactRow(Icons.phone, 'Phone', _phone, () => _launchPhone(_phone)),
+          _contactRow(Icons.phone, localization.get('phone'), _phone, () => _launchPhone(_phone)),
           const SizedBox(height: 12),
         ],
         if (_email.isNotEmpty)
-          _contactRow(Icons.email, 'Email', _email, () => _launchEmail(_email)),
+          _contactRow(Icons.email, localization.get('email'), _email, () => _launchEmail(_email)),
         const SizedBox(height: 20),
       ]),
     );

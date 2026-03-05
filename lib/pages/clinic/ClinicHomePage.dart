@@ -1,8 +1,11 @@
+import 'package:dentist_app/pages/clinic/ColleaguesListPage.dart';
+import 'package:dentist_app/pages/clinic/EditClinicDealsPage.dart';
 import 'package:dentist_app/pages/clinic/EditClinicPage.dart';
+import 'package:dentist_app/pages/clinic/PatientsListPage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../patient/SettingsPage.dart';
+import '../patient/PatientSettingsPage.dart';
 import '../../services/LocalizationProvider.dart';
 import 'CalendarPage.dart';
 
@@ -74,7 +77,7 @@ class _ClinicHomePageState extends State<ClinicHomePage> {
                   children: [
                     const SizedBox(height: 30),
                     _buildActionCards(),
-                    const SizedBox(height: 100),
+                    const SizedBox(height: 30),
                   ],
                 ),
               ),
@@ -113,7 +116,7 @@ class _ClinicHomePageState extends State<ClinicHomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const SettingsPage(),
+                        builder: (context) => const PatientSettingsPage(),
                       ),
                     );
                   },
@@ -212,9 +215,10 @@ class _ClinicHomePageState extends State<ClinicHomePage> {
             title: context.tr('special_discounts'),
             subtitle: context.tr('create_offers'),
             onTap: () {
-              // TODO: Navigate to Special Discounts page
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(context.tr('coming_soon'))),
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const EditClinicDealsPage()),
               );
             },
           ),
@@ -223,9 +227,10 @@ class _ClinicHomePageState extends State<ClinicHomePage> {
             title: context.tr('patient_list'),
             subtitle: context.tr('view_patients'),
             onTap: () {
-              // TODO: Navigate to Patient List page
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(context.tr('coming_soon'))),
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const PatientsListPage()),
               );
             },
           ),
@@ -234,9 +239,10 @@ class _ClinicHomePageState extends State<ClinicHomePage> {
             title: context.tr('colleague_list'),
             subtitle: context.tr('view_colleagues'),
             onTap: () {
-              // TODO: Navigate to Patient List page
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(context.tr('coming_soon'))),
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ColleaguesListPage()),
               );
             },
           ),

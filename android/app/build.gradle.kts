@@ -32,7 +32,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.dentech"
+        applicationId = "com.rober.asnani"
         minSdk = flutter.minSdkVersion
         targetSdk = 36
         versionCode = flutter.versionCode
@@ -65,8 +65,13 @@ flutter {
     source = "../.."
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     // Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:34.2.0"))
     implementation("com.google.firebase:firebase-analytics")
+    implementation("com.facebook.android:facebook-android-sdk:[8,9)")
 }

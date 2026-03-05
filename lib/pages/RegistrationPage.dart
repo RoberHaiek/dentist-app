@@ -2,8 +2,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'LoginPage.dart';
 import 'clinic/ClinicRegistrationPage.dart';
+import 'patient/PatientHomePage.dart';
 import '../services/LocalizationProvider.dart';
 
 class RegistrationPage extends StatefulWidget {
@@ -13,7 +17,8 @@ class RegistrationPage extends StatefulWidget {
   RegistrationPageState createState() => RegistrationPageState();
 }
 
-class RegistrationPageState extends State<RegistrationPage> with SingleTickerProviderStateMixin {
+class RegistrationPageState extends State<RegistrationPage>
+    with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController firstNameController = TextEditingController();
@@ -25,6 +30,7 @@ class RegistrationPageState extends State<RegistrationPage> with SingleTickerPro
   final TextEditingController passwordController = TextEditingController();
 
   bool isLoading = false;
+  bool isSocialLoading = false;
   bool _passwordVisible = false;
 
   late AnimationController _animationController;
@@ -59,6 +65,176 @@ class RegistrationPageState extends State<RegistrationPage> with SingleTickerPro
     super.dispose();
   }
 
+  // ──────────────────────────────────────────────
+  // SOCIAL SIGN-UP — shared helper
+  // ──────────────────────────────────────────────
+
+  /// Creates a Firestore user document from social provider data.
+  /// Returns true if this is a NEW user, false if they already existed.
+  Future<bool> _ensureUserDocument(User user, {String via = 'social'}) async {
+    final userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get();
+
+    if (!userDoc.exists) {
+      final nameParts = (user.displayName ?? '').split(' ');
+      await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+        'firstName': nameParts.isNotEmpty ? nameParts.first : '',
+        'lastName': nameParts.length > 1 ? nameParts.last : '',
+        'email': user.email ?? '',
+        'dateOfBirth': '',
+        'address': '',
+        'phoneNumber': '',
+        'photoUrl': user.photoURL ?? '',
+        'accountType': 'patient',
+        'createdVia': via,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+      return true; // new user
+    }
+    return false; // existing user
+  }
+
+  Future<void> _navigateToHome() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('rememberMe', true);
+    if (!mounted) return;
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (_) => const PatientHomePage()),
+          (route) => false,
+    );
+  }
+
+  // ──────────────────────────────────────────────
+  // GOOGLE SIGN-UP
+  // ──────────────────────────────────────────────
+
+  Future<void> _signUpWithGoogle() async {
+    if (!mounted) return;
+    setState(() => isSocialLoading = true);
+
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) {
+        setState(() => isSocialLoading = false);
+        return;
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+      await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final userCred =
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
+      final isNew = await _ensureUserDocument(userCred.user!, via: 'google');
+
+      if (!mounted) return;
+
+      if (isNew) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(context.tr('registration_successful')),
+            backgroundColor: const Color(0xFF7DD3C0),
+          ),
+        );
+      }
+
+      await _navigateToHome();
+    } on FirebaseAuthException catch (e) {
+      debugPrint('Google sign-up error: ${e.code}');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text(e.message ?? context.tr('registration_failed')),
+              backgroundColor: Colors.red),
+        );
+      }
+    } catch (e) {
+      debugPrint('Google sign-up error: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text('${context.tr('error')}: $e'),
+              backgroundColor: Colors.red),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => isSocialLoading = false);
+    }
+  }
+
+  // ──────────────────────────────────────────────
+  // FACEBOOK SIGN-UP
+  // ──────────────────────────────────────────────
+
+  Future<void> _signUpWithFacebook() async {
+    if (!mounted) return;
+    setState(() => isSocialLoading = true);
+
+    try {
+      final LoginResult result = await FacebookAuth.instance.login(
+        permissions: ['public_profile'],
+      );
+
+      if (result.status != LoginStatus.success) {
+        setState(() => isSocialLoading = false);
+        return;
+      }
+
+      final OAuthCredential credential =
+      FacebookAuthProvider.credential(result.accessToken!.tokenString);
+
+      final userCred =
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
+      final isNew = await _ensureUserDocument(userCred.user!, via: 'facebook');
+
+      if (!mounted) return;
+
+      if (isNew) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(context.tr('registration_successful')),
+            backgroundColor: const Color(0xFF7DD3C0),
+          ),
+        );
+      }
+
+      await _navigateToHome();
+    } on FirebaseAuthException catch (e) {
+      debugPrint('Facebook sign-up error: ${e.code}');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text(e.message ?? context.tr('registration_failed')),
+              backgroundColor: Colors.red),
+        );
+      }
+    } catch (e) {
+      debugPrint('Facebook sign-up error: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text('${context.tr('error')}: $e'),
+              backgroundColor: Colors.red),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => isSocialLoading = false);
+    }
+  }
+
+  // ──────────────────────────────────────────────
+  // EMAIL / PASSWORD REGISTRATION
+  // ──────────────────────────────────────────────
+
   Future<void> registerUser() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -68,14 +244,12 @@ class RegistrationPageState extends State<RegistrationPage> with SingleTickerPro
     debugPrint('registerUser: starting');
 
     try {
-      debugPrint('registerUser: creating auth user...');
       final UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
       final String uid = userCredential.user?.uid ?? '<no-uid>';
-      debugPrint('registerUser: created user uid=$uid');
 
       userCredential.user
           ?.sendEmailVerification()
@@ -85,11 +259,7 @@ class RegistrationPageState extends State<RegistrationPage> with SingleTickerPro
       });
 
       try {
-        debugPrint('registerUser: writing to Firestore for uid=$uid');
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(uid)
-            .set({
+        await FirebaseFirestore.instance.collection('users').doc(uid).set({
           'firstName': firstNameController.text.trim(),
           'lastName': lastNameController.text.trim(),
           'dateOfBirth': dobController.text.trim(),
@@ -97,24 +267,28 @@ class RegistrationPageState extends State<RegistrationPage> with SingleTickerPro
           'phoneNumber': phoneNumberController.text.trim(),
           'email': emailController.text.trim(),
           'accountType': 'patient',
+          'createdVia': 'email',
           'createdAt': FieldValue.serverTimestamp(),
-        })
-            .timeout(const Duration(seconds: 120));
-        debugPrint('registerUser: Firestore write succeeded for uid=$uid');
+        }).timeout(const Duration(seconds: 120));
       } on TimeoutException {
-        debugPrint('registerUser: Firestore write timed out');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(context.tr('timeout_error')), backgroundColor: Colors.red),
-        );
-      } catch (e, st) {
-        debugPrint('registerUser: Firestore write failed: $e\n$st');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${context.tr('error')}: $e'), backgroundColor: Colors.red),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content: Text(context.tr('timeout_error')),
+                backgroundColor: Colors.red),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content: Text('${context.tr('error')}: $e'),
+                backgroundColor: Colors.red),
+          );
+        }
       }
 
       await FirebaseAuth.instance.signOut();
-      debugPrint('registerUser: signed out user after registration');
 
       if (!mounted) return;
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -129,8 +303,8 @@ class RegistrationPageState extends State<RegistrationPage> with SingleTickerPro
           MaterialPageRoute(builder: (_) => const LoginPage()),
         );
       });
-    } on FirebaseAuthException catch (e, st) {
-      debugPrint('registerUser: FirebaseAuthException ${e.code} ${e.message}\n$st');
+    } on FirebaseAuthException catch (e) {
+      debugPrint('registerUser: FirebaseAuthException ${e.code}');
       if (!mounted) return;
 
       String message = context.tr('registration_failed');
@@ -145,19 +319,19 @@ class RegistrationPageState extends State<RegistrationPage> with SingleTickerPro
           SnackBar(content: Text(message), backgroundColor: Colors.red),
         );
       });
-    } catch (e, st) {
-      debugPrint('registerUser: unexpected error: $e\n$st');
+    } catch (e) {
       if (!mounted) return;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${context.tr('error')}: $e'), backgroundColor: Colors.red),
+          SnackBar(
+              content: Text('${context.tr('error')}: $e'),
+              backgroundColor: Colors.red),
         );
       });
     } finally {
       if (!mounted) return;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) setState(() => isLoading = false);
-        debugPrint('registerUser: finished, isLoading=false');
       });
     }
   }
@@ -186,9 +360,7 @@ class RegistrationPageState extends State<RegistrationPage> with SingleTickerPro
                 elevation: 0,
                 leading: IconButton(
                   icon: const Icon(Icons.arrow_back, color: Color(0xFF333333)),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                  onPressed: () => Navigator.pop(context),
                 ),
               ),
               Expanded(
@@ -202,6 +374,8 @@ class RegistrationPageState extends State<RegistrationPage> with SingleTickerPro
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
+
+                            // ── Title ──
                             Text(
                               context.tr('create_your_account'),
                               style: const TextStyle(
@@ -223,13 +397,77 @@ class RegistrationPageState extends State<RegistrationPage> with SingleTickerPro
                               textAlign: TextAlign.center,
                             ),
 
-                            const SizedBox(height: 28),
+                            const SizedBox(height: 24),
 
+                            // ── Social Sign-up Buttons ──
+                            isSocialLoading
+                                ? const SizedBox(
+                              height: 52,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                    color: Color(0xFF7DD3C0)),
+                              ),
+                            )
+                                : Row(
+                              children: [
+                                Expanded(
+                                  child: _buildSocialButton(
+                                    label: 'Google',
+                                    icon: const Text(
+                                      'G',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF4285F4),
+                                      ),
+                                    ),
+                                    onTap: _signUpWithGoogle,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: _buildSocialButton(
+                                    label: 'Facebook',
+                                    icon: const Icon(Icons.facebook,
+                                        color: Color(0xFF1877F2),
+                                        size: 20),
+                                    onTap: _signUpWithFacebook,
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            const SizedBox(height: 20),
+
+                            // ── Divider ──
+                            Row(
+                              children: [
+                                const Expanded(
+                                    child: Divider(color: Color(0xFFCCCCCC))),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12),
+                                  child: Text(
+                                    context.tr('or_register_with_email'),
+                                    style: const TextStyle(
+                                        color: Color(0xFF999999),
+                                        fontSize: 12),
+                                  ),
+                                ),
+                                const Expanded(
+                                    child: Divider(color: Color(0xFFCCCCCC))),
+                              ],
+                            ),
+
+                            const SizedBox(height: 20),
+
+                            // ── Email Form ──
                             _buildTextField(
                               controller: firstNameController,
                               label: context.tr('first_name'),
                               icon: Icons.person,
-                              validator: (value) => value?.trim().isEmpty ?? true
+                              validator: (value) =>
+                              value?.trim().isEmpty ?? true
                                   ? context.tr('please_enter_first_name')
                                   : null,
                             ),
@@ -240,7 +478,8 @@ class RegistrationPageState extends State<RegistrationPage> with SingleTickerPro
                               controller: lastNameController,
                               label: context.tr('last_name'),
                               icon: Icons.person_outline,
-                              validator: (value) => value?.trim().isEmpty ?? true
+                              validator: (value) =>
+                              value?.trim().isEmpty ?? true
                                   ? context.tr('please_enter_last_name')
                                   : null,
                             ),
@@ -257,7 +496,8 @@ class RegistrationPageState extends State<RegistrationPage> with SingleTickerPro
                                   return context.tr('please_enter_email');
                                 }
                                 if (!value!.contains('@')) {
-                                  return context.tr('please_enter_valid_email');
+                                  return context
+                                      .tr('please_enter_valid_email');
                                 }
                                 return null;
                               },
@@ -272,12 +512,15 @@ class RegistrationPageState extends State<RegistrationPage> with SingleTickerPro
                               obscureText: !_passwordVisible,
                               suffixIcon: IconButton(
                                 icon: Icon(
-                                  _passwordVisible ? Icons.visibility_off : Icons.visibility,
+                                  _passwordVisible
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
                                   color: const Color(0xFF999999),
                                   size: 20,
                                 ),
                                 onPressed: () {
-                                  setState(() => _passwordVisible = !_passwordVisible);
+                                  setState(() =>
+                                  _passwordVisible = !_passwordVisible);
                                 },
                               ),
                               validator: (value) {
@@ -285,7 +528,8 @@ class RegistrationPageState extends State<RegistrationPage> with SingleTickerPro
                                   return context.tr('please_enter_password');
                                 }
                                 if (value!.length < 8) {
-                                  return context.tr('password_must_be_8_chars');
+                                  return context
+                                      .tr('password_must_be_8_chars');
                                 }
                                 return null;
                               },
@@ -305,15 +549,12 @@ class RegistrationPageState extends State<RegistrationPage> with SingleTickerPro
                                   firstDate: DateTime(1900),
                                   lastDate: DateTime.now(),
                                 );
-
                                 if (pickedDate != null) {
-                                  String formattedDate =
-                                      "${pickedDate.day.toString().padLeft(2, '0')}/"
-                                      "${pickedDate.month.toString().padLeft(2, '0')}/"
-                                      "${pickedDate.year}";
-
                                   setState(() {
-                                    dobController.text = formattedDate;
+                                    dobController.text =
+                                    "${pickedDate.day.toString().padLeft(2, '0')}/"
+                                        "${pickedDate.month.toString().padLeft(2, '0')}/"
+                                        "${pickedDate.year}";
                                   });
                                 }
                               },
@@ -338,16 +579,21 @@ class RegistrationPageState extends State<RegistrationPage> with SingleTickerPro
 
                             const SizedBox(height: 28),
 
+                            // ── Register Button ──
                             Container(
                               height: 54,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(27),
                                 gradient: const LinearGradient(
-                                  colors: [Color(0xFF7DD3C0), Color(0xFF5AB9A8)],
+                                  colors: [
+                                    Color(0xFF7DD3C0),
+                                    Color(0xFF5AB9A8)
+                                  ],
                                 ),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: const Color(0xFF7DD3C0).withOpacity(0.3),
+                                    color: const Color(0xFF7DD3C0)
+                                        .withOpacity(0.3),
                                     blurRadius: 12,
                                     offset: const Offset(0, 6),
                                   ),
@@ -390,7 +636,8 @@ class RegistrationPageState extends State<RegistrationPage> with SingleTickerPro
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const ClinicRegistrationPage(),
+                                      builder: (context) =>
+                                      const ClinicRegistrationPage(),
                                     ),
                                   );
                                 },
@@ -413,6 +660,46 @@ class RegistrationPageState extends State<RegistrationPage> with SingleTickerPro
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSocialButton({
+    required String label,
+    required Widget icon,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(14),
+      child: Container(
+        height: 52,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            icon,
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF333333),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -479,7 +766,8 @@ class RegistrationPageState extends State<RegistrationPage> with SingleTickerPro
           ),
           filled: true,
           fillColor: Colors.white,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         ),
       ),
     );

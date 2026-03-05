@@ -11,7 +11,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../services/LocalizationProvider.dart';
 import '../../CurrentPatient.dart';
-import 'SettingsPage.dart';
+import 'PatientSettingsPage.dart';
 
 enum DocumentCategory {
   xrays,

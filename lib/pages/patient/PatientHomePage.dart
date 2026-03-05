@@ -13,7 +13,7 @@ import 'ClinicProfilePage.dart';
 import 'CouponPage.dart';
 import 'InstructionsPage.dart';
 import 'MyDocumentsPage.dart';
-import 'SettingsPage.dart';
+import 'PatientSettingsPage.dart';
 
 class PatientHomePage extends StatefulWidget {
   const PatientHomePage({super.key});
@@ -330,7 +330,7 @@ class PatientHomePageState extends State<PatientHomePage>{
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const SettingsPage()),
+                          builder: (context) => const PatientSettingsPage()),
                     );
                   },
                 ),
@@ -651,7 +651,7 @@ class PatientHomePageState extends State<PatientHomePage>{
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const ClinicDealsPage()),
+                    builder: (context) => ClinicDealsPage(clinicId: clinicId)),
               );
             },
           ),

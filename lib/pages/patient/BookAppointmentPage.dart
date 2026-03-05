@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import '../../CurrentPatient.dart';
+import '../../services/LocalizationService.dart';
 
 class BookAppointmentPage extends StatefulWidget {
   const BookAppointmentPage({super.key});
@@ -23,22 +24,22 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
   DateTime? _selectedDate;
   String? _selectedTime;
 
-  final List<String> _reasons = [
-    'General Checkup',
-    'Teeth Cleaning',
-    'Tooth Pain',
-    'Filling',
-    'Root Canal',
-    'Extraction',
-    'Crown/Bridge',
-    'Whitening',
-    'Orthodontics',
-    'Emergency',
+  List<String> get _reasons => [
+    localization.get('reason_general_checkup'),
+    localization.get('reason_teeth_cleaning'),
+    localization.get('reason_tooth_pain'),
+    localization.get('reason_filling'),
+    localization.get('reason_root_canal'),
+    localization.get('reason_extraction'),
+    localization.get('reason_crown_bridge'),
+    localization.get('reason_whitening'),
+    localization.get('reason_orthodontics'),
+    localization.get('reason_emergency'),
   ];
 
-  Map<String, dynamic>? _clinicHours; // Opening hours from clinic
-  List<DateTime> _bookedSlots = []; // Already booked times
-  String? _autoAssignColleague; // If only 1 colleague, auto-assign
+  Map<String, dynamic>? _clinicHours;
+  List<DateTime> _bookedSlots = [];
+  String? _autoAssignColleague;
 
   @override
   void initState() {
@@ -55,7 +56,6 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
     }
 
     try {
-      // Get patient's clinic ID
       final patientDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
@@ -67,16 +67,14 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
         return;
       }
 
-      // Load clinic info
       final clinicDoc = await FirebaseFirestore.instance
           .collection('clinics')
           .doc(_clinicId)
           .get();
       final clinicData = clinicDoc.data() ?? {};
-      _clinicName = clinicData['clinicName'] as String? ?? 'Clinic';
+      _clinicName = clinicData['clinicName'] as String? ?? localization.get('clinic');
       _clinicHours = clinicData['openingHours'] as Map<String, dynamic>?;
 
-      // Check if there's only 1 worker to auto-assign
       final workersSnap = await FirebaseFirestore.instance
           .collection('workers')
           .where('clinicId', isEqualTo: _clinicId)
@@ -95,7 +93,6 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
   Future<void> _loadBookedSlots(DateTime date) async {
     if (_clinicId == null) return;
 
-    // Query appointments for the selected date
     final startOfDay = DateTime(date.year, date.month, date.day);
     final endOfDay = startOfDay.add(const Duration(days: 1));
 
@@ -123,35 +120,28 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
 
     final List<String> slots = [];
 
-    // Parse opening hours
     final start1 = _parseTime(dayHours['start1'] as String? ?? '09:00');
     final end1 = _parseTime(dayHours['end1'] as String? ?? '17:00');
     final hasBreak = dayHours['hasBreak'] as bool? ?? false;
 
-    // Generate whole-hour slots for first period
     _addWholeHourSlots(slots, start1, end1);
 
-    // If there's a break, add second period
     if (hasBreak) {
       final start2 = _parseTime(dayHours['start2'] as String? ?? '16:00');
       final end2 = _parseTime(dayHours['end2'] as String? ?? '20:00');
       _addWholeHourSlots(slots, start2, end2);
     }
 
-    // Filter out already booked slots
     final now = DateTime.now();
     return slots.where((timeStr) {
       final slotTime = _combineDateTime(_selectedDate!, timeStr);
-      // Don't show past times
       if (slotTime.isBefore(now)) return false;
-      // Don't show if already booked
       return !_bookedSlots.any((booked) =>
       booked.hour == slotTime.hour && booked.day == slotTime.day);
     }).toList();
   }
 
   void _addWholeHourSlots(List<String> slots, TimeOfDay start, TimeOfDay end) {
-    // Only add whole hours (10:00, 11:00, not 10:30)
     int currentHour = start.minute == 0 ? start.hour : start.hour + 1;
     while (currentHour < end.hour || (currentHour == end.hour && end.minute > 0)) {
       slots.add('${currentHour.toString().padLeft(2, '0')}:00');
@@ -195,15 +185,15 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
 
     try {
       final startTime = _combineDateTime(_selectedDate!, _selectedTime!);
-      final endTime = startTime.add(const Duration(hours: 1)); // Default 1-hour appointments
+      final endTime = startTime.add(const Duration(hours: 1));
 
       final appointmentData = {
         'patientId': user.uid,
-        'patientName': _currentPatient.firstName ?? 'Patient',
+        'patientName': _currentPatient.firstName ?? localization.get('patient'),
         'clinicId': _clinicId,
         'reason': _selectedReason,
         'type': 'appointment',
-        'status': 'pending', // Pending until clinic confirms
+        'status': 'pending',
         'startTime': Timestamp.fromDate(startTime),
         'endTime': Timestamp.fromDate(endTime),
         'notes': null,
@@ -219,26 +209,25 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
           .add(appointmentData);
 
       if (mounted) {
-        // Show success and navigate back
         showDialog(
           context: context,
           barrierDismissible: false,
           builder: (context) => AlertDialog(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            title: const Row(
+            title: Row(
               children: [
-                Icon(Icons.check_circle, color: Color(0xFF7DD3C0), size: 32),
-                SizedBox(width: 12),
-                Text('Appointment Requested'),
+                const Icon(Icons.check_circle, color: Color(0xFF7DD3C0), size: 32),
+                const SizedBox(width: 12),
+                Text(localization.get('appointment_requested')),
               ],
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Your appointment request has been sent to the clinic.',
-                  style: TextStyle(fontSize: 15),
+                Text(
+                  localization.get('appointment_request_sent'),
+                  style: const TextStyle(fontSize: 15),
                 ),
                 const SizedBox(height: 12),
                 Container(
@@ -255,7 +244,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                       ),
                       Text(
-                        'at $_selectedTime',
+                        '${localization.get('at')} $_selectedTime',
                         style: const TextStyle(fontSize: 14, color: Color(0xFF7DD3C0), fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 6),
@@ -267,23 +256,26 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                const Text(
-                  'The clinic will confirm your appointment soon.',
-                  style: TextStyle(fontSize: 13, color: Color(0xFF999999)),
+                Text(
+                  localization.get('clinic_will_confirm'),
+                  style: const TextStyle(fontSize: 13, color: Color(0xFF999999)),
                 ),
               ],
             ),
             actions: [
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pop(context); // Close dialog
-                  Navigator.pop(context); // Return to previous screen
+                  Navigator.pop(context);
+                  Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF7DD3C0),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 ),
-                child: const Text('Done', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                child: Text(
+                  localization.get('done'),
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                ),
               ),
             ],
           ),
@@ -293,7 +285,10 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
       if (mounted) {
         setState(() => _saving = false);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error booking appointment: $e'), backgroundColor: Colors.red),
+          SnackBar(
+            content: Text('${localization.get('error_booking_appointment')}: $e'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -304,7 +299,10 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFF2EBE2),
       appBar: AppBar(
-        title: const Text('Book Appointment', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        title: Text(
+          localization.get('book_appointment'),
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
@@ -334,14 +332,20 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                 children: [
                   const Icon(Icons.business, color: Color(0xFF7DD3C0), size: 28),
                   const SizedBox(width: 12),
-                  Text(_clinicName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF333333))),
+                  Text(
+                    _clinicName,
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF333333)),
+                  ),
                 ],
               ),
             ),
             const SizedBox(height: 24),
 
             // Reason
-            const Text('Reason for Visit', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF333333))),
+            Text(
+              localization.get('reason_for_visit_label'),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF333333)),
+            ),
             const SizedBox(height: 12),
             Wrap(
               spacing: 8,
@@ -356,13 +360,19 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                     decoration: BoxDecoration(
                       color: selected ? const Color(0xFF7DD3C0) : Colors.white,
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: selected ? const Color(0xFF7DD3C0) : const Color(0xFFCCCCCC), width: 1.5),
+                      border: Border.all(
+                        color: selected ? const Color(0xFF7DD3C0) : const Color(0xFFCCCCCC),
+                        width: 1.5,
+                      ),
                     ),
-                    child: Text(reason, style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: selected ? FontWeight.bold : FontWeight.w500,
-                      color: selected ? Colors.white : const Color(0xFF666666),
-                    )),
+                    child: Text(
+                      reason,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: selected ? FontWeight.bold : FontWeight.w500,
+                        color: selected ? Colors.white : const Color(0xFF666666),
+                      ),
+                    ),
                   ),
                 );
               }).toList(),
@@ -370,7 +380,10 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
             const SizedBox(height: 24),
 
             // Date picker
-            const Text('Select Date', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF333333))),
+            Text(
+              localization.get('select_date_label'),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF333333)),
+            ),
             const SizedBox(height: 12),
             GestureDetector(
               onTap: () async {
@@ -389,7 +402,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                 if (date != null) {
                   setState(() {
                     _selectedDate = date;
-                    _selectedTime = null; // Reset time when date changes
+                    _selectedTime = null;
                   });
                   await _loadBookedSlots(date);
                 }
@@ -407,7 +420,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                     const SizedBox(width: 12),
                     Text(
                       _selectedDate == null
-                          ? 'Choose a date'
+                          ? localization.get('choose_a_date')
                           : DateFormat('EEEE, MMMM d, y').format(_selectedDate!),
                       style: TextStyle(
                         fontSize: 15,
@@ -423,7 +436,10 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
 
             // Time slots
             if (_selectedDate != null) ...[
-              const Text('Select Time', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF333333))),
+              Text(
+                localization.get('select_time_label'),
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF333333)),
+              ),
               const SizedBox(height: 12),
               _getAvailableTimes().isEmpty
                   ? Container(
@@ -432,10 +448,10 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Center(
+                child: Center(
                   child: Text(
-                    'No available time slots for this date',
-                    style: TextStyle(fontSize: 14, color: Color(0xFF999999)),
+                    localization.get('no_available_slots'),
+                    style: const TextStyle(fontSize: 14, color: Color(0xFF999999)),
                   ),
                 ),
               )
@@ -491,9 +507,9 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                   height: 20,
                   child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
                 )
-                    : const Text(
-                  'Book Appointment',
-                  style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                    : Text(
+                  localization.get('book_appointment'),
+                  style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),
             ),

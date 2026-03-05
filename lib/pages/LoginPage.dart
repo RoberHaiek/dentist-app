@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'patient/PatientHomePage.dart';
 import 'clinic/ClinicHomePage.dart';
 import 'ForgotPage.dart';
@@ -15,7 +17,8 @@ class LoginPage extends StatefulWidget {
   LoginPageState createState() => LoginPageState();
 }
 
-class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixin {
+class LoginPageState extends State<LoginPage>
+    with SingleTickerProviderStateMixin {
   static const bool isDebug = false;
 
   final TextEditingController emailController = TextEditingController();
@@ -25,7 +28,8 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
   bool isButtonEnabled = false;
   bool emailValid = true;
   bool isLoading = false;
-  bool rememberMe = false;
+  bool isSocialLoading = false;
+  bool rememberMe = true;
   bool _passwordVisible = false;
 
   late AnimationController _animationController;
@@ -118,14 +122,12 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
 
   Future<void> _navigateToCorrectHome(String uid) async {
     try {
-      // Check if user is a clinic
       final clinicDoc = await FirebaseFirestore.instance
           .collection('clinics')
           .doc(uid)
           .get();
 
       if (clinicDoc.exists) {
-        // User is a clinic
         debugPrint('User is a clinic, navigating to ClinicHomePage');
         if (mounted) {
           Navigator.pushReplacement(
@@ -136,14 +138,12 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
         return;
       }
 
-      // Check if user is a patient
       final userDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(uid)
           .get();
 
       if (userDoc.exists) {
-        // User is a patient
         debugPrint('User is a patient, navigating to HomePage');
         if (mounted) {
           Navigator.pushReplacement(
@@ -154,8 +154,8 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
         return;
       }
 
-      // User exists in Auth but not in either collection (shouldn't happen)
-      debugPrint('Warning: User authenticated but not found in clinics or users collection');
+      debugPrint(
+          'Warning: User authenticated but not found in clinics or users collection');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -177,12 +177,41 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
     }
   }
 
+  /// Creates a minimal Firestore user document for social sign-in users
+  /// who don't have one yet (first-time social login).
+  Future<void> _ensureUserDocument(User user) async {
+    final userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get();
+
+    if (!userDoc.exists) {
+      debugPrint('First social login - creating user document');
+      final nameParts = (user.displayName ?? '').split(' ');
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .set({
+        'firstName': nameParts.isNotEmpty ? nameParts.first : '',
+        'lastName': nameParts.length > 1 ? nameParts.last : '',
+        'email': user.email ?? '',
+        'dateOfBirth': '',
+        'address': '',
+        'phoneNumber': '',
+        'photoUrl': user.photoURL ?? '',
+        'createdVia': 'social',
+      });
+    }
+  }
+
+  // ──────────────────────────────────────────────
+  // EMAIL / PASSWORD LOGIN
+  // ──────────────────────────────────────────────
+
   Future<void> _login() async {
     if (!mounted) return;
     setState(() => isLoading = true);
     FocusScope.of(context).unfocus();
-
-    debugPrint('login: start for email=${emailController.text.trim()}');
 
     try {
       final cred = await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -192,16 +221,11 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('rememberMe', rememberMe);
-      debugPrint('Remember me preference saved: $rememberMe');
 
       if (!mounted) return;
-
-      // Navigate to correct home based on account type
       await _navigateToCorrectHome(cred.user!.uid);
-
-    } on FirebaseAuthException catch (e, st) {
-      debugPrint('login: FirebaseAuthException ${e.code} ${e.message}\n$st');
-
+    } on FirebaseAuthException catch (e) {
+      debugPrint('login: FirebaseAuthException ${e.code} ${e.message}');
       final message = (e.code == 'user-not-found')
           ? context.tr('user_not_found')
           : (e.code == 'wrong-password')
@@ -215,12 +239,13 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
           );
         });
       }
-    } catch (e, st) {
-      debugPrint('login: unexpected error $e\n$st');
+    } catch (e) {
       if (mounted) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('${context.tr('error')}: $e'), backgroundColor: Colors.red),
+            SnackBar(
+                content: Text('${context.tr('error')}: $e'),
+                backgroundColor: Colors.red),
           );
         });
       }
@@ -229,6 +254,120 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) setState(() => isLoading = false);
       });
+    }
+  }
+
+  // ──────────────────────────────────────────────
+  // GOOGLE SIGN-IN
+  // ──────────────────────────────────────────────
+
+  Future<void> _signInWithGoogle() async {
+    if (!mounted) return;
+    setState(() => isSocialLoading = true);
+
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) {
+        // User cancelled
+        setState(() => isSocialLoading = false);
+        return;
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+      await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final userCred =
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('rememberMe', true);
+
+      // Create Firestore document if first-time Google login
+      await _ensureUserDocument(userCred.user!);
+
+      if (!mounted) return;
+      await _navigateToCorrectHome(userCred.user!.uid);
+    } on FirebaseAuthException catch (e) {
+      debugPrint('Google sign-in FirebaseAuthException: ${e.code}');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text(e.message ?? context.tr('login_failed')),
+              backgroundColor: Colors.red),
+        );
+      }
+    } catch (e) {
+      debugPrint('Google sign-in error: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text('${context.tr('error')}: $e'),
+              backgroundColor: Colors.red),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => isSocialLoading = false);
+    }
+  }
+
+  // ──────────────────────────────────────────────
+  // FACEBOOK SIGN-IN
+  // ──────────────────────────────────────────────
+
+  Future<void> _signInWithFacebook() async {
+    if (!mounted) return;
+    setState(() => isSocialLoading = true);
+
+    try {
+      final LoginResult result = await FacebookAuth.instance.login(
+        permissions: ['email', 'public_profile'],
+      );
+
+      if (result.status != LoginStatus.success) {
+        debugPrint('Facebook login cancelled or failed: ${result.status}');
+        setState(() => isSocialLoading = false);
+        return;
+      }
+
+      final OAuthCredential credential =
+      FacebookAuthProvider.credential(result.accessToken!.tokenString);
+
+      final userCred =
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('rememberMe', true);
+
+      // Create Firestore document if first-time Facebook login
+      await _ensureUserDocument(userCred.user!);
+
+      if (!mounted) return;
+      await _navigateToCorrectHome(userCred.user!.uid);
+    } on FirebaseAuthException catch (e) {
+      debugPrint('Facebook sign-in FirebaseAuthException: ${e.code}');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text(e.message ?? context.tr('login_failed')),
+              backgroundColor: Colors.red),
+        );
+      }
+    } catch (e) {
+      debugPrint('Facebook sign-in error: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text('${context.tr('error')}: $e'),
+              backgroundColor: Colors.red),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => isSocialLoading = false);
     }
   }
 
@@ -302,7 +441,8 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
                           alignment: Alignment.centerLeft,
                           child: Text(
                             context.tr('invalid_email'),
-                            style: const TextStyle(color: Colors.red, fontSize: 12),
+                            style:
+                            const TextStyle(color: Colors.red, fontSize: 12),
                           ),
                         ),
                       ),
@@ -316,12 +456,15 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
                       obscureText: !_passwordVisible,
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _passwordVisible ? Icons.visibility_off : Icons.visibility,
+                          _passwordVisible
+                              ? Icons.visibility_off
+                              : Icons.visibility,
                           color: const Color(0xFF999999),
                           size: 20,
                         ),
                         onPressed: () {
-                          setState(() => _passwordVisible = !_passwordVisible);
+                          setState(
+                                  () => _passwordVisible = !_passwordVisible);
                         },
                       ),
                     ),
@@ -356,7 +499,8 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => const ForgotPage()),
+                              MaterialPageRoute(
+                                  builder: (context) => const ForgotPage()),
                             );
                           },
                           child: Text(
@@ -373,6 +517,7 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
 
                     const SizedBox(height: 24),
 
+                    // ── Email/Password Login Button ──
                     Container(
                       width: double.infinity,
                       height: 54,
@@ -380,14 +525,20 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
                         borderRadius: BorderRadius.circular(27),
                         gradient: isButtonEnabled
                             ? const LinearGradient(
-                          colors: [Color(0xFF7DD3C0), Color(0xFF5AB9A8)],
+                          colors: [
+                            Color(0xFF7DD3C0),
+                            Color(0xFF5AB9A8)
+                          ],
                         )
                             : null,
-                        color: isButtonEnabled ? null : const Color(0xFFCCCCCC),
+                        color: isButtonEnabled
+                            ? null
+                            : const Color(0xFFCCCCCC),
                         boxShadow: isButtonEnabled
                             ? [
                           BoxShadow(
-                            color: const Color(0xFF7DD3C0).withOpacity(0.3),
+                            color: const Color(0xFF7DD3C0)
+                                .withOpacity(0.3),
                             blurRadius: 12,
                             offset: const Offset(0, 6),
                           ),
@@ -395,7 +546,8 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
                             : null,
                       ),
                       child: ElevatedButton(
-                        onPressed: isButtonEnabled && !isLoading ? _login : null,
+                        onPressed:
+                        isButtonEnabled && !isLoading ? _login : null,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.transparent,
                           shadowColor: Colors.transparent,
@@ -423,8 +575,64 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
                       ),
                     ),
 
+                    const SizedBox(height: 24),
+
+                    // ── Divider ──
+                    Row(
+                      children: [
+                        const Expanded(
+                            child: Divider(color: Color(0xFFCCCCCC))),
+                        Padding(
+                          padding:
+                          const EdgeInsets.symmetric(horizontal: 12),
+                          child: Text(
+                            context.tr('or_continue_with'),
+                            style: const TextStyle(
+                                color: Color(0xFF999999), fontSize: 12),
+                          ),
+                        ),
+                        const Expanded(
+                            child: Divider(color: Color(0xFFCCCCCC))),
+                      ],
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // ── Social Buttons ──
+                    isSocialLoading
+                        ? const SizedBox(
+                      height: 54,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                            color: Color(0xFF7DD3C0)),
+                      ),
+                    )
+                        : Row(
+                      children: [
+                        // Google
+                        Expanded(
+                          child: _buildSocialButton(
+                            label: 'Google',
+                            icon: _googleIcon(),
+                            onTap: _signInWithGoogle,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        // Facebook
+                        Expanded(
+                          child: _buildSocialButton(
+                            label: 'Facebook',
+                            icon: const Icon(Icons.facebook,
+                                color: Color(0xFF1877F2), size: 22),
+                            onTap: _signInWithFacebook,
+                          ),
+                        ),
+                      ],
+                    ),
+
                     const SizedBox(height: 20),
 
+                    // ── Register ──
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -432,7 +640,9 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => const RegistrationPage()),
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                  const RegistrationPage()),
                             );
                           },
                           child: Text(
@@ -453,6 +663,59 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildSocialButton({
+    required String label,
+    required Widget icon,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(14),
+      child: Container(
+        height: 52,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            icon,
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF333333),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Draws the Google 'G' logo using a simple colored text fallback.
+  /// Replace with an SVG asset if you have one.
+  Widget _googleIcon() {
+    return const Text(
+      'G',
+      style: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: Color(0xFF4285F4),
       ),
     );
   }
@@ -502,11 +765,13 @@ class LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixi
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
-            borderSide: const BorderSide(color: Color(0xFF7DD3C0), width: 2),
+            borderSide:
+            const BorderSide(color: Color(0xFF7DD3C0), width: 2),
           ),
           filled: true,
           fillColor: Colors.white,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         ),
       ),
     );

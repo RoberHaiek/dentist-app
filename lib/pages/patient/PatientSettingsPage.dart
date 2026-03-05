@@ -7,14 +7,14 @@ import '../../services/LocalizationService.dart';
 import 'AboutPage.dart';
 import '../LoginPage.dart';
 
-class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key});
+class PatientSettingsPage extends StatefulWidget {
+  const PatientSettingsPage({super.key});
 
   @override
-  State<SettingsPage> createState() => _SettingsPageState();
+  State<PatientSettingsPage> createState() => _PatientSettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class _PatientSettingsPageState extends State<PatientSettingsPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -310,6 +310,13 @@ class _SettingsPageState extends State<SettingsPage> {
 
             _buildSectionTitle(context.tr('medical_history'), Icons.local_hospital),
             _buildPanel([
+              _buildSettingTile(
+                context.tr('insurance'),
+                _getMedicalInfo('insurance'),
+                Icons.health_and_safety,
+                    () => _selectInsurance(),
+              ),
+              const Divider(height: 1),
               _buildSettingTile(
                 context.tr('allergies'),
                 _getMedicalInfo('allergies'),
@@ -730,6 +737,117 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+  void _selectInsurance() {
+    final insuranceOptions = [
+      'כללית',
+      'מכבי',
+      'לאומית',
+      'מאוחדת',
+    ];
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Text(
+          context.tr('insurance'),
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ...insuranceOptions.map((insurance) {
+                final isSelected = userData?['insurance'] == insurance;
+                return InkWell(
+                  onTap: () async {
+                    Navigator.pop(context);
+                    await _updateField('insurance', insurance);
+                  },
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: isSelected ? const Color(0xFFA8E6CF).withOpacity(0.2) : Colors.transparent,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: isSelected ? const Color(0xFF7DD3C0) : Colors.grey.shade300,
+                        width: 2,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            insurance,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                              color: isSelected ? const Color(0xFF7DD3C0) : const Color(0xFF333333),
+                            ),
+                          ),
+                        ),
+                        if (isSelected)
+                          const Icon(Icons.check_circle, color: Color(0xFF7DD3C0)),
+                      ],
+                    ),
+                  ),
+                );
+              }).toList(),
+
+              // Clear selection option
+              if (userData?['insurance'] != null && userData!['insurance'].toString().isNotEmpty)
+                InkWell(
+                  onTap: () async {
+                    Navigator.pop(context);
+                    await _updateField('insurance', '');
+                  },
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 8),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: Colors.red.shade300,
+                        width: 2,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.clear, color: Colors.red.shade400, size: 20),
+                        const SizedBox(width: 8),
+                        Text(
+                          context.tr('clear_selection'),
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.red.shade400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              context.tr('cancel'),
+              style: const TextStyle(color: Color(0xFF999999)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _changePassword() {
     final oldPasswordController = TextEditingController();
     final newPasswordController = TextEditingController();
@@ -942,10 +1060,10 @@ class _SettingsPageState extends State<SettingsPage> {
         Navigator.pop(context);
         await context.changeLanguage(code);
         if (mounted) {
-            Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const SettingsPage()),
-                    );
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const PatientSettingsPage()),
+          );
         }
       },
       borderRadius: BorderRadius.circular(12),

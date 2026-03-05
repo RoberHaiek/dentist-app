@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DenTech</string>
+    <string name="facebook_app_id">1953621252705236</string>
+    <string name="fb_login_protocol_scheme">fb1953621252705236</string>
+    <string name="facebook_client_token">e8b8691ea55dca91cee34d17b5d2c4a6</string>
+</resources>

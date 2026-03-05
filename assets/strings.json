@@ -1339,10 +1339,450 @@
     "ar": "بوتوكس",
     "he": "בוטוקס"
   },
+  "clinic": {
+    "en": "Clinic",
+    "ar": "العيادة",
+    "he": "מרפאה"
+  },
+  "reason_for_visit_label": {
+    "en": "Reason for Visit",
+    "ar": "سبب الزيارة",
+    "he": "סיבת הביקור"
+  },
+  "select_date_label": {
+    "en": "Select Date",
+    "ar": "اختر التاريخ",
+    "he": "בחר תאריך"
+  },
+  "select_time_label": {
+    "en": "Select Time",
+    "ar": "اختر الوقت",
+    "he": "בחר שעה"
+  },
+  "choose_a_date": {
+    "en": "Choose a date",
+    "ar": "اختر تاريخاً",
+    "he": "בחר תאריך"
+  },
+  "no_available_slots": {
+    "en": "No available time slots for this date",
+    "ar": "لا توجد مواعيد متاحة لهذا التاريخ",
+    "he": "אין שעות פנויות בתאריך זה"
+  },
+  "appointment_requested": {
+    "en": "Appointment Requested",
+    "ar": "تم طلب الموعد",
+    "he": "הבקשה לתור נשלחה"
+  },
+  "appointment_request_sent": {
+    "en": "Your appointment request has been sent to the clinic.",
+    "ar": "تم إرسال طلب موعدك إلى العيادة.",
+    "he": "בקשת התור שלך נשלחה למרפאה."
+  },
+  "clinic_will_confirm": {
+    "en": "The clinic will confirm your appointment soon.",
+    "ar": "ستقوم العيادة بتأكيد موعدك قريباً.",
+    "he": "המרפאה תאשר את התור שלך בקרוב."
+  },
+  "error_booking_appointment": {
+    "en": "Error booking appointment",
+    "ar": "خطأ في حجز الموعد",
+    "he": "שגיאה בקביעת התור"
+  },
+  "reason_general_checkup": {
+    "en": "General Checkup",
+    "ar": "فحص عام",
+    "he": "בדיקה כללית"
+  },
+  "reason_teeth_cleaning": {
+    "en": "Teeth Cleaning",
+    "ar": "تنظيف الأسنان",
+    "he": "ניקוי שיניים"
+  },
+  "reason_tooth_pain": {
+    "en": "Tooth Pain",
+    "ar": "ألم الأسنان",
+    "he": "כאב שיניים"
+  },
+  "reason_filling": {
+    "en": "Filling",
+    "ar": "حشو",
+    "he": "סתימה"
+  },
+  "reason_root_canal": {
+    "en": "Root Canal",
+    "ar": "علاج العصب",
+    "he": "טיפול שורש"
+  },
+  "reason_extraction": {
+    "en": "Extraction",
+    "ar": "خلع",
+    "he": "עקירה"
+  },
+  "reason_crown_bridge": {
+    "en": "Crown/Bridge",
+    "ar": "تاج/جسر",
+    "he": "כתר/גשר"
+  },
+  "reason_whitening": {
+    "en": "Whitening",
+    "ar": "تبييض",
+    "he": "הלבנה"
+  },
+  "dental_clinic": {
+    "en": "Dental Clinic",
+    "ar": "عيادة أسنان",
+    "he": "מרפאת שיניים"
+  },
+  "clinic_name_copied": {
+    "en": "Clinic name copied",
+    "ar": "تم نسخ اسم العيادة",
+    "he": "שם המרפאה הועתק"
+  },
+  "whatsapp_not_available": {
+    "en": "WhatsApp not available",
+    "ar": "واتساب غير متاح",
+    "he": "וואטסאפ אינו זמין"
+  },
+  "google_maps": {
+    "en": "Google Maps",
+    "ar": "خرائط جوجل",
+    "he": "גוגל מפות"
+  },
+  "waze": {
+    "en": "Waze",
+    "ar": "ويز",
+    "he": "ווייז"
+  },
+  "tab_about": {
+    "en": "About",
+    "ar": "عن العيادة",
+    "he": "אודות"
+  },
+  "tab_team": {
+    "en": "Team",
+    "ar": "الفريق",
+    "he": "צוות"
+  },
+  "tab_services": {
+    "en": "Services",
+    "ar": "الخدمات",
+    "he": "שירותים"
+  },
+  "tab_gallery": {
+    "en": "Gallery",
+    "ar": "معرض الصور",
+    "he": "גלריה"
+  },
+  "tab_contact": {
+    "en": "Contact",
+    "ar": "تواصل",
+    "he": "צור קשר"
+  },
+  "btn_call": {
+    "en": "Call",
+    "ar": "اتصل",
+    "he": "התקשר"
+  },
+  "btn_whatsapp": {
+    "en": "WhatsApp",
+    "ar": "واتساب",
+    "he": "וואטסאפ"
+  },
+  "btn_book": {
+    "en": "Book",
+    "ar": "احجز",
+    "he": "קבע תור"
+  },
+  "btn_map": {
+    "en": "Map",
+    "ar": "خريطة",
+    "he": "מפה"
+  },
+  "about_us": {
+    "en": "About Us",
+    "ar": "من نحن",
+    "he": "אודותינו"
+  },
+  "technology_equipment": {
+    "en": "Technology & Equipment",
+    "ar": "التكنولوجيا والمعدات",
+    "he": "טכנולוגיה וציוד"
+  },
+  "certifications_awards": {
+    "en": "Certifications & Awards",
+    "ar": "الشهادات والجوائز",
+    "he": "תעודות ופרסים"
+  },
+  "insurance_payment": {
+    "en": "Insurance & Payment",
+    "ar": "التأمين والدفع",
+    "he": "ביטוח ותשלום"
+  },
+  "insurance": {
+    "en": "Insurance",
+    "ar": "التأمين",
+    "he": "ביטוח"
+  },
+  "payment": {
+    "en": "Payment",
+    "ar": "الدفع",
+    "he": "תשלום"
+  },
+  "languages_spoken": {
+    "en": "Languages Spoken",
+    "ar": "اللغات المتحدثة",
+    "he": "שפות מדוברות"
+  },
+  "parking_accessibility": {
+    "en": "Parking & Accessibility",
+    "ar": "مواقف السيارات وإمكانية الوصول",
+    "he": "חניה ונגישות"
+  },
+  "features": {
+    "en": "Features",
+    "ar": "الميزات",
+    "he": "תכונות"
+  },
+  "no_info_added": {
+    "en": "No information added yet.",
+    "ar": "لم تتم إضافة أي معلومات بعد.",
+    "he": "לא נוסף מידע עדיין."
+  },
+  "no_team_members": {
+    "en": "No team members added yet.",
+    "ar": "لم تتم إضافة أعضاء فريق بعد.",
+    "he": "לא נוספו חברי צוות עדיין."
+  },
+  "no_services_added": {
+    "en": "No services added yet.",
+    "ar": "لم تتم إضافة خدمات بعد.",
+    "he": "לא נוספו שירותים עדיין."
+  },
+  "no_photos_added": {
+    "en": "No photos added yet.",
+    "ar": "لم تتم إضافة صور بعد.",
+    "he": "לא נוספו תמונות עדיין."
+  },
+  "photos": {
+    "en": "photos",
+    "ar": "صور",
+    "he": "תמונות"
+  },
+  "opening_hours": {
+    "en": "Opening Hours",
+    "ar": "ساعات العمل",
+    "he": "שעות פתיחה"
+  },
+  "contact_info": {
+    "en": "Contact Info",
+    "ar": "معلومات التواصل",
+    "he": "פרטי קשר"
+  },
+  "address": {
+    "en": "Address",
+    "ar": "العنوان",
+    "he": "כתובת"
+  },
+  "phone": {
+    "en": "Phone",
+    "ar": "هاتف",
+    "he": "טלפון"
+  },
+  "closed": {
+    "en": "Closed",
+    "ar": "مغلق",
+    "he": "סגור"
+  },
+  "reason_orthodontics": {
+    "en": "Orthodontics",
+    "ar": "تقويم الأسنان",
+    "he": "יישור שיניים"
+  },
+  "reason_emergency": {
+    "en": "Emergency",
+    "ar": "طوارئ",
+    "he": "חירום"
+  },
   "clinic_name": {
-    "en": "Dr. Alfred Jarrous",
-    "ar": "د. الفرد جروس",
-    "he": "דר׳ אלפרד גרוס"
+    "en": "Clinic Name",
+    "ar": "اسم العيادة",
+    "he": "שם המרפאה"
+  },
+  "enter_registration_code": {
+    "en": "Enter Registration Code",
+    "ar": "أدخل رمز التسجيل",
+    "he": "הכנס קוד רישום"
+  },
+  "register_clinic_now": {
+    "en": "Register Clinic Now",
+    "ar": "سجّل العيادة الآن",
+    "he": "רשום מרפאה עכשיו"
+  },
+  "connect_to_dental_clinic": {
+    "en": "Connect to Dental Clinic",
+    "ar": "الاتصال بعيادة الأسنان",
+    "he": "התחבר למרפאת שיניים"
+  },
+  "view_as_patient": {
+    "en": "View as Patient",
+    "ar": "عرض كمريض",
+    "he": "צפה כמטופל"
+  },
+  "patient_view_coming_soon": {
+    "en": "Patient view coming soon",
+    "ar": "عرض المريض قريباً",
+    "he": "תצוגת מטופל בקרוב"
+  },
+  "your_clinic": {
+    "en": "Your Clinic",
+    "ar": "عيادتك",
+    "he": "המרפאה שלך"
+  },
+  "tap_logo_hint": {
+    "en": "Tap logo to change  •  Press Save when done",
+    "ar": "اضغط على الشعار للتغيير  •  اضغط حفظ عند الانتهاء",
+    "he": "לחץ על הלוגו לשינוי  •  לחץ שמור בסיום"
+  },
+  "describe_clinic": {
+    "en": "Describe your clinic, your values, and what makes you special…",
+    "ar": "صف عيادتك وقيمك وما يميزك…",
+    "he": "תאר את המרפאה שלך, את הערכים שלך ומה מייחד אותך…"
+  },
+  "insurance_accepted": {
+    "en": "Insurance Accepted",
+    "ar": "التأمين المقبول",
+    "he": "ביטוח מקובל"
+  },
+  "payment_methods": {
+    "en": "Payment Methods",
+    "ar": "طرق الدفع",
+    "he": "אמצעי תשלום"
+  },
+  "add": {
+    "en": "Add",
+    "ar": "إضافة",
+    "he": "הוסף"
+  },
+  "add_team_member": {
+    "en": "Add Team Member",
+    "ar": "إضافة عضو فريق",
+    "he": "הוסף חבר צוות"
+  },
+  "add_team_member_title": {
+    "en": "Add Team Member",
+    "ar": "إضافة عضو فريق",
+    "he": "הוסף חבר צוות"
+  },
+  "edit_team_member_title": {
+    "en": "Edit Team Member",
+    "ar": "تعديل عضو الفريق",
+    "he": "ערוך חבר צוות"
+  },
+  "full_name": {
+    "en": "Full name",
+    "ar": "الاسم الكامل",
+    "he": "שם מלא"
+  },
+  "role_hint": {
+    "en": "Role (e.g. Dentist)",
+    "ar": "الدور (مثال: طبيب أسنان)",
+    "he": "תפקיד (לדוג' רופא שיניים)"
+  },
+  "experience_hint": {
+    "en": "Experience (e.g. 10 years)",
+    "ar": "الخبرة (مثال: 10 سنوات)",
+    "he": "ניסיון (לדוג' 10 שנים)"
+  },
+  "specializations_hint": {
+    "en": "Specializations, comma separated",
+    "ar": "التخصصات، مفصولة بفواصل",
+    "he": "התמחויות, מופרדות בפסיקים"
+  },
+  "edit": {
+    "en": "Edit",
+    "ar": "تعديل",
+    "he": "ערוך"
+  },
+  "remove": {
+    "en": "Remove",
+    "ar": "إزالة",
+    "he": "הסר"
+  },
+  "add_category": {
+    "en": "Add Category  (max 5)",
+    "ar": "إضافة فئة  (الحد الأقصى 5)",
+    "he": "הוסף קטגוריה  (מקסימום 5)"
+  },
+  "category_name": {
+    "en": "Category name",
+    "ar": "اسم الفئة",
+    "he": "שם קטגוריה"
+  },
+  "add_photo": {
+    "en": "Add",
+    "ar": "إضافة",
+    "he": "הוסף"
+  },
+  "remove_photo": {
+    "en": "Remove photo",
+    "ar": "إزالة الصورة",
+    "he": "הסר תמונה"
+  },
+  "profile_saved": {
+    "en": "Profile saved!",
+    "ar": "تم حفظ الملف الشخصي!",
+    "he": "הפרופיל נשמר!"
+  },
+  "save_failed": {
+    "en": "Save failed",
+    "ar": "فشل الحفظ",
+    "he": "השמירה נכשלה"
+  },
+  "upload_failed": {
+    "en": "Upload failed",
+    "ar": "فشل التحميل",
+    "he": "ההעלאה נכשלה"
+  },
+  "replace": {
+    "en": "Replace",
+    "ar": "استبدال",
+    "he": "החלף"
+  },
+  "open": {
+    "en": "Open",
+    "ar": "مفتوح",
+    "he": "פתוח"
+  },
+  "break_label": {
+    "en": "Break",
+    "ar": "استراحة",
+    "he": "הפסקה"
+  },
+  "save": {
+    "en": "Save",
+    "ar": "حفظ",
+    "he": "שמור"
+  },
+  "register_with_code": {
+    "en": "Register with Code",
+    "ar": "سجّل برمز",
+    "he": "הרשם עם קוד"
+  },
+  "scan_qr_code": {
+    "en": "Scan QR Code",
+    "ar": "امسح رمز QR",
+    "he": "סרוק קוד QR"
+  },
+  "or_continue_with": {
+    "en": "or continue with",
+    "ar": "أو تابع بواسطة",
+    "he": "או המשך עם"
+  },
+  "or_register_with_email": {
+    "en": "or register with email",
+    "ar": "أو سجل بالبريد الإلكتروني",
+    "he": "או הירשם עם אימייל"
   },
   "clinic_about_description": {
     "en": "Founded in 2010, Asnani Dental Clinic has been serving the community with excellence in dental care. Our team of experienced professionals is dedicated to providing comprehensive dental services using the latest technology and techniques. We believe in creating beautiful, healthy smiles in a comfortable and caring environment.",
