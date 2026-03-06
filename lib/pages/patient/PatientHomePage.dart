@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import '../../CurrentPatient.dart';
 import 'package:dentist_app/services/LocalizationProvider.dart';
 import '../../Images.dart';
+import '../QRScannerPage.dart';
 import 'BookAppointmentPage.dart';
 import 'ClinicDealsPage.dart';
 import 'ClinicProfilePage.dart';
@@ -1013,14 +1014,19 @@ class _ClinicRegistrationDialogState extends State<_ClinicRegistrationDialog> {
     );
   }
 
-  void _showQRCodeScanner() {
-    // TODO: Implement QR code scanner
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(context.tr('qr_scanner_coming_soon')),
-        backgroundColor: const Color(0xFF7DD3C0),
-      ),
+  void _showQRCodeScanner() async {
+    // Close the current dialog first
+    Navigator.pop(context);
+
+    final result = await Navigator.push<Map<String, String>>(
+      context,
+      MaterialPageRoute(builder: (context) => const QRScannerPage()),
     );
+
+    if (result != null) {
+      // 'code' is what _handleClinicRegistration uses to look up the clinic
+      widget.onRegister(result['code']!);
+    }
   }
 
   @override

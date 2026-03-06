@@ -5,9 +5,9 @@ import 'package:dentist_app/pages/clinic/PatientsListPage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../patient/PatientSettingsPage.dart';
 import '../../services/LocalizationProvider.dart';
 import 'CalendarPage.dart';
+import 'ClinicSettingsPage.dart';
 
 class ClinicHomePage extends StatefulWidget {
   const ClinicHomePage({super.key});
@@ -116,7 +116,7 @@ class _ClinicHomePageState extends State<ClinicHomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const PatientSettingsPage(),
+                        builder: (context) => const ClinicSettingsPage(),
                       ),
                     );
                   },

@@ -1499,26 +1499,6 @@
     "ar": "خريطة",
     "he": "מפה"
   },
-  "about_us": {
-    "en": "About Us",
-    "ar": "من نحن",
-    "he": "אודותינו"
-  },
-  "technology_equipment": {
-    "en": "Technology & Equipment",
-    "ar": "التكنولوجيا والمعدات",
-    "he": "טכנולוגיה וציוד"
-  },
-  "certifications_awards": {
-    "en": "Certifications & Awards",
-    "ar": "الشهادات والجوائز",
-    "he": "תעודות ופרסים"
-  },
-  "insurance_payment": {
-    "en": "Insurance & Payment",
-    "ar": "التأمين والدفع",
-    "he": "ביטוח ותשלום"
-  },
   "insurance": {
     "en": "Insurance",
     "ar": "التأمين",
@@ -1528,16 +1508,6 @@
     "en": "Payment",
     "ar": "الدفع",
     "he": "תשלום"
-  },
-  "languages_spoken": {
-    "en": "Languages Spoken",
-    "ar": "اللغات المتحدثة",
-    "he": "שפות מדוברות"
-  },
-  "parking_accessibility": {
-    "en": "Parking & Accessibility",
-    "ar": "مواقف السيارات وإمكانية الوصول",
-    "he": "חניה ונגישות"
   },
   "features": {
     "en": "Features",
@@ -1564,36 +1534,6 @@
     "ar": "لم تتم إضافة صور بعد.",
     "he": "לא נוספו תמונות עדיין."
   },
-  "photos": {
-    "en": "photos",
-    "ar": "صور",
-    "he": "תמונות"
-  },
-  "opening_hours": {
-    "en": "Opening Hours",
-    "ar": "ساعات العمل",
-    "he": "שעות פתיחה"
-  },
-  "contact_info": {
-    "en": "Contact Info",
-    "ar": "معلومات التواصل",
-    "he": "פרטי קשר"
-  },
-  "address": {
-    "en": "Address",
-    "ar": "العنوان",
-    "he": "כתובת"
-  },
-  "phone": {
-    "en": "Phone",
-    "ar": "هاتف",
-    "he": "טלפון"
-  },
-  "closed": {
-    "en": "Closed",
-    "ar": "مغلق",
-    "he": "סגור"
-  },
   "reason_orthodontics": {
     "en": "Orthodontics",
     "ar": "تقويم الأسنان",
@@ -1603,11 +1543,6 @@
     "en": "Emergency",
     "ar": "طوارئ",
     "he": "חירום"
-  },
-  "clinic_name": {
-    "en": "Clinic Name",
-    "ar": "اسم العيادة",
-    "he": "שם המרפאה"
   },
   "enter_registration_code": {
     "en": "Enter Registration Code",
@@ -1649,26 +1584,6 @@
     "ar": "صف عيادتك وقيمك وما يميزك…",
     "he": "תאר את המרפאה שלך, את הערכים שלך ומה מייחד אותך…"
   },
-  "insurance_accepted": {
-    "en": "Insurance Accepted",
-    "ar": "التأمين المقبول",
-    "he": "ביטוח מקובל"
-  },
-  "payment_methods": {
-    "en": "Payment Methods",
-    "ar": "طرق الدفع",
-    "he": "אמצעי תשלום"
-  },
-  "add": {
-    "en": "Add",
-    "ar": "إضافة",
-    "he": "הוסף"
-  },
-  "add_team_member": {
-    "en": "Add Team Member",
-    "ar": "إضافة عضو فريق",
-    "he": "הוסף חבר צוות"
-  },
   "add_team_member_title": {
     "en": "Add Team Member",
     "ar": "إضافة عضو فريق",
@@ -1684,11 +1599,6 @@
     "ar": "الاسم الكامل",
     "he": "שם מלא"
   },
-  "role_hint": {
-    "en": "Role (e.g. Dentist)",
-    "ar": "الدور (مثال: طبيب أسنان)",
-    "he": "תפקיד (לדוג' רופא שיניים)"
-  },
   "experience_hint": {
     "en": "Experience (e.g. 10 years)",
     "ar": "الخبرة (مثال: 10 سنوات)",
@@ -1698,11 +1608,6 @@
     "en": "Specializations, comma separated",
     "ar": "التخصصات، مفصولة بفواصل",
     "he": "התמחויות, מופרדות בפסיקים"
-  },
-  "edit": {
-    "en": "Edit",
-    "ar": "تعديل",
-    "he": "ערוך"
   },
   "remove": {
     "en": "Remove",
@@ -1749,20 +1654,10 @@
     "ar": "استبدال",
     "he": "החלף"
   },
-  "open": {
-    "en": "Open",
-    "ar": "مفتوح",
-    "he": "פתוח"
-  },
   "break_label": {
     "en": "Break",
     "ar": "استراحة",
     "he": "הפסקה"
-  },
-  "save": {
-    "en": "Save",
-    "ar": "حفظ",
-    "he": "שמור"
   },
   "register_with_code": {
     "en": "Register with Code",
@@ -1783,6 +1678,76 @@
     "en": "or register with email",
     "ar": "أو سجل بالبريد الإلكتروني",
     "he": "או הירשם עם אימייל"
+  },
+  "view_and_manage": {
+    "en": "View & Manage",
+    "ar": "عرض وإدارة",
+    "he": "הצג ונהל"
+  },
+  "forgot_password_subtitle": {
+    "en": "Enter your email address and we'll send you a link to reset your password.",
+    "ar": "أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور.",
+    "he": "הזן את כתובת האימייל שלך ונשלח לך קישור לאיפוס הסיסמה."
+  },
+  "back_to_login": {
+    "en": "Back to Login",
+    "ar": "العودة إلى تسجيل الدخول",
+    "he": "חזרה להתחברות"
+  },
+  "clinic_information": {
+    "en": "Clinic Information",
+    "ar": "معلومات العيادة",
+    "he": "פרטי המרפאה"
+  },
+  "patient_registration": {
+    "en": "Patient Registration",
+    "ar": "تسجيل المرضى",
+    "he": "רישום מטופלים"
+  },
+  "clinic_qr_code": {
+    "en": "Clinic QR Code",
+    "ar": "رمز QR للعيادة",
+    "he": "קוד QR של המרפאה"
+  },
+  "qr_scan_hint": {
+    "en": "Patients scan this to join your clinic",
+    "ar": "يمكن للمرضى مسح هذا الرمز للانضمام",
+    "he": "מטופלים סורקים כדי להצטרף למרפאה"
+  },
+  "qr_instant": {
+    "en": "Instant",
+    "ar": "فوري",
+    "he": "מיידי"
+  },
+  "qr_permanent": {
+    "en": "Permanent",
+    "ar": "دائم",
+    "he": "קבוע"
+  },
+  "qr_secure": {
+    "en": "Secure",
+    "ar": "آمن",
+    "he": "מאובטח"
+  },
+  "or_enter_code_manually": {
+    "en": "Or share the code above manually",
+    "ar": "أو شارك الرمز أعلاه يدوياً",
+    "he": "או שתף את הקוד ידנית"
+  },
+  "code_copied": {
+    "en": "Code copied to clipboard",
+    "ar": "تم نسخ الرمز",
+    "he": "הקוד הועתק ללוח"
+  },
+  "patients": {
+    "en": "patients",
+    "ar": "مرضى",
+    "he": "מטופלים"
+  },
+  "clinic_name": {
+    "en": "Clinic Name",
+    "ar": "اسم العيادة",
+    "he": "שם המרפאה"
   },
   "clinic_about_description": {
     "en": "Founded in 2010, Asnani Dental Clinic has been serving the community with excellence in dental care. Our team of experienced professionals is dedicated to providing comprehensive dental services using the latest technology and techniques. We believe in creating beautiful, healthy smiles in a comfortable and caring environment.",
