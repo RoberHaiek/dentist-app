@@ -3064,5 +3064,18 @@
     "en": "Dr. Dentist",
     "ar": "د. طبيب أسنان",
     "he": "ד\"ר רופא שיניים"
-  }
+  },
+  "check_spam_folder": {
+    "en": "Can't find the email? Check your spam or junk folder.",
+    "ar": "لا تجد البريد؟ تحقق من مجلد الرسائل غير المرغوب فيها.",
+    "he": "לא מוצא את האימייל? בדוק את תיקיית הספאם."
+  },
+  "email_not_verified_yet": {
+    "en": "Please verify your email before logging in.",
+    "ar": "يرجى التحقق من بريدك الإلكتروني قبل تسجيل الدخول.",
+    "he": "אנא אמת את האימייל שלך לפני ההתחברות."
+  },
+  "verify_your_email": { "en": "Verify Your Email", "ar": "تحقق من بريدك الإلكتروني", "he": "אמת את האימייל שלך" },
+  "verification_sent_to": { "en": "We've sent a verification link to", "ar": "لقد أرسلنا رابط التحقق إلى", "he": "שלחנו קישור אימות אל" },
+  "verification_instructions": { "en": "Click the link in the email to activate your account. Check your spam folder if you don't see it.", "ar": "انقر على الرابط في البريد الإلكتروني لتفعيل حسابك.", "he": "לחץ על הקישור באימייל כדי להפעיל את החשבון שלך." },
 }

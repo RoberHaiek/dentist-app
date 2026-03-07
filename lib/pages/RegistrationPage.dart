@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'LoginPage.dart';
+import 'EmailVerificationPage.dart';
 import 'clinic/ClinicRegistrationPage.dart';
 import 'patient/PatientHomePage.dart';
 import '../services/LocalizationProvider.dart';
@@ -300,7 +301,11 @@ class RegistrationPageState extends State<RegistrationPage>
         );
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const LoginPage()),
+          MaterialPageRoute(
+            builder: (_) => EmailVerificationPage(
+              email: emailController.text.trim(),
+            ),
+          ),
         );
       });
     } on FirebaseAuthException catch (e) {

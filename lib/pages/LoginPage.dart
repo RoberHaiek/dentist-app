@@ -199,7 +199,7 @@ class LoginPageState extends State<LoginPage>
         'address': '',
         'phoneNumber': '',
         'photoUrl': user.photoURL ?? '',
-        'createdVia': 'social',
+        'createdVia': 'google',
       });
     }
   }
@@ -218,6 +218,20 @@ class LoginPageState extends State<LoginPage>
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
+
+      // Block login if email not verified
+      if (!cred.user!.emailVerified) {
+        await FirebaseAuth.instance.signOut();
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(context.tr('email_not_verified_yet')),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        }
+        return;
+      }
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('rememberMe', rememberMe);
@@ -268,7 +282,6 @@ class LoginPageState extends State<LoginPage>
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       if (googleUser == null) {
-        // User cancelled
         setState(() => isSocialLoading = false);
         return;
       }
@@ -287,7 +300,6 @@ class LoginPageState extends State<LoginPage>
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('rememberMe', true);
 
-      // Create Firestore document if first-time Google login
       await _ensureUserDocument(userCred.user!);
 
       if (!mounted) return;
@@ -441,8 +453,8 @@ class LoginPageState extends State<LoginPage>
                           alignment: Alignment.centerLeft,
                           child: Text(
                             context.tr('invalid_email'),
-                            style:
-                            const TextStyle(color: Colors.red, fontSize: 12),
+                            style: const TextStyle(
+                                color: Colors.red, fontSize: 12),
                           ),
                         ),
                       ),
